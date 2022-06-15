@@ -3,6 +3,7 @@ import { Form, Container, Button, Col, FormControl, Pagination, Row } from 'reac
 import { Column } from 'react-table';
 import AddItemModal from '../AddItemModal'
 import EquipmentTable, { EquipmentData } from '../EquipmentTable';
+import InputColumnFilter from '../InputColumnFilter';
 
 function generateEquipmentData(count: number): EquipmentData[] {
     const data: EquipmentData[] = [];
@@ -20,15 +21,18 @@ const Equipment = () => {
     const headers: Column<EquipmentData>[] = React.useMemo(() => [
         {
             Header: "#",
-            accessor: "id"
+            accessor: "id",
+            disableFilters: true
         },
         {
             Header: "Наименование",
-            accessor: "name"
+            accessor: "name",
+            Filter: InputColumnFilter
         },
         {
             Header: "Тип",
             accessor: "type",
+            disableFilters: true
         }
     ], []);
 
