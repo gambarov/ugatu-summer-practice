@@ -1,8 +1,8 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
-import { useTable, Column } from 'react-table'
+import { useTable, useSortBy, Column } from 'react-table'
 import { Button, Row, Col } from 'react-bootstrap';
-import { TrashFill, PencilFill } from 'react-bootstrap-icons';
+import { TrashFill, PencilFill, SortUp, SortDownAlt } from 'react-bootstrap-icons';
 
 export interface EquipmentData {
     id: number;
@@ -53,7 +53,9 @@ const EquipmentTable: React.FC<Props> = ({ columns, data }) => {
     } = useTable({
         columns,
         data,
-    }, tableHooks);
+    }, 
+        tableHooks,
+        useSortBy);
 
     return (
         <Table {...getTableProps()} bordered className='align-middle'>
@@ -62,9 +64,12 @@ const EquipmentTable: React.FC<Props> = ({ columns, data }) => {
                     const { key, ...restHeadGroupProps } = headerGroup.getHeaderGroupProps();
                     return (<tr {...restHeadGroupProps} key={key}>
                         {headerGroup.headers.map(column => {
-                            const { key, ...restColumnProps } = column.getHeaderProps();
+                            const { key, ...restColumnProps } = column.getHeaderProps(column.getSortByToggleProps());
                             return (
-                                <th {...restColumnProps} key={key} className='w-auto'>{column.render('Header')}</th>
+                                <th {...restColumnProps} key={key} className='w-auto'>
+                                    {column.render('Header')}
+                                    {column.isSorted ? (column.isSortedDesc ? <SortUp /> : <SortDownAlt />) : null}
+                                </th>
                             )
                         })}
                     </tr>)
