@@ -1,35 +1,8 @@
 import React from 'react'
 import { Tab, Row, Col, ListGroup, Container } from 'react-bootstrap'
-import EquipmentTable, { EquipmentData } from '../EquipmentTable'
-import { Column } from 'react-table';
+import Equipment from './Equipment'
 
 const Main = () => {
-    const headers: Column<EquipmentData>[] = React.useMemo(() => [
-        {
-            Header: "#",
-            accessor: "id"
-        },
-        {
-            Header: "Наименование",
-            accessor: "name"
-        },
-        {
-            Header: "Тип",
-            accessor: "type",
-        }
-    ], []);
-
-    const data: EquipmentData[] = React.useMemo(() => [
-        { id: 1, name: 'Прибор2', type: 'Тип2' },
-        { id: 1, name: 'Прибор2', type: 'Тип2' },
-        { id: 1, name: 'Прибор2', type: 'Тип2' },
-        { id: 1, name: 'Прибор2', type: 'Тип2' },
-        { id: 1, name: 'Прибор2', type: 'Тип2' },
-        { id: 1, name: 'Прибор2', type: 'Тип2' },
-        { id: 1, name: 'Прибор2', type: 'Тип2' },
-        { id: 1, name: 'Прибор2', type: 'Тип2' },
-    ], []);
-
     return (
         <Container>
             <Tab.Container id="main-list-groups" defaultActiveKey="#mto">
@@ -50,7 +23,7 @@ const Main = () => {
                     <Col sm={9}>
                         <Tab.Content>
                             <Tab.Pane eventKey="#mto">
-                                <EquipmentTable columns={headers} data={data} />
+                                <Equipment/>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#sets">
                                 ...
