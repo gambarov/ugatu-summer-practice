@@ -1,6 +1,8 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
 import { useTable, Column } from 'react-table'
+import { Button, Row, Col } from 'react-bootstrap';
+import { TrashFill, PencilFill } from 'react-bootstrap-icons';
 
 export interface EquipmentData {
     id: number;
@@ -17,7 +19,31 @@ interface Props {
 }
 
 const EquipmentTable: React.FC<Props> = ({ columns, data }) => {
-    // Use the state and functions returned from useTable to build your UI
+    const tableHooks = (hooks: any) => {
+        hooks.visibleColumns.push((columns: Column<EquipmentData>[]) => [
+            ...columns,
+            {
+                id: 'actions',
+                accessor: 'actions',
+                Header: 'Действия',
+                Cell: () => (
+                    <Row>
+                        <Col sm='4' md='2'>
+                            <Button>
+                                <PencilFill />
+                            </Button>
+                        </Col>
+                        <Col sm='4' md='2'>
+                            <Button>
+                                <TrashFill />
+                            </Button>
+                        </Col>
+                    </Row>
+                )
+            }
+        ]);
+    }
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -27,18 +53,18 @@ const EquipmentTable: React.FC<Props> = ({ columns, data }) => {
     } = useTable({
         columns,
         data,
-    })
+    }, tableHooks);
 
     return (
-        <Table {...getTableProps()} className='table table-bordered'>
-            <thead className='table table-primary'>
+        <Table {...getTableProps()} bordered className='align-middle'>
+            <thead className='table-primary'>
                 {headerGroups.map((headerGroup) => {
                     const { key, ...restHeadGroupProps } = headerGroup.getHeaderGroupProps();
                     return (<tr {...restHeadGroupProps} key={key}>
                         {headerGroup.headers.map(column => {
                             const { key, ...restColumnProps } = column.getHeaderProps();
                             return (
-                                <th {...restColumnProps} key={key}>{column.render('Header')}</th>
+                                <th {...restColumnProps} key={key} className='w-auto'>{column.render('Header')}</th>
                             )
                         })}
                     </tr>)

@@ -59,7 +59,7 @@ const Equipment = () => {
     }
 
     return (
-        <Container>
+        <>
             <Row>
                 <Col md='12'>
                     <EquipmentTable columns={headers} data={data} />
@@ -95,7 +95,7 @@ const Equipment = () => {
                     </Form.Group>
                 </Form>
             </AddItemModal>
-        </Container>
+        </>
     )
 }
 

@@ -11,7 +11,7 @@ interface Props {
 
 const AddItemModal: React.FC<Props> = ({ show, setShow, title, children, onAction }) => {
     return (
-        <Modal show={show} onHide={() => { setShow(false) }}>
+        <Modal show={show} onHide={() => { setShow(false) }} centered>
             <Modal.Header closeButton>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>

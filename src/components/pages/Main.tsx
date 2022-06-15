@@ -8,7 +8,7 @@ const Main = () => {
             <Tab.Container id="main-list-groups" defaultActiveKey="#mto">
                 <Row>
                     <Col sm={3}>
-                        <ListGroup role={'button'}>
+                        <ListGroup role={'button'} className='mb-3 mb-sm-0'>
                             <ListGroup.Item action href="#mto">
                                 МТО
                             </ListGroup.Item>
