@@ -1,13 +1,13 @@
 import React from 'react';
 import MyNavbar from './components/Navbar';
-import Equipment from './components/pages/Equipment';
+import Main from './components/pages/Main';
 import './App.scss';
 
 function App() {
 	return (
 		<>
 			<MyNavbar />
-			<Equipment />
+			<Main />
 		</>
 	);
 }
