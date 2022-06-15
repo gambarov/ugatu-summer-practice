@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 
 const MyNavbar = () => {
     return (
-        <Navbar bg="dark" variant='dark'>
+        <Navbar bg="dark" variant='dark' className='mb-3'>
             <Container>
                 <Navbar.Brand href="#home">МТО</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
