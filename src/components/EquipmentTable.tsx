@@ -1,8 +1,9 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
 import { useTable, useSortBy, useFilters, Column } from 'react-table'
-import { Button, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col, Form, Modal } from 'react-bootstrap';
 import { TrashFill, PencilFill, SortUp, SortDownAlt } from 'react-bootstrap-icons';
+import AddItemModal from './AddItemModal';
 
 export interface EquipmentData {
     id: number;
@@ -13,12 +14,21 @@ export interface EquipmentData {
 interface Props {
     columns: Column<EquipmentData>[];
     data: EquipmentData[];
-    // addEquipment: (equipment: EquipmentData) => void;
-    // updateEquipment: (equipment: EquipmentData) => void;
-    // deleteEquipment: (id: number) => void;
+    addEquipment: (equipment: EquipmentData) => void;
+    updateEquipment: (equipment: EquipmentData) => void;
+    deleteEquipment: (id: number) => void;
 }
 
-const EquipmentTable: React.FC<Props> = ({ columns, data }) => {
+const EquipmentTable: React.FC<Props> = ({ columns, data, updateEquipment, deleteEquipment }) => {
+    const [show, setShow] = React.useState(false);
+    const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+
+    const [form, setForm] = React.useState<EquipmentData>({
+        id: 0,
+        name: '',
+        type: 'ПО'
+    });
+
     const tableHooks = (hooks: any) => {
         hooks.visibleColumns.push((columns: Column<EquipmentData>[]) => [
             ...columns,
@@ -27,15 +37,23 @@ const EquipmentTable: React.FC<Props> = ({ columns, data }) => {
                 accessor: 'actions',
                 Header: 'Действия',
                 disableFilters: true,
-                Cell: () => (
+                Cell: ({ row }: any) => (
                     <Row>
-                        <Col sm='4' md='2'>
-                            <Button>
+                        <Col>
+                            <Button onClick={
+                                () => {
+                                    setForm({ ...row.original });
+                                    setShow(true);
+                                }}>
                                 <PencilFill />
                             </Button>
                         </Col>
-                        <Col sm='4' md='2'>
-                            <Button>
+                        <Col>
+                            <Button variant='danger' onClick={
+                                () => {
+                                    setForm({ ...row.original });
+                                    setShowDeleteModal(true);
+                                }}>
                                 <TrashFill />
                             </Button>
                         </Col>
@@ -55,23 +73,32 @@ const EquipmentTable: React.FC<Props> = ({ columns, data }) => {
         columns,
         data,
     },
-        tableHooks, 
+        tableHooks,
         useFilters,
         useSortBy);
 
     return (
         <>
             <Table {...getTableProps()} bordered className='align-middle'>
-                <thead className='table-primary'>
+                <thead className='bg-primary text-light'>
                     {headerGroups.map((headerGroup) => {
                         const { key, ...restHeadGroupProps } = headerGroup.getHeaderGroupProps();
                         return (<tr {...restHeadGroupProps} key={key}>
                             {headerGroup.headers.map(column => {
-                                const { key, ...restColumnProps } = column.getHeaderProps(column.getSortByToggleProps());
+                                const { key, ...restColumnProps } = column.getHeaderProps();
                                 return (
-                                    <th {...restColumnProps} key={key} className='w-auto'>
-                                        {column.render('Header')}
-                                        {column.isSorted ? (column.isSortedDesc ? <SortUp /> : <SortDownAlt />) : null}
+                                    <th {...restColumnProps} key={key}>
+                                        <Row className='align-items-center'>
+                                            <Col md='6'>
+                                                <span {...column.getSortByToggleProps()}>
+                                                    {column.render('Header')}
+                                                    {column.isSorted ? (column.isSortedDesc ? <SortUp /> : <SortDownAlt />) : null}
+                                                </span>
+                                            </Col>
+                                            <Col md='6'>
+                                                <div>{column.canFilter ? column.render('Filter') : null}</div>
+                                            </Col>
+                                        </Row>
                                     </th>
                                 )
                             })}
@@ -93,6 +120,53 @@ const EquipmentTable: React.FC<Props> = ({ columns, data }) => {
                     })}
                 </tbody>
             </Table>
+
+            <AddItemModal title='Обновление обеспечения' show={show} setShow={setShow} onAction={() => { updateEquipment(form) }}>
+                <Form>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Название</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Введите название обеспечения"
+                            onChange={(e) => { setForm({ ...form, name: e.target.value }) }}
+                            value={form.name}
+                            autoFocus
+                        />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label>Тип</Form.Label>
+                        <Form.Select aria-label="Default select example"
+                            onChange={
+                                (e) => { setForm({ ...form, type: e.target.value }) }
+                            }
+                            value={form.type}
+                        >
+                            <option disabled>Выберите тип обеспечения</option>
+                            <option value="ПО">ПО</option>
+                            <option value="АО">АО</option>
+                        </Form.Select>
+                    </Form.Group>
+                </Form>
+            </AddItemModal>
+
+            <Modal show={showDeleteModal} onHide={() => { setShowDeleteModal(false) }} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Удаление записи</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    Вы точно хотите удалить запись об обеспечении?
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => { setShow(false) }}>Нет</Button>
+                    <Button variant="primary" onClick={() => {
+                        deleteEquipment(form.id);
+                        setShowDeleteModal(false);
+                    }}>Да</Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }

@@ -25,7 +25,7 @@ const AddItemModal: React.FC<Props> = ({ show, setShow, title, children, onActio
                 <Button variant="primary" onClick={() => {
                     onAction();
                     setShow(false);
-                }}>Добавить</Button>
+                }}>Сохранить</Button>
             </Modal.Footer>
         </Modal>
     )

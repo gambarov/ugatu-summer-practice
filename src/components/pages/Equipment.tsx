@@ -4,6 +4,7 @@ import { Column } from 'react-table';
 import AddItemModal from '../AddItemModal'
 import EquipmentTable, { EquipmentData } from '../EquipmentTable';
 import InputColumnFilter from '../InputColumnFilter';
+import SelectColumnFilter from '../SelectColumnFilter';
 
 function generateEquipmentData(count: number): EquipmentData[] {
     const data: EquipmentData[] = [];
@@ -32,7 +33,8 @@ const Equipment = () => {
         {
             Header: "Тип",
             accessor: "type",
-            disableFilters: true
+            Filter: SelectColumnFilter,
+            filter: 'includes',
         }
     ], []);
 
@@ -47,7 +49,7 @@ const Equipment = () => {
     });
 
     const handleAddEquipment = () => {
-        addEquipment({...form, id: data.length + 1});
+        addEquipment({ ...form, id: data.length + 1 });
     };
 
     const addEquipment = (equipment: EquipmentData) => {
@@ -66,7 +68,13 @@ const Equipment = () => {
         <>
             <Row>
                 <Col md='12'>
-                    <EquipmentTable columns={headers} data={data} />
+                    <EquipmentTable
+                        columns={headers}
+                        data={data}
+                        addEquipment={addEquipment}
+                        updateEquipment={updateEquipment}
+                        deleteEquipment={deleteEquipment}
+                    />
                 </Col>
             </Row>
             <Row>

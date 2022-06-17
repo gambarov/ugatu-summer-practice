@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tab, Row, Col, ListGroup, Container } from 'react-bootstrap'
 import Equipment from './Equipment'
+import DataTableFilterDemo from '../DataTableFilterDemo'
 
 const Main = () => {
     return (
@@ -26,10 +27,10 @@ const Main = () => {
                                 <Equipment/>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#sets">
-                                ...
+                                <DataTableFilterDemo/>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#audiences">
-                                ...
+                                ПУСТО...
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>
