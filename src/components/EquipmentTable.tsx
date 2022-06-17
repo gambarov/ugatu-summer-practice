@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo } from 'react';
-import { TrashFill, PencilFill, SortUp, SortDownAlt } from 'react-bootstrap-icons';
 import { DataTable, DataTableFilterMeta } from 'primereact/datatable';
 import { Column, ColumnFilterElementTemplateOptions } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -8,6 +7,8 @@ import { MultiSelect } from 'primereact/multiselect';
 import { FilterMatchMode } from 'primereact/api';
 import { MultiSelectChangeParams } from 'primereact/multiselect';
 import { Row, Col } from 'react-bootstrap';
+import { PaginatorCurrentPageReportOptions, PaginatorRowsPerPageDropdownOptions, PaginatorTemplate } from 'primereact/paginator';
+import { Dropdown } from 'primereact/dropdown';
 
 function generateEquipmentData(count: number): EquipmentData[] {
     const data: EquipmentData[] = [];
@@ -75,8 +76,7 @@ const EquipmentTable: React.FC = () => {
                         </span>
                     </Col>
                     <Col>
-                        <Button type="button" icon="pi pi-filter-slash" label="Очистить" className="p-button-outlined" onClick={resetFilters} />
-
+                        <Button type="button" icon="pi pi-filter-slash" label="Очистить" onClick={resetFilters} />
                     </Col>
                 </Row>
             </div>
@@ -85,13 +85,52 @@ const EquipmentTable: React.FC = () => {
 
     const header = useMemo(() => renderHeader(), [globalFilterValue]);
 
+    const paginatorTemplate: PaginatorTemplate = {
+        layout: 'CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown',
+        'RowsPerPageDropdown': (options: PaginatorRowsPerPageDropdownOptions) => {
+            const dropdownOptions = [
+                { label: 10, value: 10 },
+                { label: 20, value: 20 },
+                { label: 50, value: 50 },
+                { label: 'Все', value: options.totalRecords },
+            ];
+
+            return <Dropdown value={options.value} options={dropdownOptions} onChange={options.onChange} />;
+        },
+        'CurrentPageReport': (options: PaginatorCurrentPageReportOptions) => {
+            return (
+                <span style={{ color: 'var(--text-color)', userSelect: 'none', width: '120px', textAlign: 'center' }}>
+                    {options.first} - {options.last} из {options.totalRecords}
+                </span>
+            )
+        },
+        'FirstPageLink': (options) => {
+            return options.element;
+        },
+        'LastPageLink': (options) => {
+            return options.element;
+        },
+        'JumpToPageInput': (options) => {
+            return options.element;
+        },
+        'NextPageLink': (options) => {
+            return options.element;
+        },
+        'PrevPageLink': (options) => {
+            return options.element;
+        },
+        'PageLinks': (options) => {
+            return options.element;
+        }
+    };
+
     return (
         <DataTable value={data} sortMode='multiple' removableSort header={header} responsiveLayout="scroll"
+            resizableColumns columnResizeMode="fit"
             emptyMessage='МТО отсутствуют...' showGridlines dataKey='id'
             filterDisplay='row' filters={filters} globalFilterFields={['name', 'type']}
-            paginator rows={5} rowsPerPageOptions={[5, 10, 25]}
-            paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-            currentPageReportTemplate="Показано {first} с {last} из {totalRecords}">
+            paginator rows={10}
+            paginatorTemplate={paginatorTemplate}>
             <Column field="id" header="#" sortable />
             <Column field="name" header="Название" sortable
                 filter filterPlaceholder='Поиск по названию...' showFilterMenu={false} />
