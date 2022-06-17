@@ -9,6 +9,7 @@ import { MultiSelectChangeParams } from 'primereact/multiselect';
 import { Row, Col } from 'react-bootstrap';
 import { PaginatorCurrentPageReportOptions, PaginatorRowsPerPageDropdownOptions, PaginatorTemplate } from 'primereact/paginator';
 import { Dropdown } from 'primereact/dropdown';
+import { Toolbar } from 'primereact/toolbar';
 
 function generateEquipmentData(count: number): EquipmentData[] {
     const data: EquipmentData[] = [];
@@ -61,24 +62,27 @@ const EquipmentTable: React.FC = () => {
 
     const typeFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
         return <MultiSelect display="chip" options={types}
-            value={options.value} onChange={(e: MultiSelectChangeParams) => { options.filterApplyCallback(e.value); }}
+            value={options.value} onChange={(e: MultiSelectChangeParams) => { options.filterApplyCallback(e.value); console.log(filters) }}
             placeholder="Все" className="p-column-filter" />;
+    }
+
+    const leftToolbarTemplate = () => {
+        return (
+            <React.Fragment>
+                <Button label="Добавить" icon="pi pi-plus" className="p-button-success mr-3" />
+                <Button label="Удалить выбранное" icon="pi pi-trash" className="p-button-danger" />
+            </React.Fragment>
+        )
     }
 
     const renderHeader = () => {
         return (
             <div>
-                <Row>
-                    <Col md='auto'>
-                        <span className="p-input-icon-left">
-                            <i className="pi pi-search" />
-                            <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Поиск..." />
-                        </span>
-                    </Col>
-                    <Col>
-                        <Button type="button" icon="pi pi-filter-slash" label="Очистить" onClick={resetFilters} />
-                    </Col>
-                </Row>
+                <span className="p-input-icon-left">
+                    <i className="pi pi-search" />
+                    <InputText className='mr-3' value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Поиск..." />
+                </span>
+                <Button type="button" icon="pi pi-filter-slash" label="Очистить" onClick={resetFilters} />
             </div>
         )
     }
@@ -125,18 +129,23 @@ const EquipmentTable: React.FC = () => {
     };
 
     return (
-        <DataTable value={data} sortMode='multiple' removableSort header={header} responsiveLayout="scroll"
-            resizableColumns columnResizeMode="fit"
-            emptyMessage='МТО отсутствуют...' showGridlines dataKey='id'
-            filterDisplay='row' filters={filters} globalFilterFields={['name', 'type']}
-            paginator rows={10}
-            paginatorTemplate={paginatorTemplate}>
-            <Column field="id" header="#" sortable />
-            <Column field="name" header="Название" sortable
-                filter filterPlaceholder='Поиск по названию...' showFilterMenu={false} />
-            <Column field='type' header="Тип" sortable
-                filter filterElement={typeFilterTemplate} showFilterMenu={false} />
-        </DataTable>
+        <>
+            <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
+
+            <DataTable value={data}
+                sortMode='multiple' removableSort
+                header={header} responsiveLayout="scroll"
+                resizableColumns columnResizeMode="fit"
+                emptyMessage='МТО отсутствуют...' showGridlines dataKey='id'
+                filterDisplay='row' filters={filters} globalFilterFields={['name', 'type']}
+                paginator rows={10} paginatorTemplate={paginatorTemplate}>
+                <Column field="id" header="#" sortable />
+                <Column field="name" header="Название" sortable
+                    filter filterPlaceholder='Поиск по названию...' showFilterMenu={false} />
+                <Column field='type' header="Тип" sortable
+                    filter filterElement={typeFilterTemplate} showFilterMenu={false} />
+            </DataTable>
+        </>
     );
 }
 
