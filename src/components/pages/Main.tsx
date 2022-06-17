@@ -1,7 +1,6 @@
 import React from 'react'
 import { Tab, Row, Col, ListGroup, Container } from 'react-bootstrap'
-import Equipment from './Equipment'
-import DataTableFilterDemo from '../DataTableFilterDemo'
+import EquipmentTable from '../EquipmentTable'
 
 const Main = () => {
     return (
@@ -24,10 +23,9 @@ const Main = () => {
                     <Col sm={9}>
                         <Tab.Content>
                             <Tab.Pane eventKey="#mto">
-                                <Equipment/>
+                                <EquipmentTable/>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#sets">
-                                <DataTableFilterDemo/>
                             </Tab.Pane>
                             <Tab.Pane eventKey="#audiences">
                                 ПУСТО...

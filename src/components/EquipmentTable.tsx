@@ -1,9 +1,25 @@
-import React from 'react';
-import Table from 'react-bootstrap/Table';
-import { useTable, useSortBy, useFilters, Column } from 'react-table'
-import { Button, Row, Col, Form, Modal } from 'react-bootstrap';
+import React, { useEffect, useMemo } from 'react';
 import { TrashFill, PencilFill, SortUp, SortDownAlt } from 'react-bootstrap-icons';
-import AddItemModal from './AddItemModal';
+import { DataTable, DataTableFilterMeta } from 'primereact/datatable';
+import { Column, ColumnFilterElementTemplateOptions } from 'primereact/column';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import { MultiSelect } from 'primereact/multiselect';
+import { FilterMatchMode } from 'primereact/api';
+import { MultiSelectChangeParams } from 'primereact/multiselect';
+import { Row, Col } from 'react-bootstrap';
+
+function generateEquipmentData(count: number): EquipmentData[] {
+    const data: EquipmentData[] = [];
+    for (let i = 0; i < count; i++) {
+        data.push({
+            id: i + 1,
+            name: `Обеспечение${i + 1}`,
+            type: Math.random() > 0.5 ? 'ПО' : 'АО'
+        });
+    }
+    return data;
+}
 
 export interface EquipmentData {
     id: number;
@@ -11,164 +27,78 @@ export interface EquipmentData {
     type: string;
 }
 
-interface Props {
-    columns: Column<EquipmentData>[];
-    data: EquipmentData[];
-    addEquipment: (equipment: EquipmentData) => void;
-    updateEquipment: (equipment: EquipmentData) => void;
-    deleteEquipment: (id: number) => void;
-}
 
-const EquipmentTable: React.FC<Props> = ({ columns, data, updateEquipment, deleteEquipment }) => {
-    const [show, setShow] = React.useState(false);
-    const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+const EquipmentTable: React.FC = () => {
+    const [data, setData] = React.useState<EquipmentData[]>(generateEquipmentData(15));
 
-    const [form, setForm] = React.useState<EquipmentData>({
-        id: 0,
-        name: '',
-        type: 'ПО'
-    });
+    const [filters, setFilters] = React.useState<DataTableFilterMeta>({});
+    const [globalFilterValue, setGlobalFilterValue] = React.useState<string>('');
 
-    const tableHooks = (hooks: any) => {
-        hooks.visibleColumns.push((columns: Column<EquipmentData>[]) => [
-            ...columns,
-            {
-                id: 'actions',
-                accessor: 'actions',
-                Header: 'Действия',
-                disableFilters: true,
-                Cell: ({ row }: any) => (
-                    <Row>
-                        <Col>
-                            <Button onClick={
-                                () => {
-                                    setForm({ ...row.original });
-                                    setShow(true);
-                                }}>
-                                <PencilFill />
-                            </Button>
-                        </Col>
-                        <Col>
-                            <Button variant='danger' onClick={
-                                () => {
-                                    setForm({ ...row.original });
-                                    setShowDeleteModal(true);
-                                }}>
-                                <TrashFill />
-                            </Button>
-                        </Col>
-                    </Row>
-                )
-            }
-        ]);
+    const types = useMemo(() => ['ПО', 'АО'], []);
+
+    useEffect(() => {
+        resetFilters();
+    }, []);
+
+    const resetFilters = () => {
+        setFilters({
+            'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
+            'name': { value: null, matchMode: FilterMatchMode.CONTAINS },
+            'type': { value: null, matchMode: FilterMatchMode.IN },
+        });
+        setGlobalFilterValue('');
     }
 
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = useTable({
-        columns,
-        data,
-    },
-        tableHooks,
-        useFilters,
-        useSortBy);
+    const onGlobalFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        // FIXME: не стоит перезаписывать global полностью
+        // Следует перезаписывать только его value
+        const newFilters = { ...filters, 'global': { value, matchMode: FilterMatchMode.CONTAINS } };
+        setFilters(newFilters);
+        setGlobalFilterValue(value);
+    }
+
+    const typeFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
+        return <MultiSelect display="chip" options={types}
+            value={options.value} onChange={(e: MultiSelectChangeParams) => { options.filterApplyCallback(e.value); }}
+            placeholder="Все" className="p-column-filter" />;
+    }
+
+    const renderHeader = () => {
+        return (
+            <div>
+                <Row>
+                    <Col md='auto'>
+                        <span className="p-input-icon-left">
+                            <i className="pi pi-search" />
+                            <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Поиск..." />
+                        </span>
+                    </Col>
+                    <Col>
+                        <Button type="button" icon="pi pi-filter-slash" label="Очистить" className="p-button-outlined" onClick={resetFilters} />
+
+                    </Col>
+                </Row>
+            </div>
+        )
+    }
+
+    const header = useMemo(() => renderHeader(), [globalFilterValue]);
 
     return (
-        <>
-            <Table {...getTableProps()} bordered className='align-middle'>
-                <thead className='bg-primary text-light'>
-                    {headerGroups.map((headerGroup) => {
-                        const { key, ...restHeadGroupProps } = headerGroup.getHeaderGroupProps();
-                        return (<tr {...restHeadGroupProps} key={key}>
-                            {headerGroup.headers.map(column => {
-                                const { key, ...restColumnProps } = column.getHeaderProps();
-                                return (
-                                    <th {...restColumnProps} key={key}>
-                                        <Row className='align-items-center'>
-                                            <Col md='6'>
-                                                <span {...column.getSortByToggleProps()}>
-                                                    {column.render('Header')}
-                                                    {column.isSorted ? (column.isSortedDesc ? <SortUp /> : <SortDownAlt />) : null}
-                                                </span>
-                                            </Col>
-                                            <Col md='6'>
-                                                <div>{column.canFilter ? column.render('Filter') : null}</div>
-                                            </Col>
-                                        </Row>
-                                    </th>
-                                )
-                            })}
-                        </tr>)
-                    })}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                    {rows.map((row) => {
-                        prepareRow(row)
-                        const { key, ...restRowProps } = row.getRowProps();
-                        return (
-                            <tr {...restRowProps} key={key}>
-                                {row.cells.map(cell => {
-                                    const { key, ...restCellProps } = cell.getCellProps();
-                                    return <td {...restCellProps} key={key}>{cell.render('Cell')}</td>
-                                })}
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </Table>
-
-            <AddItemModal title='Обновление обеспечения' show={show} setShow={setShow} onAction={() => { updateEquipment(form) }}>
-                <Form>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Название</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Введите название обеспечения"
-                            onChange={(e) => { setForm({ ...form, name: e.target.value }) }}
-                            value={form.name}
-                            autoFocus
-                        />
-                    </Form.Group>
-
-                    <Form.Group className="mb-3">
-                        <Form.Label>Тип</Form.Label>
-                        <Form.Select aria-label="Default select example"
-                            onChange={
-                                (e) => { setForm({ ...form, type: e.target.value }) }
-                            }
-                            value={form.type}
-                        >
-                            <option disabled>Выберите тип обеспечения</option>
-                            <option value="ПО">ПО</option>
-                            <option value="АО">АО</option>
-                        </Form.Select>
-                    </Form.Group>
-                </Form>
-            </AddItemModal>
-
-            <Modal show={showDeleteModal} onHide={() => { setShowDeleteModal(false) }} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Удаление записи</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    Вы точно хотите удалить запись об обеспечении?
-                </Modal.Body>
-
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => { setShow(false) }}>Нет</Button>
-                    <Button variant="primary" onClick={() => {
-                        deleteEquipment(form.id);
-                        setShowDeleteModal(false);
-                    }}>Да</Button>
-                </Modal.Footer>
-            </Modal>
-        </>
-    )
+        <DataTable value={data} sortMode='multiple' removableSort header={header} responsiveLayout="scroll"
+            emptyMessage='МТО отсутствуют...' showGridlines dataKey='id'
+            filterDisplay='row' filters={filters} globalFilterFields={['name', 'type']}
+            paginator rows={5} rowsPerPageOptions={[5, 10, 25]}
+            paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+            currentPageReportTemplate="Показано {first} с {last} из {totalRecords}">
+            <Column field="id" header="#" sortable />
+            <Column field="name" header="Название" sortable
+                filter filterPlaceholder='Поиск по названию...' showFilterMenu={false} />
+            <Column field='type' header="Тип" sortable
+                filter filterElement={typeFilterTemplate} showFilterMenu={false} />
+        </DataTable>
+    );
 }
 
 export default EquipmentTable;
