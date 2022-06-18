@@ -7,6 +7,7 @@ import EquipmentTable from './components/EquipmentTable';
 import MainMenubar from './components/MainMenubar';
 import MainMenu from './components/MainMenu';
 import MainTabView, { CustomTabPanel, MainTabViewHandle } from './components/MainTabView';
+import { Card } from 'primereact/card';
 
 function App() {
 
@@ -29,14 +30,16 @@ function App() {
 	return (
 		<>
 			<MainMenubar />
-			<div className="grid p-6 flex flex-nowrap justify-content-between">
-				<div className="col-3 mr-3 p-0">
-					<MainMenu onMenuItemClick={onMenuItemClick} />
+			<Card>
+				<div className="grid flex flex-nowrap justify-content-between">
+					<div className="col-3 mr-3">
+						<MainMenu onMenuItemClick={onMenuItemClick} />
+					</div>
+					<div className="col-9 pr-4">
+						<MainTabView ref={mainMenuRef} />
+					</div>
 				</div>
-				<div className="col-9 p-0">
-					<MainTabView ref={mainMenuRef} />
-				</div>
-			</div>
+			</Card>
 		</>
 	);
 }
