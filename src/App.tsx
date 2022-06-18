@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from 'react';
 // import './App.scss';
-import "primereact/resources/themes/bootstrap4-light-blue/theme.css";  	// Тема
+import "primereact/resources/themes/nova/theme.css";  	// Тема
 import "primereact/resources/primereact.min.css";                  		// Ядро
 import "primeicons/primeicons.css";                                		// Иконки
 import EquipmentTable from './components/EquipmentTable';
