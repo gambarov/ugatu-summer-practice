@@ -76,14 +76,6 @@ const MainTabView: React.ForwardRefRenderFunction<MainTabViewHandle, Props> = (p
 				onClick={(e) => onTabClose({ originalEvent: e, index: options.index })} >
 			</i>
 		</a>;
-
-		// return <div className={options.className}>
-		// 	<Button className="p-button-text" onClick={options.onClick}>
-		// 		<span className="p-tabview-tab-text">{tabPanel.header}</span>
-		// 	</Button>
-		// 	<Button icon="pi pi-times" className="p-button-rounded p-button-text"
-		// 		onClick={(e) => onTabClose({ originalEvent: e, index: options.index })} />
-		// </div>;
 	};
 
 	if (tabPanels.length === 0) {

@@ -61,7 +61,7 @@ const EquipmentTable: React.FC = () => {
 
     const typeFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
         return <MultiSelect display="chip" options={types}
-            value={options.value} onChange={(e: MultiSelectChangeParams) => { options.filterApplyCallback(e.value); console.log(filters) }}
+            value={options.value} onChange={(e: MultiSelectChangeParams) => { options.filterApplyCallback(e.value); }}
             placeholder="Все" className="p-column-filter" />;
     }
 
