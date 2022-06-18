@@ -8,6 +8,8 @@ import { FilterMatchMode } from 'primereact/api';
 import { MultiSelectChangeParams } from 'primereact/multiselect';
 import { Toolbar } from 'primereact/toolbar';
 import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Dialog } from 'primereact/dialog';
+import { Dropdown } from 'primereact/dropdown';
 import PaginatorTemplate from './templates/Paginator';
 
 function generateEquipmentData(count: number): EquipmentData[] {
@@ -95,7 +97,11 @@ const EquipmentTable: React.FC = () => {
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="Добавить" icon="pi pi-plus" className="p-button-primary mr-3" />
+                <Button label="Добавить" icon="pi pi-plus" className="p-button-primary mr-3"
+                    onClick={() => {
+                        setEquipment(emptyEquipment);
+                        setEquipmentDialog(true)
+                    }} />
                 <Button label="Удалить выбранное" icon="pi pi-trash"
                     className="p-button-danger" onClick={() => { setDeleteEquipmentsDialog(true) }}
                     disabled={!selectedEquipments || !selectedEquipments.length} />
@@ -105,8 +111,11 @@ const EquipmentTable: React.FC = () => {
 
     const actionBodyTemplate = (rowData: EquipmentData) => {
         return (
-            <div >
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-primary mr-2" onClick={() => console.log(rowData)} />
+            <div>
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-primary mr-2" onClick={() => {
+                    setEquipment(rowData);
+                    setEquipmentDialog(true);
+                }} />
                 <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => {
                     setEquipment(rowData);
                     setDeleteEquipmentDialog(true);
@@ -114,6 +123,29 @@ const EquipmentTable: React.FC = () => {
             </div>
         );
     };
+
+    const equipmentDialogFooter = () => {
+        return (
+            <React.Fragment>
+                <Button label="Отмена" icon="pi pi-times" className="p-button-secondary" onClick={() => {
+                    setEquipmentDialog(false);
+                }} />
+                <Button label="Сохранить" icon="pi pi-check" className="p-button-primary" onClick={() => {
+                    setEquipmentDialog(false);
+                    if (equipment.id) {
+                        const newData = [...data];
+                        const index = newData.findIndex(eq => eq.id === equipment.id);
+                        newData[index] = equipment;
+                        setData(newData);
+                    }
+                    else {
+                        setData([...data, equipment]);
+                    }
+                    setEquipment(emptyEquipment);
+                }} />
+            </React.Fragment>
+        );
+    }
 
     const renderHeader = () => {
         return (
@@ -155,6 +187,20 @@ const EquipmentTable: React.FC = () => {
 
             <ConfirmDialog visible={deleteEquipmentsDialog} onHide={() => setDeleteEquipmentsDialog(false)} message={`Вы уверены, что хотите удалить выбранные МТО?`}
                 header="Подтверждение действия" icon="pi pi-info-circle" acceptClassName='p-button-danger' accept={deleteSelectedEquipments} />
+
+            <Dialog visible={EquipmentDialog} style={{ width: '450px' }}
+                header="МТО" modal className="p-fluid"
+                footer={equipmentDialogFooter} onHide={() => setEquipmentDialog(false)}>
+                <div className="field">
+                    <label htmlFor="name">Наименование МТО</label>
+                    <InputText id="name" value={equipment.name} onChange={(e) => setEquipment({ ...equipment, 'name': e.target.value })}
+                        required autoFocus />
+                </div>
+                <div className="field">
+                    <label htmlFor="type">Тип</label>
+                    <Dropdown value={equipment.type} options={types} onChange={(e) => setEquipment({ ...equipment, 'type': e.target.value })} placeholder="Выберите тип МТО" />
+                </div>
+            </Dialog>
         </>
     );
 }
