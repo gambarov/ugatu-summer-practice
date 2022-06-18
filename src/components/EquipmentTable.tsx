@@ -96,11 +96,13 @@ const EquipmentTable: React.FC = () => {
         return (
             <React.Fragment>
                 <Button label="Добавить" icon="pi pi-plus" className="p-button-primary mr-3" />
-                <Button label="Удалить выбранное" icon="pi pi-trash" className="p-button-danger" onClick={() => {setDeleteEquipmentsDialog(true)}} />
+                <Button label="Удалить выбранное" icon="pi pi-trash"
+                    className="p-button-danger" onClick={() => { setDeleteEquipmentsDialog(true) }}
+                    disabled={!selectedEquipments || !selectedEquipments.length} />
             </React.Fragment>
         )
     }
-    
+
     const actionBodyTemplate = (rowData: EquipmentData) => {
         return (
             <div >
@@ -149,10 +151,10 @@ const EquipmentTable: React.FC = () => {
             </DataTable>
 
             <ConfirmDialog visible={deleteEquipmentDialog} onHide={() => setDeleteEquipmentDialog(false)} message={`Вы уверены, что хотите удалить ${equipment.name}?`}
-                header="Подтверждение действия" icon="pi pi-info-circle" acceptClassName='p-button-danger' accept={deleteEquipment}/>
+                header="Подтверждение действия" icon="pi pi-info-circle" acceptClassName='p-button-danger' accept={deleteEquipment} />
 
             <ConfirmDialog visible={deleteEquipmentsDialog} onHide={() => setDeleteEquipmentsDialog(false)} message={`Вы уверены, что хотите удалить выбранные МТО?`}
-                header="Подтверждение действия" icon="pi pi-info-circle" acceptClassName='p-button-danger' accept={deleteSelectedEquipments}/>
+                header="Подтверждение действия" icon="pi pi-info-circle" acceptClassName='p-button-danger' accept={deleteSelectedEquipments} />
         </>
     );
 }
