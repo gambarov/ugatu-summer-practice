@@ -5,7 +5,7 @@ interface Props {
 	onMenuItemClick: (label: string) => void;
 }
 
-const MainMenu: React.FC<Props> = ({onMenuItemClick}) => {
+const AppMenu: React.FC<Props> = ({onMenuItemClick}) => {
 	const items = useMemo(() => [
 		{
 			label: 'Модули',
@@ -40,4 +40,4 @@ const MainMenu: React.FC<Props> = ({onMenuItemClick}) => {
 	)
 }
 
-export default MainMenu
+export default AppMenu

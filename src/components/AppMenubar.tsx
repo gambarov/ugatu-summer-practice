@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menubar } from 'primereact/menubar';
 
-const MainMenubar: React.FC = () => {
+const AppMenubar: React.FC = () => {
 	const start = (
 		<h2>
 			МАГЛ
@@ -14,4 +14,4 @@ const MainMenubar: React.FC = () => {
 	);
 };
 
-export default MainMenubar;
+export default AppMenubar;

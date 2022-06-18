@@ -11,24 +11,24 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props { }
 
-export interface CustomTabPanel {
+export interface AppTabPanel {
 	id: number;
 	header: React.ReactNode;
 	content: React.ReactNode;
 }
 
-export interface MainTabViewHandle {
-	addTabPanel: (tabPanel: CustomTabPanel) => void;
+export interface AppTabViewHandle {
+	addTabPanel: (tabPanel: AppTabPanel) => void;
 	removeTabPanel: (id: number) => void;
 }
 
-const MainTabView: React.ForwardRefRenderFunction<MainTabViewHandle, Props> = (props, ref) => {
-	const [tabPanels, setTabPanels] = useState<CustomTabPanel[]>([]);
+const AppTabView: React.ForwardRefRenderFunction<AppTabViewHandle, Props> = (props, ref) => {
+	const [tabPanels, setTabPanels] = useState<AppTabPanel[]>([]);
 	const [activeIndex, setActiveIndex] = useState<number>(0);
 
 	useImperativeHandle(ref, () => ({
 
-		addTabPanel(tabPanel: CustomTabPanel) {
+		addTabPanel(tabPanel: AppTabPanel) {
 			// Не более одной вкладки с одним идентификатором
 			if (tabPanels.find(t => t.id === tabPanel.id)) {
 				return;
@@ -94,4 +94,4 @@ const MainTabView: React.ForwardRefRenderFunction<MainTabViewHandle, Props> = (p
 	)
 }
 
-export default forwardRef(MainTabView);
+export default forwardRef(AppTabView);
