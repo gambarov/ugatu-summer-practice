@@ -32,6 +32,7 @@ export interface EquipmentData {
 const EquipmentTable: React.FC = () => {
     const [data, setData] = React.useState<EquipmentData[]>(generateEquipmentData(15));
 
+    const [selectedEquipments, setSelectedEquipments] = React.useState<EquipmentData[]>([]);
     const [filters, setFilters] = React.useState<DataTableFilterMeta>({});
     const [globalFilterValue, setGlobalFilterValue] = React.useState<string>('');
 
@@ -135,9 +136,11 @@ const EquipmentTable: React.FC = () => {
                 sortMode='multiple' removableSort
                 header={header} responsiveLayout="scroll"
                 resizableColumns columnResizeMode="fit"
+                selection={selectedEquipments} onSelectionChange={(e) => setSelectedEquipments(e.value)}
                 emptyMessage='МТО отсутствуют...' showGridlines dataKey='id'
-                filterDisplay='row' filters={filters} globalFilterFields={['name', 'type']}
+                filterDisplay='row' filters={filters} globalFilterFields={['name', 'type']} onFilter={(e) => { setFilters(e.filters); }}
                 paginator rows={10} paginatorTemplate={paginatorTemplate}>
+                <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}></Column>
                 <Column field="id" header="#" sortable />
                 <Column field="name" header="Название" sortable
                     filter filterPlaceholder='Поиск по названию...' showFilterMenu={false} />
