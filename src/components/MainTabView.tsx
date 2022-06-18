@@ -1,6 +1,12 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
-import { TabView, TabPanel, TabViewTabCloseParams, TabViewTabChangeParams, TabPanelHeaderTemplateType, TabPanelHeaderTemplateOptions } from 'primereact/tabview';
-import { Button } from 'primereact/button';
+import {
+	TabView,
+	TabPanel,
+	TabViewTabCloseParams,
+	TabViewTabChangeParams,
+	TabPanelHeaderTemplateType,
+	TabPanelHeaderTemplateOptions
+} from 'primereact/tabview';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props { }
@@ -59,14 +65,30 @@ const MainTabView: React.ForwardRefRenderFunction<MainTabViewHandle, Props> = (p
 	const template: TabPanelHeaderTemplateType = (options: TabPanelHeaderTemplateOptions) => {
 		const tabPanel = tabPanels[options.index];
 
-		return <div className={options.className}>
-			<Button className="p-button-text" onClick={options.onClick}>
-				<span className="p-tabview-tab-text">{tabPanel.header}</span>
-			</Button>
-			<Button icon="pi pi-times" className="p-button-rounded p-button-text"
-				onClick={(e) => onTabClose({ originalEvent: e, index: options.index })} />
-		</div>;
+		console.log(options.className, options.titleClassName)
+
+		return <a role="tab" onClick={options.onClick} className={options.className}
+			aria-controls={options.ariaControls} aria-selected={options.selected} tabIndex={options.index}>
+			<span className={options.titleClassName}>
+				{tabPanel.header}
+			</span>
+			<i className="p-tabview-close pi pi-times"
+				onClick={(e) => onTabClose({ originalEvent: e, index: options.index })} >
+			</i>
+		</a>;
+
+		// return <div className={options.className}>
+		// 	<Button className="p-button-text" onClick={options.onClick}>
+		// 		<span className="p-tabview-tab-text">{tabPanel.header}</span>
+		// 	</Button>
+		// 	<Button icon="pi pi-times" className="p-button-rounded p-button-text"
+		// 		onClick={(e) => onTabClose({ originalEvent: e, index: options.index })} />
+		// </div>;
 	};
+
+	if (tabPanels.length === 0) {
+		return null;
+	}
 
 	return (
 		<TabView onTabClose={onTabClose} onTabChange={onTabChange} activeIndex={activeIndex}>
