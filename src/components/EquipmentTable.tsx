@@ -6,9 +6,9 @@ import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 import { FilterMatchMode } from 'primereact/api';
 import { MultiSelectChangeParams } from 'primereact/multiselect';
-import { PaginatorCurrentPageReportOptions, PaginatorRowsPerPageDropdownOptions, PaginatorTemplate } from 'primereact/paginator';
-import { Dropdown } from 'primereact/dropdown';
 import { Toolbar } from 'primereact/toolbar';
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import PaginatorTemplate from './templates/Paginator';
 
 function generateEquipmentData(count: number): EquipmentData[] {
     const data: EquipmentData[] = [];
@@ -32,7 +32,21 @@ export interface EquipmentData {
 const EquipmentTable: React.FC = () => {
     const [data, setData] = React.useState<EquipmentData[]>(generateEquipmentData(15));
 
+    const emptyEquipment = useMemo(() => {
+        return {
+            id: 0,
+            name: '',
+            type: ''
+        };
+    }, []);
+
+    const [equipment, setEquipment] = React.useState<EquipmentData>(emptyEquipment);
+    const [EquipmentDialog, setEquipmentDialog] = React.useState<boolean>(false);
+    const [deleteEquipmentDialog, setDeleteEquipmentDialog] = React.useState<boolean>(false);
+    const [deleteEquipmentsDialog, setDeleteEquipmentsDialog] = React.useState<boolean>(false);
+
     const [selectedEquipments, setSelectedEquipments] = React.useState<EquipmentData[]>([]);
+
     const [filters, setFilters] = React.useState<DataTableFilterMeta>({});
     const [globalFilterValue, setGlobalFilterValue] = React.useState<string>('');
 
@@ -49,6 +63,18 @@ const EquipmentTable: React.FC = () => {
             'type': { value: null, matchMode: FilterMatchMode.IN },
         });
         setGlobalFilterValue('');
+    }
+
+    const deleteEquipment = () => {
+        setDeleteEquipmentDialog(false);
+        setData(data.filter(eq => eq.id !== equipment.id));
+        setEquipment(emptyEquipment);
+    }
+
+    const deleteSelectedEquipments = () => {
+        setDeleteEquipmentsDialog(false);
+        setData(data.filter(eq => !selectedEquipments.includes(eq)));
+        setSelectedEquipments([]);
     }
 
     const onGlobalFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,11 +95,23 @@ const EquipmentTable: React.FC = () => {
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="Добавить" icon="pi pi-plus" className="p-button-success mr-3" />
-                <Button label="Удалить выбранное" icon="pi pi-trash" className="p-button-danger" />
+                <Button label="Добавить" icon="pi pi-plus" className="p-button-primary mr-3" />
+                <Button label="Удалить выбранное" icon="pi pi-trash" className="p-button-danger" onClick={() => {setDeleteEquipmentsDialog(true)}} />
             </React.Fragment>
         )
     }
+    
+    const actionBodyTemplate = (rowData: EquipmentData) => {
+        return (
+            <div >
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-primary mr-2" onClick={() => console.log(rowData)} />
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => {
+                    setEquipment(rowData);
+                    setDeleteEquipmentDialog(true);
+                }} />
+            </div>
+        );
+    };
 
     const renderHeader = () => {
         return (
@@ -89,45 +127,6 @@ const EquipmentTable: React.FC = () => {
 
     const header = useMemo(() => renderHeader(), [globalFilterValue]);
 
-    const paginatorTemplate: PaginatorTemplate = {
-        layout: 'CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown',
-        'RowsPerPageDropdown': (options: PaginatorRowsPerPageDropdownOptions) => {
-            const dropdownOptions = [
-                { label: 10, value: 10 },
-                { label: 20, value: 20 },
-                { label: 50, value: 50 },
-                { label: 'Все', value: options.totalRecords },
-            ];
-
-            return <Dropdown value={options.value} options={dropdownOptions} onChange={options.onChange} />;
-        },
-        'CurrentPageReport': (options: PaginatorCurrentPageReportOptions) => {
-            return (
-                <span style={{ color: 'var(--text-color)', userSelect: 'none', width: '120px', textAlign: 'center' }}>
-                    {options.first} - {options.last} из {options.totalRecords}
-                </span>
-            )
-        },
-        'FirstPageLink': (options) => {
-            return options.element;
-        },
-        'LastPageLink': (options) => {
-            return options.element;
-        },
-        'JumpToPageInput': (options) => {
-            return options.element;
-        },
-        'NextPageLink': (options) => {
-            return options.element;
-        },
-        'PrevPageLink': (options) => {
-            return options.element;
-        },
-        'PageLinks': (options) => {
-            return options.element;
-        }
-    };
-
     return (
         <>
             <Toolbar className="mb-3" left={leftToolbarTemplate}></Toolbar>
@@ -139,14 +138,21 @@ const EquipmentTable: React.FC = () => {
                 selection={selectedEquipments} onSelectionChange={(e) => setSelectedEquipments(e.value)}
                 emptyMessage='МТО отсутствуют...' showGridlines dataKey='id'
                 filterDisplay='row' filters={filters} globalFilterFields={['name', 'type']} onFilter={(e) => { setFilters(e.filters); }}
-                paginator rows={10} paginatorTemplate={paginatorTemplate}>
+                paginator rows={10} paginatorTemplate={PaginatorTemplate}>
                 <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}></Column>
                 <Column field="id" header="#" sortable />
                 <Column field="name" header="Название" sortable
                     filter filterPlaceholder='Поиск по названию...' showFilterMenu={false} />
                 <Column field='type' header="Тип" sortable
                     filter filterElement={typeFilterTemplate} showFilterMenu={false} />
+                <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '8rem' }}></Column>
             </DataTable>
+
+            <ConfirmDialog visible={deleteEquipmentDialog} onHide={() => setDeleteEquipmentDialog(false)} message={`Вы уверены, что хотите удалить ${equipment.name}?`}
+                header="Подтверждение действия" icon="pi pi-info-circle" acceptClassName='p-button-danger' accept={deleteEquipment}/>
+
+            <ConfirmDialog visible={deleteEquipmentsDialog} onHide={() => setDeleteEquipmentsDialog(false)} message={`Вы уверены, что хотите удалить выбранные МТО?`}
+                header="Подтверждение действия" icon="pi pi-info-circle" acceptClassName='p-button-danger' accept={deleteSelectedEquipments}/>
         </>
     );
 }
