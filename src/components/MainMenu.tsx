@@ -36,7 +36,7 @@ const MainMenu: React.FC<Props> = ({onMenuItemClick}) => {
 	], []);
 
 	return (
-		<Menu model={items}/>
+		<Menu model={items} className='min-w-full'/>
 	)
 }
 
