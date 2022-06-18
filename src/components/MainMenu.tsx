@@ -19,7 +19,7 @@ const MainMenu: React.FC<Props> = ({onMenuItemClick}) => {
 				},
 				{
 					label: 'Комплекты',
-					icon: 'pi pi-folder',
+					icon: 'pi pi-box',
 					command: () => {
 						onMenuItemClick('Комплекты');
 					}
