@@ -33,6 +33,7 @@ const MainTabView: React.ForwardRefRenderFunction<MainTabViewHandle, Props> = (p
 			if (tabPanels.find(t => t.id === tabPanel.id)) {
 				return;
 			}
+			setActiveIndex(tabPanels.length);
 			setTabPanels([...tabPanels, { ...tabPanel }]);
 		},
 
