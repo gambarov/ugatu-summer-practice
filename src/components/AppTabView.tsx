@@ -30,7 +30,10 @@ const AppTabView: React.ForwardRefRenderFunction<AppTabViewHandle, Props> = (pro
 
 		addTabPanel(tabPanel: AppTabPanel) {
 			// Не более одной вкладки с одним идентификатором
+			// Вместо этого, просто делаем ее активной
 			if (tabPanels.find(t => t.id === tabPanel.id)) {
+				const index = tabPanels.findIndex(t => t.id === tabPanel.id);
+				setActiveIndex(index);
 				return;
 			}
 			setActiveIndex(tabPanels.length);
