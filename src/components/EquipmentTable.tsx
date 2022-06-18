@@ -6,7 +6,6 @@ import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
 import { FilterMatchMode } from 'primereact/api';
 import { MultiSelectChangeParams } from 'primereact/multiselect';
-import { Row, Col } from 'react-bootstrap';
 import { PaginatorCurrentPageReportOptions, PaginatorRowsPerPageDropdownOptions, PaginatorTemplate } from 'primereact/paginator';
 import { Dropdown } from 'primereact/dropdown';
 import { Toolbar } from 'primereact/toolbar';
@@ -130,7 +129,7 @@ const EquipmentTable: React.FC = () => {
 
     return (
         <>
-            <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
+            <Toolbar className="mb-3" left={leftToolbarTemplate}></Toolbar>
 
             <DataTable value={data}
                 sortMode='multiple' removableSort
