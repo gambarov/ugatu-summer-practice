@@ -81,7 +81,9 @@ const AppTabView: React.ForwardRefRenderFunction<AppTabViewHandle, Props> = (pro
 	};
 
 	if (tabPanels.length === 0) {
-		return null;
+		return <p className='text-lg'>
+			Активные вкладки отсутствуют...
+		</p>;
 	}
 
 	return (
