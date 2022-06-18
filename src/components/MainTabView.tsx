@@ -46,7 +46,7 @@ const MainTabView: React.ForwardRefRenderFunction<MainTabViewHandle, Props> = (p
 		const maxIndex = tabPanels.length - 1;
 
 		if (maxIndex > 0) {
-			if (activeIndex >= maxIndex) {
+			if (activeIndex > maxIndex) {
 				setActiveIndex(maxIndex);
 			}
 		} else {
@@ -64,8 +64,6 @@ const MainTabView: React.ForwardRefRenderFunction<MainTabViewHandle, Props> = (p
 
 	const template: TabPanelHeaderTemplateType = (options: TabPanelHeaderTemplateOptions) => {
 		const tabPanel = tabPanels[options.index];
-
-		console.log(options.className, options.titleClassName)
 
 		return <a role="tab" onClick={options.onClick} className={options.className}
 			aria-controls={options.ariaControls} aria-selected={options.selected} tabIndex={options.index}>
