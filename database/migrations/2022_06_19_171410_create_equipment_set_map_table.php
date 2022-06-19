@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('equipment_set_map', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Equipment::class)->constrained()->nullOnDelete();
-            $table->foreignIdFor(EquipmentSet::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(Equipment::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(EquipmentSet::class)->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

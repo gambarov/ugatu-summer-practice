@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('equipment_placement', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Equipment::class)->constrained()->nullOnDelete();
-            $table->foreignIdFor(Audience::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(Equipment::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(Audience::class)->nullable()->constrained()->nullOnDelete();
             $table->timestamp('placed_at')->useCurrent();
             $table->timestamp('removed_at')->nullable();
         });
