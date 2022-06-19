@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Equipment;
+use App\Models\EquipmentSet;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +15,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('equipment_set_map', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Equipment::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(EquipmentSet::class)->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('equipment_set_map');
     }
 };

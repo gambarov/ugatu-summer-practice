@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\EquipmentType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,6 +16,9 @@ return new class extends Migration
     {
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
+            $table->integer('inventory_id')->unique();
+            $table->string('name');
+            $table->foreignIdFor(EquipmentType::class)->constrained();
             $table->timestamps();
         });
     }

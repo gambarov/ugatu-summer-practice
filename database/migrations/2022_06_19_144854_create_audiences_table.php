@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('audiences', function (Blueprint $table) {
             $table->id();
+            $table->string('building');
+            $table->string('number');
+            $table->string('letter');
             $table->timestamps();
         });
     }
