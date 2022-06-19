@@ -69,9 +69,9 @@ const AppTabView: React.ForwardRefRenderFunction<AppTabViewHandle, Props> = (pro
 	const template: TabPanelHeaderTemplateType = (options: TabPanelHeaderTemplateOptions) => {
 		const tabPanel = tabPanels[options.index];
 
-		return <a role="tab" onClick={options.onClick} className={options.className}
+		return <a role="tab" className={options.className}
 			aria-controls={options.ariaControls} aria-selected={options.selected} tabIndex={options.index}>
-			<span className={options.titleClassName}>
+			<span className={options.titleClassName} onClick={options.onClick}>
 				{tabPanel.header}
 			</span>
 			<i className="p-tabview-close pi pi-times"
