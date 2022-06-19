@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EquipmentType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,15 @@ class EquipmentTypeSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $types = [
+            'ПО',
+            'АО'
+        ];
+
+        foreach ($types as $type) {
+            EquipmentType::create([
+                'name' => $type,
+            ]);
+        }
     }
 }

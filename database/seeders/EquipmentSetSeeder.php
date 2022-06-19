@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EquipmentSet;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,6 @@ class EquipmentSetSeeder extends Seeder
      */
     public function run()
     {
-        //
+        EquipmentSet::factory()->count(10)->create();
     }
 }

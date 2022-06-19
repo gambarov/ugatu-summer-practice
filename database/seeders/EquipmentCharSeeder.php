@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\EquipmentChar;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,18 @@ class EquipmentCharSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $names = [
+            'Модель',
+            'Вес',
+            'Габариты',
+            'Производитель',
+            'Страна производитель',
+        ];
+
+        foreach ($names as $name) {
+            EquipmentChar::create([
+                'name' => $name,
+            ]);
+        }
     }
 }

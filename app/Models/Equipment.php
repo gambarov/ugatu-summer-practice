@@ -28,6 +28,10 @@ class Equipment extends Model
         return $this->belongsToMany(Audience::class, 'equipment_placement_map');
     }
 
+    public function audience() {
+        return $this->audiences()->orderBy('id', 'desc')->first();
+    }
+
     public function sets() {
         return $this->belongsToMany(EquipmentSet::class, 'equipment_set_map');
     }
