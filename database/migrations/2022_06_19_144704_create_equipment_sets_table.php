@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('equipment_sets', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignIdFor(Employee::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(Employee::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();
         });
     }

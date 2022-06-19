@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->integer('inventory_id')->unique();
             $table->string('name');
-            $table->foreignIdFor(EquipmentType::class)->constrained();
+            $table->foreignIdFor(EquipmentType::class)->constrained()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
