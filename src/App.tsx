@@ -17,6 +17,7 @@ function App() {
 		{ id: 1, header: 'МТО', content: <EquipmentTable /> },
 		{ id: 2, header: 'Комплекты', content: <div>HELLO!</div> },
 		{ id: 3, header: 'Аудитории', content: <div>22222</div> },
+		{ id: 4, header: 'Размещение', content: <div>44444</div> },
 	], []);
 
 	const onMenuItemClick = (label: string) => {

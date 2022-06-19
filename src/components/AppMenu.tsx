@@ -8,7 +8,7 @@ interface Props {
 const AppMenu: React.FC<Props> = ({onMenuItemClick}) => {
 	const items = useMemo(() => [
 		{
-			label: 'Модули',
+			label: 'Разделы',
 			items: [
 				{
 					label: 'МТО',
@@ -29,6 +29,13 @@ const AppMenu: React.FC<Props> = ({onMenuItemClick}) => {
 					icon: 'pi pi-user',
 					command: () => {
 						onMenuItemClick('Аудитории');
+					}
+				},
+				{
+					label: 'Размещение',
+					icon: 'pi pi-history',
+					command: () => {
+						onMenuItemClick('Размещение');
 					}
 				}
 			]
