@@ -1,14 +1,10 @@
 import { createStore } from 'vuex'
+import equipment from "./equipment.js"
 
 export default createStore({
   state: {
   },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
+    equipment
   }
 })
