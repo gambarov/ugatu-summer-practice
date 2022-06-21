@@ -1,30 +1,54 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <Header />
+    <div class="flex p-4">
+      <Menu :model="items" class="mr-4" />
+      <router-view  class="flex-auto"/>
+    </div>
+  </div>
 </template>
-
+<script>
+import Menu from "primevue/menu";
+import Header from "./components/Header.vue";
+export default {
+  components: {
+    Menu,
+    Header,
+  },
+  setup() {
+    let items = [
+      {
+        label: "Разделы",
+        items: [
+          {
+            label: "МТО",
+            icon: "pi pi-desktop",
+            command: () => {},
+          },
+          {
+            label: "Комплекты",
+            icon: "pi pi-box",
+            command: () => {},
+          },
+          {
+            label: "Аудитории",
+            icon: "pi pi-user",
+            command: () => {},
+          },
+          {
+            label: "Размещение",
+            icon: "pi pi-history",
+            command: () => {},
+          },
+        ],
+      },
+    ];
+    return { items };
+  },
+};
+</script>
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+button{
+  background-color: rgb(143, 73, 73);
 }
 </style>
