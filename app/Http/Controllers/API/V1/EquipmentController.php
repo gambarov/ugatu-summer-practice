@@ -16,17 +16,7 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Equipment::all()->toJson();
     }
 
     /**
@@ -37,7 +27,7 @@ class EquipmentController extends Controller
      */
     public function store(StoreEquipmentRequest $request)
     {
-        //
+        return Equipment::create($request->all())->toJson();
     }
 
     /**
@@ -48,18 +38,7 @@ class EquipmentController extends Controller
      */
     public function show(Equipment $equipment)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Equipment  $equipment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Equipment $equipment)
-    {
-        //
+        return $equipment->toJson();
     }
 
     /**
@@ -71,7 +50,8 @@ class EquipmentController extends Controller
      */
     public function update(UpdateEquipmentRequest $request, Equipment $equipment)
     {
-        //
+        $equipment->update($request->all());
+        return $equipment->toJson();
     }
 
     /**
@@ -82,6 +62,7 @@ class EquipmentController extends Controller
      */
     public function destroy(Equipment $equipment)
     {
-        //
+        $equipment->delete();
+        return response()->noContent();
     }
 }

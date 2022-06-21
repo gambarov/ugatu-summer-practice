@@ -16,17 +16,7 @@ class AudienceController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Audience::all()->toJson();
     }
 
     /**
@@ -37,7 +27,7 @@ class AudienceController extends Controller
      */
     public function store(StoreAudienceRequest $request)
     {
-        //
+        return Audience::create($request->all())->toJson();
     }
 
     /**
@@ -48,18 +38,7 @@ class AudienceController extends Controller
      */
     public function show(Audience $audience)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Audience  $audience
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Audience $audience)
-    {
-        //
+        return $audience->toJson();
     }
 
     /**
@@ -71,7 +50,8 @@ class AudienceController extends Controller
      */
     public function update(UpdateAudienceRequest $request, Audience $audience)
     {
-        //
+        $audience->update($request->all());
+        return $audience->toJson();
     }
 
     /**
@@ -82,6 +62,7 @@ class AudienceController extends Controller
      */
     public function destroy(Audience $audience)
     {
-        //
+        $audience->delete();
+        return $audience->toJson();
     }
 }
