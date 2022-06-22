@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\EquipmentCharGroup;
+use App\Models\EquipmentCharMeasure;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,6 +18,8 @@ return new class extends Migration
         Schema::create('equipment_chars', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignIdFor(EquipmentCharMeasure::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignIdFor(EquipmentCharGroup::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();
         });
     }

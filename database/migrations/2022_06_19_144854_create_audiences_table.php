@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AudienceType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,8 @@ return new class extends Migration
             $table->id();
             $table->string('building');
             $table->string('number');
-            $table->string('letter');
+            $table->string('letter')->nullable();
+            $table->foreignIdFor(AudienceType::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();
         });
     }
