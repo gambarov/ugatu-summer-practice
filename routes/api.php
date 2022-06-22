@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\V1\AudienceController;
+use App\Http\Controllers\API\V1\EmployeeController;
 use App\Http\Controllers\API\V1\EquipmentController;
 use App\Http\Controllers\API\V1\EquipmentSetController;
 use Illuminate\Http\Request;
@@ -19,11 +20,14 @@ Route::apiResource('/equipment', EquipmentController::class, [
     'only' => ['index', 'store', 'show', 'update', 'destroy'],
 ]);
 
-
 Route::apiResource('/sets', EquipmentSetController::class, [
     'only' => ['index', 'store', 'show', 'update', 'destroy'],
 ]);
 
 Route::apiResource('/audiences', AudienceController::class, [
+    'only' => ['index', 'store', 'show', 'update', 'destroy'],
+]);
+
+Route::apiResource('/employees', EmployeeController::class, [
     'only' => ['index', 'store', 'show', 'update', 'destroy'],
 ]);
