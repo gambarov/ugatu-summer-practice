@@ -9,13 +9,15 @@ class Equipment extends Model
 {
     use HasFactory;
 
+    protected $with = ['equipment_type'];
+
     protected $fillable = [
         'inventory_id',
         'name',
         'equipment_type_id',
     ];
 
-    public function equipmentType()
+    public function equipment_type()
     {
         return $this->belongsTo(EquipmentType::class);
     }

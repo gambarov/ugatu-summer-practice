@@ -9,6 +9,8 @@ class Audience extends Model
 {
     use HasFactory;
 
+    protected $with = ['type'];
+
     protected $fillable = [
         'building',
         'number',
@@ -17,5 +19,9 @@ class Audience extends Model
 
     public function equipment() {
         return $this->belongsToMany(Equipment::class, 'equipment_audience_map');
+    }
+
+    public function type() {
+        return $this->belongsTo(AudienceType::class);
     }
 }

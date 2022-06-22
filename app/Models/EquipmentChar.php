@@ -11,10 +11,21 @@ class EquipmentChar extends Model
 
     protected $fillable = [
         'name',
+        'value',
     ];
 
     public function equipment()
     {
         return $this->belongsToMany(Equipment::class, 'equipment_char_map');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(EquipmentCharGroup::class);
+    }
+
+    public function measure()
+    {
+        return $this->belongsTo(EquipmentCharMeasure::class);
     }
 }
