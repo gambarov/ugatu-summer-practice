@@ -1,0 +1,1 @@
+export const mtoColumns = [{field:'id', header:'№'}, {field:'name', header:'Название'}, {field:'type', header:'Тип'}];

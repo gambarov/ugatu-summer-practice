@@ -1,7 +1,7 @@
 <template>
   <Menubar :model="items">
     <template #start>
-        <h1>Инвентаризация</h1>
+        <h1>Магл</h1>
     </template>
   </Menubar>
 </template>

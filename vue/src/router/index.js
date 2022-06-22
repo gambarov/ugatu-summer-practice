@@ -1,19 +1,42 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TabView from "../components/TabView.vue"
+import Mto from "../components/categories/Mto.vue";
+import SetsTable from "../components/categories/SetsTable.vue";
+import ClassesTable from "../components/categories/ClassesTable.vue";
+import HistoryTable from "../components/categories/HistoryTable.vue";
+import EquipmentInfo from "../components/EquipmentInfo.vue";
+
 const routes = [
   {
     path: '/',
     name: 'mto',
-    component: TabView
+    component: Mto
   },
   {
-    path: '/sets',
-    name: 'sets',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: TabView,
-  }
+    path: '/category/mto',
+    name:'mto',
+    component: Mto,
+  },
+  {
+    path: '/category/mto/info/:id',
+    name:'info',
+    component: EquipmentInfo,
+    props:true,
+  },
+  {
+    path: '/category/sets',
+    name:'sets',
+    component: SetsTable,
+  },
+  {
+    path: '/category/classes',
+    name:'classes',
+    component: ClassesTable,
+  },
+  {
+    path: '/category/history',
+    name:'history',
+    component: HistoryTable,
+  },
 ]
 
 const router = createRouter({

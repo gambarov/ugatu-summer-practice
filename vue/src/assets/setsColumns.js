@@ -1,0 +1,1 @@
+export const setsColumns = [{field:'id', header:'№'}, {field:'name', header:'Название'}, {field:'employee', header:'Сотрудник'}];

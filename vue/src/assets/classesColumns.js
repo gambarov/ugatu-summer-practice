@@ -1,0 +1,1 @@
+export const classesColumns = [{field:'id', header:'№'}, {field:'name', header:'Название'},];

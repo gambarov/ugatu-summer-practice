@@ -1,5 +1,5 @@
 <template>
-  <TabView>
+  <!-- <TabView>
 	<TabPanel header="Header I">
 		<EquipmentTable/>
 	</TabPanel>
@@ -9,7 +9,8 @@
 	<TabPanel header="Header III">
 		Content III
 	</TabPanel>
-</TabView>
+</TabView> -->
+<EquipmentTable/>
 </template>
 
 <script>
