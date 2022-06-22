@@ -14,6 +14,10 @@ class EquipmentSet extends Model
         'employee_id',
     ];
 
+    protected $with = [
+        'equipment'
+    ];
+
     public function employee()
     {
         return $this->belongsTo(Employee::class);
