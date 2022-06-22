@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Equipment;
+use App\Models\EquipmentType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,5 +17,10 @@ class EquipmentSeeder extends Seeder
     public function run()
     {
         Equipment::factory()->count(100)->create();
+
+        foreach(Equipment::all() as $equipment) {
+            $type = EquipmentType::inRandomOrder()->first();
+            $equipment->update(['equipment_type_id' => $type->id]);
+        }
     }
 }

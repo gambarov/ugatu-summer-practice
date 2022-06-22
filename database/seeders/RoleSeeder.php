@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
+use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class EmployeeSeeder extends Seeder
+class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +15,10 @@ class EmployeeSeeder extends Seeder
      */
     public function run()
     {
-        Employee::factory()->count(10)->create();
+        $roles = ['Лаборант', 'Заведующий', 'Преподаватель'];
+
+        foreach($roles as $role) {
+            Role::create(['name' => $role]);
+        }
     }
 }
