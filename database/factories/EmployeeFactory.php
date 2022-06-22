@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,12 @@ class EmployeeFactory extends Factory
     public function definition()
     {
         return [
-            'fullname' => $this->faker->firstName() . ' ' . $this->faker->lastName(),
+            'email' => $this->faker->unique()->email(),
+            'password' => $this->faker->unique()->password(),
+            'surname' => $this->faker->lastName(),
+            'name' => $this->faker->firstName(),
+            'patronymic' => $this->faker->lastName(),
+            'role_id' => Role::inRandomOrder()->first()->id,
         ];
     }
 }
