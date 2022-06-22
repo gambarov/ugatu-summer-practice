@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Equipment;
 use App\Http\Requests\StoreEquipmentRequest;
 use App\Http\Requests\UpdateEquipmentRequest;
+use App\Http\Resources\EquipmentResource;
 
 class EquipmentController extends Controller
 {
@@ -16,7 +17,8 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        return Equipment::all()->toJson();
+        $equipment = Equipment::with(['sets'])->get();
+        return EquipmentResource::collection($equipment);
     }
 
     /**
@@ -38,7 +40,7 @@ class EquipmentController extends Controller
      */
     public function show(Equipment $equipment)
     {
-        return $equipment->toJson();
+        return new EquipmentResource($equipment);
     }
 
     /**

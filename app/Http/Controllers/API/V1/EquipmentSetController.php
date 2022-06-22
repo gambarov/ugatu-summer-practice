@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EquipmentSet;
 use App\Http\Requests\StoreEquipmentSetRequest;
 use App\Http\Requests\UpdateEquipmentSetRequest;
+use App\Http\Resources\EquipmentSetResource;
 
 class EquipmentSetController extends Controller
 {
@@ -16,7 +17,8 @@ class EquipmentSetController extends Controller
      */
     public function index()
     {
-        return EquipmentSet::all()->toJson();
+        $sets = EquipmentSet::with('equipment')->get();
+        return EquipmentSetResource::collection($sets);
     }
 
     /**
@@ -33,12 +35,12 @@ class EquipmentSetController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\EquipmentSet  $equipmentSet
+     * @param  \App\Models\EquipmentSet  $set
      * @return \Illuminate\Http\Response
      */
-    public function show(EquipmentSet $equipmentSet)
+    public function show(EquipmentSet $set)
     {
-        return $equipmentSet->toJson();
+        return new EquipmentSetResource($set);
     }
 
     /**
