@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\V1\AudienceController;
 use App\Http\Controllers\API\V1\EmployeeController;
 use App\Http\Controllers\API\V1\EquipmentController;
+use App\Http\Controllers\API\V1\EquipmentPlacementController;
 use App\Http\Controllers\API\V1\EquipmentSetController;
 use App\Http\Controllers\API\V1\NoteController;
 use Illuminate\Http\Request;
@@ -35,4 +36,8 @@ Route::apiResource('/employees', EmployeeController::class, [
 
 Route::apiResource('/notes', NoteController::class, [
     'only' => ['index', 'store', 'show', 'update', 'destroy'],
+]);
+
+Route::apiResource('/placements', EquipmentPlacementController::class, [
+    'only' => ['index', 'store'],
 ]);
