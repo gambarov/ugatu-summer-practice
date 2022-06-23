@@ -1,3 +1,4 @@
+import { getSets } from "@/assets/api/sets";
 export default {
     state: {
         sets:[],
@@ -9,18 +10,22 @@ export default {
     },
     mutations: {
         SET_SETS(state,payload){
-            state.equipment=payload;
+            payload=payload.map((set)=>{
+                set.employeeInitials=set.employee.surname+" "+set.employee.name[0]+"."+set.employee.patronymic[0]+".";
+                return set;
+            })
+            state.sets=payload;
         },
         DELETE_SET(state,payload){
-            state.equipment= state.equipment.filter(item=>item.id!==payload.id);
+            state.sets= state.sets.filter(item=>item.id!==payload.id);
         },
     },
     actions: {
-        fetchSets(context,payload){
-            context.commmit('SET_EQUIPMENT',payload)
+        fetchSets(context){
+            return getSets().then((response) => context.commit('SET_SETS', response.data.data)).catch((error) => console.log(error))
         },
         deleteSet(context,payload){
-            context.commmit('DELETE_EQUIPMENT',payload)
+            context.commmit('DELETE_SET',payload)
         }
     },
   }

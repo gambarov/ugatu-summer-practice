@@ -1,5 +1,5 @@
 <template>
-  <EquipmentTable :columns="setsColumns" table="Комплекты" :data="info"/>
+  <EquipmentTable :loading="loading" :columns="setsColumns" table="Комплекты" :info="info"/>
 </template>
 <script>
 import EquipmentTable from "../EquipmentTable.vue";
@@ -11,10 +11,17 @@ export default {
     EquipmentTable,
   },
   setup() {
+    const loading = ref(true);
+    const info = ref();
     const store=useStore();
-    const info=computed(()=>store.getters.GET_SETS);
+    store.dispatch('fetchSets').then(() => {
+      loading.value = false;
+      info.value = store.getters.GET_SETS;
+    }
+    ); 
     return{
         info,
+        loading,
         setsColumns
     }
   },

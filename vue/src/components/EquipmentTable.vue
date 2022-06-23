@@ -1,13 +1,13 @@
 <template>
 <div class="flex flex-col">
-  <Toolbar>
+  <Toolbar class="mb-3">
     <template #start>
       <Button label="Добавить" icon="pi pi-plus" class="p-button bg-blue-400 mr-3" @click="openDialog(true)" />
       <Button label="Удалить выбранное" icon="pi pi-trash" class="p-button-danger" :disabled="isEmpty"
         @click="deleteSelected" />
     </template>
   </Toolbar>
-  <DataTable :value="data" :paginator="true" :rows="10" dataKey="id" :rowHover="true" filterDisplay="menu"
+  <DataTable class="card" :value="info" :paginator="true" :rows="10" dataKey="id" :rowHover="true" filterDisplay="menu"
     :loading="loading" v-model:selection="selectedRows"
     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
     :rowsPerPageOptions="[10, 25, 50]" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -80,15 +80,19 @@ export default {
   },
   props:{
     table:String,
-    data:{
+    info:{
       default:[]
     },
     columns:{
       default:[]
     },
+    loading:{
+      default:true
+    }
   },
   setup(props) {
-    onMounted(()=>{  console.log(props.columns)})
+    onMounted(()=>{  
+      console.log(props.info)})
     const store=useStore();
     const router = useRouter()
     const isEmpty = computed(() => {
@@ -96,14 +100,12 @@ export default {
     })
     const types = ["АО", "ПО"];
     const isDialogOpen = ref(false);
-    const loading = ref(true);
     const newEquipment = ref({
     })
     const selectedRows = ref();
     
     const data = ref([]);
-    data.value=props.data
-    loading.value = false;
+    data.value=props.info;
     const openDialog = (value) => {
       isDialogOpen.value = value;
     };
@@ -122,7 +124,6 @@ export default {
     }
     return {
       data,
-      loading,
       selectedRows,
       isDialogOpen,
       openDialog,
@@ -141,5 +142,9 @@ export default {
 <style>
 button {
   background-color: rgb(143, 73, 73);
+}
+.card{
+  border: 1px solid #dee2e6;
+    border-radius: 3px;
 }
 </style>

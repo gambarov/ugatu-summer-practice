@@ -11,14 +11,17 @@
 import Menu from "primevue/menu";
 import Header from "./components/Header.vue";
 import { useRouter, useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 export default {
   components: {
     Menu,
     Header,
   },
   setup() {
+    const store=useStore();
     const router = useRouter()
-    const route = useRoute()
+    const route = useRoute();
+    // store.dispatch('fetchEquipment')
     let items = [
       {
         label: "Разделы",
