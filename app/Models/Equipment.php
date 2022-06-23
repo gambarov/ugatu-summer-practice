@@ -29,7 +29,10 @@ class Equipment extends Model
 
     public function audiences()
     {
-        return $this->belongsToMany(Audience::class, 'equipment_placement_map');
+        return $this->belongsToMany(Audience::class, 'equipment_placements')
+            ->withPivot(['placed_at', 'removed_at'])
+            ->using(EquipmentPlacement::class)
+            ->as('placements');
     }
 
     public function audience()
