@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Equipment;
 use App\Http\Requests\StoreEquipmentRequest;
 use App\Http\Requests\UpdateEquipmentRequest;
-use App\Http\Resources\EquipmentResource;
+use App\Http\Resources\Equipment\EquipmentResource;
 
 class EquipmentController extends Controller
 {

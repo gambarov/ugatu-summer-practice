@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\EquipmentSet;
 
+use App\Http\Resources\Equipment\WithEquipmentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class EmployeeResource extends JsonResource
+class EquipmentSetResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +17,10 @@ class EmployeeResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'surname' => $this->surname,
             'name' => $this->name,
-            'patronymic' => $this->patronymic,
-            'email' => $this->email,
-            'role_id' => $this->role_id,
-            'role' => new WithRoleResource($this->role)
+            'employee_id' => $this->employee_id,
+            'employee' => $this->employee,
+            'equipment' => WithEquipmentResource::collection($this->equipment)
         ];
     }
 }
