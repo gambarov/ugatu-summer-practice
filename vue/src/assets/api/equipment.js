@@ -5,3 +5,12 @@ export const getEquipment=()=>{
 export const getEquipmentById=(id)=>{
     return url.get('/equipment/'+id)
 }
+export const postEquipment=(data)=>{
+    return url.post('/equipment',data)
+}
+export const deleteEquipment=(id)=>{
+    return url.delete('/equipment/'+id)
+}
+export const patchEquipment=(id,data)=>{
+    return url.patch('/equipment/'+id,data)
+}

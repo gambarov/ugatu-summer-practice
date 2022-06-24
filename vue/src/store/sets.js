@@ -11,7 +11,10 @@ export default {
     mutations: {
         SET_SETS(state,payload){
             payload=payload.map((set)=>{
-                set.employeeInitials=set.employee.surname+" "+set.employee.name[0]+"."+set.employee.patronymic[0]+".";
+                if(set.employee!=null){
+                    set.employeeInitials=set.employee.surname+" "+set.employee.name[0]+"."+set.employee.patronymic[0]+".";
+
+                }
                 return set;
             })
             state.sets=payload;

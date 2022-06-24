@@ -4,6 +4,7 @@ import SetsTable from "../components/categories/SetsTable.vue";
 import ClassesTable from "../components/categories/ClassesTable.vue";
 import HistoryTable from "../components/categories/HistoryTable.vue";
 import EquipmentInfo from "../components/EquipmentInfo.vue";
+import SetsInfo from "../components/SetsInfo.vue";
 
 const routes = [
   {
@@ -18,8 +19,14 @@ const routes = [
   },
   {
     path: '/category/mto/info/:id',
-    name:'info',
+    name:'mtoInfo',
     component: EquipmentInfo,
+    props:true,
+  },
+  {
+    path: '/category/sets/info/:id',
+    name:'setsInfo',
+    component: SetsInfo,
     props:true,
   },
   {

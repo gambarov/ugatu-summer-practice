@@ -13,7 +13,9 @@ export default {
             state.equipment = payload;
         },
         DELETE_EQUIPMENT(state, payload) {
-            state.equipment = state.equipment.filter(item => item.id !== payload.id);
+            // console.log(state.equipment.filter(item => item.value.id != payload))
+            state.equipment = state.equipment.filter(item => item.id != payload);
+            console.log(state.equipment.length)
         },
     },
     actions: {
@@ -21,7 +23,7 @@ export default {
             return getEquipment().then((response) => context.commit('SET_EQUIPMENT', response.data.data)).catch((error) => console.log(error))
         },
         deleteEquipment(context, payload) {
-            context.commmit('DELETE_EQUIPMENT', payload)
+            context.commit('DELETE_EQUIPMENT', payload)
         }
     },
 }

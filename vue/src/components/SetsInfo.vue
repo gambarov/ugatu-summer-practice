@@ -1,28 +1,26 @@
 <template>
-    <Toast />
+<Toast></Toast>
     <div class="absolute inset-0 h-fit bg-white p-4">
         <div class="flex items-center mb-3">
             <Button icon="pi pi-arrow-left" @click="closeModal" class="p-button-rounded p-button-outlined mr-3" />
-            <h1 class="text-2xl font-medium">Информация об оборудовании</h1>
+            <h1 class="text-2xl font-medium">Информация о комплекте</h1>
         </div>
+
         <div v-if="!loading" class="flex  flex-row ">
             <div class="mr-3 flex-auto">
                 <div class="flex flex-col ">
-                    <label htmlFor="name">Наименование МТО</label>
-                    <InputText type="text" v-model="data.name" />
-                </div>
-                <div class="flex flex-col">
-                    <label htmlFor="type">Тип</label>
-                    <InputText type="text" v-model="type" />
+                    <label htmlFor="name">Наименование комплекта</label>
+                    <InputText type="text" v-model="data.name"  />
                 </div>
                 <div class="flex flex-col mb-3">
-                    <label htmlFor="type">Идентификатор</label>
-                    <InputText type="text" v-model="data.inventory_id" />
+                    <label htmlFor="type">Сотрудник</label>
+                    <InputText type="text" v-model="data.employeeInitials"  disabled/>
                 </div>
-                <Button label="Обновить данные" @click="updateEquipment" class="p-button-success" />
+                <Button label="Обновить данные" @click="updateSet" class="p-button-success" />
             </div>
+
             <div class="flex-auto">
-                <EquipmentTable :loading="loading" name="sets" :columns="setsColumns" table="Комплекты" :info="sets" />
+                <EquipmentTable :loading="loading" name="mto" :columns="mtoColumns" table="МТО" :info="equipment" />
             </div>
         </div>
     </div>
@@ -35,10 +33,10 @@ import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Toast from 'primevue/toast';
 import { useToast } from "primevue/usetoast";
-import { getEquipmentById, patchEquipment } from '@/assets/api/equipment'
+import { getSetsById,patchSet } from '@/assets/api/sets';
 import { useRouter, useRoute } from 'vue-router'
 import EquipmentTable from './EquipmentTable.vue';
-import { setsColumns } from '@/assets/setsColumns';
+import { mtoColumns } from '@/assets/mtoColumns';
 export default {
     components: {
         Dialog,
@@ -58,27 +56,21 @@ export default {
         const isDialogOpen = ref(true)
         const store = useStore();
         const data = ref({});
-        const sets = ref([]);
+        const equipment = ref([]);
         const type = ref();
         const loading = ref(true)
-        getEquipmentById(props.id).then((response) => {
+        getSetsById(props.id).then((response) => {
             data.value = response.data.data;
-            if (response.data.data.sets != null) {
-                sets.value = response.data.data.sets
-                sets.value = sets.value.map((set) => {
-                    set.employeeInitials = set.employee.surname + " " + set.employee.name[0] + "." + set.employee.patronymic[0] + ".";
-                    return set;
-                })
-            }
-            type.value = response.data.data.equipment_type.name
+            data.value.employeeInitials = data.value.employee.surname + " " + data.value.employee.name[0] + "." + data.value.employee.patronymic[0] + ".";
+            equipment.value = data.value.equipment
         })
             .then(loading.value = false).catch((error) => { console.log(error) })
         const closeModal = () => {
             isDialogOpen.value = false;
-            router.push({ name: 'mto' })
+            router.push({ name: 'sets' })
         }
-        const updateEquipment = () => {
-            patchEquipment(props.id, data.value).then(() => showSuccess()).catch(() => {
+        const updateSet = () => {
+            patchSet(props.id, data.value).then(() => showSuccess()).catch(() => {
                 toast.add({ severity: 'error', summary: 'Ошибка', life: 3000 });
             })
         }
@@ -89,11 +81,10 @@ export default {
             isDialogOpen,
             closeModal,
             data, loading,
-            sets,
+            equipment,
             type,
-            setsColumns,
-            hasSets: computed(() => { return sets.value.length }),
-            updateEquipment
+            mtoColumns,
+            updateSet,
         }
     },
 };

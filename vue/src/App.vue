@@ -3,7 +3,7 @@
     <Header />
     <div class="flex relative p-4">
       <Menu :model="items" class="mr-4" />
-      <router-view class="flex-auto" />
+      <router-view class="" />
     </div>
   </div>
 </template>

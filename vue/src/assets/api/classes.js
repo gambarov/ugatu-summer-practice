@@ -1,4 +1,7 @@
 import { url } from "./url"
-export const getEquipment=()=>{
-    return url.get('/equipment')
+export const getClasses=()=>{
+    return url.get('/audiences')
+}
+export const postClass=(data)=>{
+    return url.post('/audiences',data)
 }
