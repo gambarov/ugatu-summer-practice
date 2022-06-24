@@ -8,7 +8,7 @@ import EquipmentInfo from "../components/EquipmentInfo.vue";
 const routes = [
   {
     path: '/',
-    name: 'mto',
+    name: 'default',
     component: Mto
   },
   {
