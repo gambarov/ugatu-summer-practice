@@ -34,20 +34,21 @@ class CreatePlacementService extends BaseService
 
         // Получаем оборудование, которое нужно сместить
         $equipment = Equipment::findOrFail($data['equipment_id']);
+        $audience = $equipment->currentAudience();
 
-        if ($equipment->audience()) {
+        if ($audience) {
             // Получаем последнее (текущее) расположение, если оно есть
-            $placement = $equipment->audience()->placements->latest('placed_at')->first();
-
+            $placement = $audience->placements->latest('placed_at')->first();;
             // Закрываем предыдущее расположение
-            if ($placement) {
-                $placement->update([
-                    'removed_at' => Carbon::now(),
-                ]);
-            }
+            $placement->update([
+                'removed_at' => Carbon::now(),
+            ]);
         }
 
         // Создаем новое расположение
-        return Placement::create($data);
+        Placement::create($data);
+        // FIXME: Приходится возращать расположение таким образом, 
+        // потому что Placement::create() не возвращает данных с id, placed_at, removed_at 
+        return $equipment->currentPlacement();
     }
 }

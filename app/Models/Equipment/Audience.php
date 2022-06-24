@@ -22,7 +22,7 @@ class Audience extends Model
 
     public function equipment() {
         return $this->belongsToMany(Equipment::class, 'placements')
-            ->withPivot(['placed_at', 'removed_at'])
+            ->withPivot('id', 'placed_at', 'removed_at')
             ->using(Placement::class)
             ->as('placements');
     }

@@ -33,15 +33,19 @@ class Equipment extends Model
     public function audiences()
     {
         return $this->belongsToMany(Audience::class, 'placements')
-            ->withPivot(['placed_at', 'removed_at'])
+            ->withPivot('id', 'placed_at', 'removed_at')
             ->using(PLacement::class)
             ->as('placements');
     }
 
-    public function audience()
+    public function currentAudience()
     {
         return $this->audiences()->orderBy('id', 'desc')->first();
     }
+
+    public function currentPlacement() {
+        return $this->currentAudience()->placements->latest('placed_at')->first();
+    }    
 
     public function sets()
     {
