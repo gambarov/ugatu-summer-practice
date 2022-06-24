@@ -40,7 +40,7 @@ class SetController extends Controller
      */
     public function show(Set $set)
     {
-        return new SetResource($set->with('equipment')->first());
+        return new SetResource($set->load('equipment'));
     }
 
     /**
