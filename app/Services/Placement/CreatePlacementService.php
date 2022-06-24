@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\EquipmentPlacement;
+namespace App\Services\Placement;
 
-use App\Models\Equipment;
-use App\Models\EquipmentPlacement;
+use App\Models\Equipment\Equipment;
+use App\Models\Equipment\Placement;
 use App\Services\BaseService;
 use Carbon\Carbon;
 
-class CreateEquipmentPlacementService extends BaseService
+class CreatePlacementService extends BaseService
 {
     /**
      * Правила для валидации.
@@ -28,7 +28,7 @@ class CreateEquipmentPlacementService extends BaseService
      * @param  array  $data
      * @return Section
      */
-    public function execute(array $data) : EquipmentPlacement
+    public function execute(array $data) : Placement
     {
         $this->validate($data);
 
@@ -45,6 +45,6 @@ class CreateEquipmentPlacementService extends BaseService
         }
 
         // Создаем новое расположение
-        return EquipmentPlacement::create($data);
+        return Placement::create($data);
     }
 }
