@@ -1,0 +1,537 @@
+{
+    "variable": [{ "key": "base_url", "value": "http://localhost" }],
+    "info": {
+        "name": "2022_06_23_202030_laravel_collection.json",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "api/user",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/user",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "user"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/equipment",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/equipment",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "equipment"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/equipment",
+            "request": {
+                "method": "POST",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/equipment",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "equipment"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/equipment/{equipment}",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/equipment/:equipment",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "equipment", ":equipment"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/equipment/{equipment}",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/equipment/:equipment",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "equipment", ":equipment"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/equipment/{equipment}",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/equipment/:equipment",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "equipment", ":equipment"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/equipment/{equipment}",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/equipment/:equipment",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "equipment", ":equipment"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/sets",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/sets",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "sets"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/sets",
+            "request": {
+                "method": "POST",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/sets",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "sets"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/sets/{set}",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/sets/:set",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "sets", ":set"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/sets/{set}",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/sets/:set",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "sets", ":set"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/sets/{set}",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/sets/:set",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "sets", ":set"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/sets/{set}",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/sets/:set",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "sets", ":set"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/audiences",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/audiences",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "audiences"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/audiences",
+            "request": {
+                "method": "POST",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/audiences",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "audiences"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/audiences/{audience}",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/audiences/:audience",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "audiences", ":audience"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/audiences/{audience}",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/audiences/:audience",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "audiences", ":audience"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/audiences/{audience}",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/audiences/:audience",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "audiences", ":audience"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/audiences/{audience}",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/audiences/:audience",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "audiences", ":audience"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/employees",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/employees",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "employees"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/employees",
+            "request": {
+                "method": "POST",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/employees",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "employees"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/employees/{employee}",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/employees/:employee",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "employees", ":employee"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/employees/{employee}",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/employees/:employee",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "employees", ":employee"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/employees/{employee}",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/employees/:employee",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "employees", ":employee"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/employees/{employee}",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/employees/:employee",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "employees", ":employee"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/notes",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/notes",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "notes"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/notes",
+            "request": {
+                "method": "POST",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/notes",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "notes"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/notes/{note}",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/notes/:note",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "notes", ":note"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/notes/{note}",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/notes/:note",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "notes", ":note"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/notes/{note}",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/notes/:note",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "notes", ":note"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/notes/{note}",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/notes/:note",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "notes", ":note"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/placements",
+            "request": {
+                "method": "GET",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/placements",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "placements"],
+                    "variable": []
+                }
+            }
+        },
+        {
+            "name": "api/placements",
+            "request": {
+                "method": "POST",
+                "header": [
+                    { "key": "Accept", "value": "application/json" },
+                    { "key": "Content-Type", "value": "application/json" }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/placements",
+                    "host": ["{{base_url}}"],
+                    "path": ["api", "placements"],
+                    "variable": []
+                }
+            }
+        }
+    ]
+}
