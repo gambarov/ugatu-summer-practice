@@ -28,7 +28,8 @@ class EquipmentController extends Controller
      */
     public function store(Request $request)
     {
-        return Equipment::create($request->all())->toJson();
+        $equipment = Equipment::create($request->all());
+        return new EquipmentResource($equipment);
     }
 
     /**
@@ -52,7 +53,7 @@ class EquipmentController extends Controller
     public function update(Request $request, Equipment $equipment)
     {
         $equipment->update($request->all());
-        return $equipment->toJson();
+        return new EquipmentResource($equipment);
     }
 
     /**

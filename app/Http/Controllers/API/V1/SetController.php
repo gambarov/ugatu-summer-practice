@@ -28,7 +28,8 @@ class SetController extends Controller
      */
     public function store(Request $request)
     {
-        return Set::create($request->all())->toJson();
+        $set = Set::create($request->all());
+        return new SetResource($set);
     }
 
     /**
@@ -52,7 +53,7 @@ class SetController extends Controller
     public function update(Request $request, Set $set)
     {
         $set->update($request->all());
-        return $set->toJson();
+        return new SetResource($set);
     }
 
     /**
