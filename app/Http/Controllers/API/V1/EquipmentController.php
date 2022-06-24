@@ -39,7 +39,7 @@ class EquipmentController extends Controller
      */
     public function show(Equipment $equipment)
     {
-        return new EquipmentResource($equipment);
+        return new EquipmentResource($equipment->with('sets')->first());
     }
 
     /**
