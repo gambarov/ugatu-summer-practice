@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\EquipmentType;
-use App\Http\Requests\StoreEquipmentTypeRequest;
-use App\Http\Requests\UpdateEquipmentTypeRequest;
+use App\Models\Equipment\EquipmentType;
+use Illuminate\Http\Request;
 
 class EquipmentTypeController extends Controller
 {
@@ -22,10 +21,10 @@ class EquipmentTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreEquipmentTypeRequest  $request
+     * @param  \App\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreEquipmentTypeRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -33,10 +32,10 @@ class EquipmentTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\EquipmentType  $equipmentType
+     * @param  \App\Models\EquipmentType  $type
      * @return \Illuminate\Http\Response
      */
-    public function show(EquipmentType $equipmentType)
+    public function show(EquipmentType $type)
     {
         //
     }
@@ -44,11 +43,11 @@ class EquipmentTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateEquipmentTypeRequest  $request
-     * @param  \App\Models\EquipmentType  $equipmentType
+     * @param  \App\Http\Request  $request
+     * @param  \App\Models\EquipmentType  $type
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEquipmentTypeRequest $request, EquipmentType $equipmentType)
+    public function update(Request $request, EquipmentType $type)
     {
         //
     }
@@ -56,10 +55,10 @@ class EquipmentTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\EquipmentType  $equipmentType
+     * @param  \App\Models\EquipmentType  $type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EquipmentType $equipmentType)
+    public function destroy(EquipmentType $type)
     {
         //
     }

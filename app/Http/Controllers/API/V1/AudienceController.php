@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Audience;
-use App\Http\Requests\StoreAudienceRequest;
-use App\Http\Requests\UpdateAudienceRequest;
+use App\Models\Equipment\Audience;
+use Illuminate\Http\Request;
 
 class AudienceController extends Controller
 {
@@ -22,10 +21,10 @@ class AudienceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAudienceRequest  $request
+     * @param  \App\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAudienceRequest $request)
+    public function store(Request $request)
     {
         return Audience::create($request->all())->toJson();
     }
@@ -44,11 +43,11 @@ class AudienceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAudienceRequest  $request
+     * @param  \App\Http\Request  $request
      * @param  \App\Models\Audience  $audience
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAudienceRequest $request, Audience $audience)
+    public function update(Request $request, Audience $audience)
     {
         $audience->update($request->all());
         return $audience->toJson();

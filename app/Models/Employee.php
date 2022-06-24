@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Equipment\Set;
+use App\Models\Equipment\Work;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -10,6 +12,8 @@ use Laravel\Sanctum\HasApiTokens;
 class Employee extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    protected $guarded = ['id'];
 
     /**
      * The attributes that are mass assignable.
@@ -51,5 +55,15 @@ class Employee extends Model
     public function notes()
     {
         return $this->hasMany(Note::class);
+    }
+
+    public function works()
+    {
+        return $this->hasMany(Work::class);
+    }
+
+    public function sets()
+    {
+        return $this->hasMany(Set::class);
     }
 }

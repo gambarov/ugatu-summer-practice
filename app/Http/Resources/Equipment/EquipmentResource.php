@@ -2,8 +2,7 @@
 
 namespace App\Http\Resources\Equipment;
 
-use App\Http\Resources\EquipmentSet\WithEquipmentSetResource;
-use App\Http\Resources\EquipmentType\WithEquipmentTypeResource;
+use App\Http\Resources\Set\SetResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class EquipmentResource extends JsonResource
@@ -20,9 +19,8 @@ class EquipmentResource extends JsonResource
             'id' => $this->id,
             'inventory_id' => $this->inventory_id,
             'name' => $this->name,
-            'equipment_type_id' => $this->equipment_type_id,
-            'equipment_type' => new WithEquipmentTypeResource($this->equipment_type),
-            'sets' => WithEquipmentSetResource::collection($this->sets),
+            'equipment_type' => new EquipmentTypeResource($this->whenLoaded('type')),
+            'sets' => SetResource::collection($this->whenLoaded('sets')),
         ];
     }
 }

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Equipment;
-use App\Http\Requests\StoreEquipmentRequest;
-use App\Http\Requests\UpdateEquipmentRequest;
+use App\Models\Equipment\Equipment;
 use App\Http\Resources\Equipment\EquipmentResource;
+use Illuminate\Http\Request;
 
 class EquipmentController extends Controller
 {
@@ -24,10 +23,10 @@ class EquipmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreEquipmentRequest  $request
+     * @param  \App\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreEquipmentRequest $request)
+    public function store(Request $request)
     {
         return Equipment::create($request->all())->toJson();
     }
@@ -46,11 +45,11 @@ class EquipmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateEquipmentRequest  $request
+     * @param  \App\Http\Request  $request
      * @param  \App\Models\Equipment  $equipment
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEquipmentRequest $request, Equipment $equipment)
+    public function update(Request $request, Equipment $equipment)
     {
         $equipment->update($request->all());
         return $equipment->toJson();

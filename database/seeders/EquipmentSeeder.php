@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Equipment;
-use App\Models\EquipmentType;
+use App\Models\Equipment\Equipment;
+use App\Models\Equipment\EquipmentType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

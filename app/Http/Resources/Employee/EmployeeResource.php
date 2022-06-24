@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\Employee;
 
-use App\Http\Resources\WithRoleResource;
+use App\Http\Resources\Role\RoleResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class EmployeeResource extends JsonResource
@@ -21,8 +21,7 @@ class EmployeeResource extends JsonResource
             'name' => $this->name,
             'patronymic' => $this->patronymic,
             'email' => $this->email,
-            'role_id' => $this->role_id,
-            'role' => new WithRoleResource($this->role)
+            'role' => new RoleResource($this->whenLoaded('role')),
         ];
     }
 }

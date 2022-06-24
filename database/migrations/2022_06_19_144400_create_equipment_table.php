@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\EquipmentType;
+use App\Models\Equipment\EquipmentType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

@@ -20,12 +20,12 @@ class DatabaseSeeder extends Seeder
         $this->call(EmployeeSeeder::class);
         $this->call(EquipmentTypeSeeder::class);
         $this->call(EquipmentSeeder::class);
-        $this->call(EquipmentSetSeeder::class);
-        $this->call(EquipmentCharGroupSeeder::class);
-        $this->call(EquipmentCharMeasureSeeder::class);
-        $this->call(EquipmentCharSeeder::class);
-        $this->call(EquipmentWorkTypeSeeder::class);
-        $this->call(EquipmentWorkStatusSeeder::class);
-        $this->call(EquipmentWorkSeeder::class);
+        $this->call(SetSeeder::class);
+        $this->call(CharGroupSeeder::class);
+        $this->call(CharMeasureSeeder::class);
+        $this->call(CharSeeder::class);
+        $this->call(WorkTypeSeeder::class);
+        $this->call(WorkStatusSeeder::class);
+        $this->call(WorkSeeder::class);
     }
 }

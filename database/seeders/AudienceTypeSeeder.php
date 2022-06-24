@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\AudienceType;
+use App\Models\Equipment\AudienceType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
