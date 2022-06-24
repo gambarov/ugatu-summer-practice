@@ -29,9 +29,9 @@ class PlacementController extends Controller
      */
     public function store(Request $request)
     {
-        return app(CreatePlacementService::class)
-            ->execute($request->all())
-            ->toJson();
+        $placement = app(CreatePlacementService::class)
+            ->execute($request->all());
+        return new PlacementResource($placement);
     }
 
     /**
@@ -42,7 +42,7 @@ class PlacementController extends Controller
      */
     public function show(Placement $placement)
     {
-        //
+        return new PlacementResource($placement->load(['equipment', 'audience']));
     }
 
     /**

@@ -28,20 +28,23 @@ class CreatePlacementService extends BaseService
      * @param  array  $data
      * @return Section
      */
-    public function execute(array $data) : Placement
+    public function execute(array $data): Placement
     {
         $this->validate($data);
 
         // Получаем оборудование, которое нужно сместить
         $equipment = Equipment::findOrFail($data['equipment_id']);
-        // Получаем последнее (текущее) расположение, если оно есть
-        $placement = $equipment->audience()->placements->latest('placed_at')->first();
 
-        // Закрываем предыдущее расположение
-        if ($placement) {
-            $placement->update([
-                'removed_at' => Carbon::now(),
-            ]);
+        if ($equipment->audience()) {
+            // Получаем последнее (текущее) расположение, если оно есть
+            $placement = $equipment->audience()->placements->latest('placed_at')->first();
+
+            // Закрываем предыдущее расположение
+            if ($placement) {
+                $placement->update([
+                    'removed_at' => Carbon::now(),
+                ]);
+            }
         }
 
         // Создаем новое расположение
