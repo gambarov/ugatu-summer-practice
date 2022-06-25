@@ -18,3 +18,7 @@ php artisan serve
 ```
 php artisan db:seed
 ```
+Команда для запуска тестов
+```
+php artisan test
+```
