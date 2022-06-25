@@ -5,11 +5,14 @@ export default {
     state: {
         user: currentUser,
     },
-    // getters: {
-    //     GET_EQUIPMENT(state) {
-    //         return state.equipment;
-    //     },
-    // },
+    getters: {
+        GET_USER(state) {
+            return state.user;
+        },
+        GET_AUTHENTICATION(state) {
+            return state.user!==null?true:false;
+        },
+    },
     mutations: {
         SET_USER(state, payload) {
             localStorage.setItem('user', JSON.stringify(payload));
@@ -21,12 +24,12 @@ export default {
         },
     },
     actions: {
-        fetchUser(context) {
-            context.commit('SET_USER', { name: 'john', token: '123' })
+        fetchUser(context,user) {
+            return new Promise((resolve,error)=>{context.commit('SET_USER', user);resolve('lolz')}) 
             // return postUser().then((response) => context.commit('SET_USER', response.data.data)).catch((error) => console.log(error))
         },
-        deleteEquipment(context, payload) {
-            context.commit('DELETE_EQUIPMENT', payload)
+        deleteUser(context) {
+            context.commit('DELETE_USER');
         }
     },
 }

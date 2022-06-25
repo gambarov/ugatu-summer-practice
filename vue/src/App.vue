@@ -21,7 +21,7 @@ export default {
     const store=useStore();
     const router = useRouter()
     const route = useRoute();
-    store.dispatch('fetchUser')
+    // store.dispatch('fetchUser',{name:'aaa'})
     let items = [
       {
         label: "Разделы",
@@ -59,5 +59,9 @@ export default {
 }
 button {
   background-color: rgb(143, 73, 73);
+}
+.card {
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
 }
 </style>

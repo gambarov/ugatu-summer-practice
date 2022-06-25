@@ -20,7 +20,8 @@
             </div>
 
             <div class="flex-auto">
-                <EquipmentTable :loading="loading" name="mto" :columns="mtoColumns" table="МТО" :info="equipment" />
+                <SetCreation :creation="false" @save="update" :saveEquipment="saveNewEquipment" :equipment="equipment"></SetCreation>
+                <EquipmentTable :saveSelected="saveNewEquipment" @deleteElement="update" :delete="deleteEqFromSet" :loading="loading" name="mto" :columns="mtoColumns" table="МТО" :info="equipment" />
             </div>
         </div>
     </div>
@@ -36,6 +37,7 @@ import { useToast } from "primevue/usetoast";
 import { getSetsById,patchSet } from '@/assets/api/sets';
 import { useRouter, useRoute } from 'vue-router'
 import EquipmentTable from './EquipmentTable.vue';
+import SetCreation from './modals/SetCreation.vue';
 import { mtoColumns } from '@/assets/mtoColumns';
 export default {
     components: {
@@ -43,7 +45,8 @@ export default {
         Button,
         InputText,
         EquipmentTable,
-        Toast
+        Toast,
+        SetCreation
     },
     props: {
         id: {
@@ -59,23 +62,47 @@ export default {
         const equipment = ref([]);
         const type = ref();
         const loading = ref(true)
-        getSetsById(props.id).then((response) => {
+        const loadSet=()=>{
+            getSetsById(props.id).then((response) => {
             data.value = response.data.data;
+            if(data.value.employee){
             data.value.employeeInitials = data.value.employee.surname + " " + data.value.employee.name[0] + "." + data.value.employee.patronymic[0] + ".";
-            equipment.value = data.value.equipment
-        })
-            .then(loading.value = false).catch((error) => { console.log(error) })
+            }
+            equipment.value = data.value.equipment;
+            loading.value = false
+        }).catch((error) => { console.log(error) })
+        }
+        loadSet();
         const closeModal = () => {
             isDialogOpen.value = false;
             router.push({ name: 'sets' })
         }
         const updateSet = () => {
-            patchSet(props.id, data.value).then(() => showSuccess()).catch(() => {
+            patchSet(props.id,{'name':data.value.name} ).then(() => showSuccess()).catch(() => {
                 toast.add({ severity: 'error', summary: 'Ошибка', life: 3000 });
             })
         }
         const showSuccess = () => {
             toast.add({ severity: 'success', summary: 'Изменения сохранены', life: 2000 });
+        }
+const update = () => {
+      loading.value = true;
+      loadSet();
+    }
+        const deleteEqFromSet=(id, array)=>{
+            let equipmentIds=array.map((item)=>{
+                return item.id
+            })
+            equipmentIds=equipmentIds.filter((item)=>
+                item!==id);
+            return patchSet(props.id,{'equipment':equipmentIds} ).then(() => showSuccess()).catch(() => {
+                toast.add({ severity: 'error', summary: 'Ошибка', life: 3000 });
+            })
+        }
+        const saveNewEquipment=(forSave)=>{
+            return patchSet(props.id,{'equipment':forSave} ).then(() => showSuccess()).catch(() => {
+                toast.add({ severity: 'error', summary: 'Ошибка', life: 3000 });
+            })
         }
         return {
             isDialogOpen,
@@ -85,6 +112,9 @@ export default {
             type,
             mtoColumns,
             updateSet,
+            deleteEqFromSet,
+            update,
+            saveNewEquipment
         }
     },
 };

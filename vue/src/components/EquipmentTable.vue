@@ -1,39 +1,38 @@
 <template>
   <ConfirmDialog></ConfirmDialog>
-    <DataTable class="card" :value="info" :paginator="true" :rows="10" dataKey="id" :rowHover="true"
-      filterDisplay="menu" :loading="loading" v-model:selection="selectedRows"
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-      :rowsPerPageOptions="[10, 25, 50]" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      responsiveLayout="scroll">
-      <template #header>
-        <div class="flex justify-between items-center">
-          <div class="flex flex-row items-center ">
-            <h5 class="m-0 mr-3">{{ table }}</h5>
-            <!-- <Button label="Удалить выбранное" icon="pi pi-trash" class="p-button-danger" :disabled="isEmpty"
-        @click="deleteSelected" /> -->
-          </div>
+  <DataTable class="card" :value="info" :paginator="true" :rows="10" dataKey="id" :rowHover="true" filterDisplay="menu"
+    :loading="loading" v-model:selection="selectedRows"
+    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+    :rowsPerPageOptions="[10, 25, 50]" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    responsiveLayout="scroll">
+    <template #header>
+      <div class="flex justify-between items-center">
+        <div class="flex flex-row items-center ">
+          <h5 class="m-0 mr-3">{{ table }}</h5>
 
-          <span class="p-input-icon-left">
-            <i class="pi pi-search" />
-            <InputText placeholder="Keyword Search" />
-          </span>
         </div>
+
+        <span class="p-input-icon-left">
+          <i class="pi pi-search" />
+          <InputText placeholder="Keyword Search" />
+        </span>
+        <Button v-if="isSelectedEmpty" label="Удалить выбранное" icon="pi pi-trash" class="p-button-danger" :disabled="isEmpty"
+          @click="confirmDeleteSelected" />
+      </div>
+    </template>
+    <template #empty> Нет оборудования </template>
+    <template #loading> Загрузка... </template>
+    <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+    <Column v-for="column in columns" :field="column.field" :header="column.header" sortable></Column>
+    <Column headerStyle="width: 4rem; text-align: center"
+      bodyStyle="display:flex;text-align: center; overflow: visible">
+      <template #body="slotProps">
+        <Button @click="showInfo(slotProps.data)" icon="pi pi-eye" className="p-button-rounded p-button-primary mr-2" />
+        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" />
+        <Button icon="pi pi-trash" @click="confirm2(slotProps.data.id)" className="p-button-rounded p-button-danger" />
       </template>
-      <template #empty> Нет оборудования </template>
-      <template #loading> Загрузка... </template>
-      <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-      <Column v-for="column in columns" :field="column.field" :header="column.header" sortable></Column>
-      <Column headerStyle="width: 4rem; text-align: center"
-        bodyStyle="display:flex;text-align: center; overflow: visible">
-        <template #body="slotProps">
-          <Button @click="showInfo(slotProps.data)" icon="pi pi-eye"
-            className="p-button-rounded p-button-primary mr-2" />
-          <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" />
-          <Button icon="pi pi-trash" @click="confirm2(slotProps.data.id)"
-            className="p-button-rounded p-button-danger" />
-        </template>
-      </Column>
-    </DataTable>
+    </Column>
+  </DataTable>
 
 </template>
 
@@ -67,6 +66,7 @@ export default {
     table: String,
     name: String,
     delete: Function,
+    saveSelected: Function,
     info: {
       default: []
     },
@@ -85,7 +85,7 @@ export default {
       return selectedRows === null;
     })
     const isDialogOpen = ref(false);
-    const selectedRows = ref();
+    const selectedRows = ref([]);
     const data = ref([]);
     data.value = props.info;
     const openDialog = (value) => {
@@ -99,7 +99,7 @@ export default {
         acceptClass: 'p-button-danger',
         accept: () => {
           console.log(id)
-          props.delete(id).then(() => { emit('deleteElement') });
+          props.delete(id, props.info).then(() => { emit('deleteElement') })
           // store.dispatch('deleteEquipment',id);
 
         },
@@ -107,8 +107,23 @@ export default {
         }
       });
     }
-    const deleteSelected = () => {
-      data.value = data.value.filter(eq => !selectedRows.value.includes(eq))
+    const confirmDeleteSelected = () => {
+      confirm.require({
+        message: 'Вы хотите удалить выбранные записи?',
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        acceptClass: 'p-button-danger',
+        accept: () => {
+          let forSave = props.info.filter((item) => !selectedRows.value.some((remove) => remove.id === item.id));
+          forSave = forSave.map((item) => {
+            return item.id
+          })
+          props.saveSelected(forSave)
+            .then(() => { emit('deleteElement') })
+        },
+        reject: () => {
+        }
+      });
     }
     const showInfo = (data) => {
       console.log(data)
@@ -120,11 +135,12 @@ export default {
       selectedRows,
       isDialogOpen,
       openDialog,
-      deleteSelected,
+      confirmDeleteSelected,
       isEmpty,
       mtoColumns,
       showInfo,
-      confirm2
+      confirm2,
+      isSelectedEmpty:computed(()=>{return selectedRows.value.length})
     };
   },
 };
