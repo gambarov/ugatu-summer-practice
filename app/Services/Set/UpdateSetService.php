@@ -12,7 +12,7 @@ class UpdateSetService extends BaseService
      * Обновить комплект оборудования.
      *
      * @param  array  $data
-     * @return Section
+     * @return Set
      */
     public function execute(array $data): Set
     {

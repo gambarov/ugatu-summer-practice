@@ -39,11 +39,11 @@ class CreateSetServiceTest extends TestCase
     public function test_creates_a_set_with_equipment()
     {
         EquipmentType::factory(2)->create();
-        Equipment::factory(3)->create();
+        $equipment = Equipment::factory()->create();
 
         $data = [
             'name' => 'TestSet',
-            'equipment' => [1, 2, 3],
+            'equipment' => [$equipment->id],
         ];
 
         $set = app(CreateSetService::class)->execute($data);
@@ -57,7 +57,7 @@ class CreateSetServiceTest extends TestCase
 
         $this->assertDatabaseHas('equipment_set', [
             'set_id' => $set->id,
-            'equipment_id' => 1,
+            'equipment_id' => $equipment->id,
         ]);
     }
 }
