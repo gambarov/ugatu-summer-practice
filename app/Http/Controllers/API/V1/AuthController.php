@@ -3,23 +3,19 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginAuthRequest;
+use App\Http\Requests\Auth\RegisterAuthRequest;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterAuthRequest $request)
     {
-        $data = $request->validate([
-            'surname' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'patronymic' => 'required|string|max:255',
-            'role_id' => 'required|integer:exists:roles,id',
-            'email' => 'required|string|email|max:255|unique:employees',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        $data = $request->validated();
 
         $employee = Employee::create($data + []);
+
         $token = $employee->createToken('employee')->plainTextToken;
 
         return response()->json([
@@ -28,14 +24,9 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request)
+    public function login(LoginAuthRequest $request)
     {
-        $data = $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-            'remember_me' => 'sometimes|boolean',
-        ]);
-
+        $data = $request->validated();
         $employee = Employee::where('email', $data['email'])->first();
 
         if (!$employee || $data['password'] !== $employee->password) {
@@ -43,9 +34,6 @@ class AuthController extends Controller
                 'message' => 'Неправильный логин и/или пароль',
             ], 401);
         }
-
-        $remember_me = $data['remember_me'] ?? false;
-        auth()->login($employee, $remember_me);
 
         $token = $employee->createToken('employee')->plainTextToken;
 
