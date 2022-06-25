@@ -3,6 +3,7 @@
 namespace Database\Factories\Equipment;
 
 use App\Models\Equipment\Audience;
+use App\Models\Equipment\AudienceType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,6 +28,7 @@ class AudienceFactory extends Factory
             'building' => $buildings[array_rand($buildings)],
             'number' => $numbers[array_rand($numbers)],
             'letter' => $letters[array_rand($letters)],
+            'audience_type_id' => AudienceType::inRandomOrder()->first()->id,
         ];
     }
 }
