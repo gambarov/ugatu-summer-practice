@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Equipment\Equipment;
 use App\Models\Equipment\EquipmentType;
 use App\Models\Equipment\Set;
+use App\Models\Role;
 use App\Services\Set\UpdateSetService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,15 +20,18 @@ class UpdateSetServiceTest extends TestCase
      */
     public function test_updates_a_set()
     {
-        $employee = Employee::factory(2)->create();
+        Role::factory()->create();
+        $employee1 = Employee::factory()->create();
+        $employee2 = Employee::factory()->create();
+
         $set = Set::factory()->create([
-            'employee_id' => 1,
+            'employee_id' => $employee1->id,
         ]);
 
         $data = [
             'id' => $set->id,
             'name' => 'UpdatedTestSet',
-            'employee_id' => 2,
+            'employee_id' => $employee2->id,
         ];
 
         $set = app(UpdateSetService::class)->execute($data);
@@ -35,7 +39,7 @@ class UpdateSetServiceTest extends TestCase
         $this->assertDatabaseHas('sets', [
             'id' => $set->id,
             'name' => 'UpdatedTestSet',
-            'employee_id' => 2,
+            'employee_id' => $employee2->id,
         ]);
 
         $this->assertInstanceOf(Set::class, $set);
@@ -46,6 +50,7 @@ class UpdateSetServiceTest extends TestCase
      */
     public function test_updates_a_set_with_equipment()
     {
+        Role::factory()->create();
         Employee::factory()->create();
         EquipmentType::factory()->create();
         
