@@ -1,21 +1,19 @@
 <?php
 
 use App\Http\Controllers\API\V1\AudienceController;
+use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\EmployeeController;
 use App\Http\Controllers\API\V1\EquipmentController;
 use App\Http\Controllers\API\V1\PlacementController;
 use App\Http\Controllers\API\V1\SetController;
 use App\Http\Controllers\API\V1\NoteController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-| These routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-*/
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 Route::patch('/equipment/{id}', [EquipmentController::class, 'update']);

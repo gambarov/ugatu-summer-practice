@@ -14,6 +14,13 @@ class EmployeeFactory extends Factory
 {
     protected $model = Employee::class;
 
+    public function configure()
+    {
+        return $this->afterCreating(function(Employee $employee) {
+            $employee->createToken('factory');
+        });
+    }
+
     /**
      * Define the model's default state.
      *

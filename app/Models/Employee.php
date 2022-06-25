@@ -5,11 +5,11 @@ namespace App\Models;
 use App\Models\Equipment\Set;
 use App\Models\Equipment\Work;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Employee extends Model
+class Employee extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -24,6 +24,7 @@ class Employee extends Model
         'surname',
         'name',
         'patronymic',
+        'role_id',
         'email',
         'password',
     ];
