@@ -63,6 +63,7 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
+        $employee->tokens()->delete();
         $employee->delete();
         return response()->noContent();
     }
