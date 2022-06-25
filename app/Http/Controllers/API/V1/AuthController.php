@@ -31,7 +31,9 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request) {
-        auth()->user()->tokens()->delete();
+        /** @var \App\Models\Employee $user **/
+        $user = auth()->user();
+        $user->tokens()->delete();
 
         return [
             'message' => 'Выполнен выход из системы'
