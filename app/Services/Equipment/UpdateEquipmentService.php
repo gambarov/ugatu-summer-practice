@@ -23,6 +23,10 @@ class UpdateEquipmentService extends BaseService
             $equipment->sets()->sync($data['sets']);
         }
 
+        if (Arr::has($data, ['audiences'])) {
+            $equipment->audiences()->sync($data['audiences']);
+        }
+
         return $equipment;
     }
 }

@@ -22,6 +22,10 @@ class CreateEquipmentService extends BaseService
             $equipment->sets()->attach($data['sets']);
         }
 
+        if (Arr::has($data, ['audiences'])) {
+            $equipment->audiences()->attach($data['audiences']);
+        }
+
         return $equipment;
     }
 }
