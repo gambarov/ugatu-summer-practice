@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\ApiController;
 use App\Http\Requests\Auth\LoginAuthRequest;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
     public function login(LoginAuthRequest $request)
     {
@@ -15,9 +15,7 @@ class AuthController extends Controller
         $employee = Employee::where('email', $data['email'])->first();
 
         if (!$employee || $data['password'] !== $employee->password) {
-            return response([
-                'message' => 'Неправильный логин и/или пароль',
-            ], 401);
+            return $this->respondUnauthorized('Неправильный логин и/или пароль');
         }
 
         $token = $employee->createToken('app')->plainTextToken;
@@ -27,7 +25,7 @@ class AuthController extends Controller
             'token' => $token
         ];
 
-        return response($response, 201);
+        return $this->setHTTPStatusCode(201)->respond($response);
     }
 
     public function logout(Request $request) {
@@ -35,8 +33,6 @@ class AuthController extends Controller
         $user = auth()->user();
         $user->tokens()->delete();
 
-        return [
-            'message' => 'Выполнен выход из системы'
-        ];
+        return $this->setHTTPStatusCode(204)->respond([]);
     }
 }
