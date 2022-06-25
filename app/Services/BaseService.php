@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
 abstract class BaseService
@@ -30,4 +31,6 @@ abstract class BaseService
 
         return true;
     }
+
+    public abstract function execute(array $data): Model;
 }

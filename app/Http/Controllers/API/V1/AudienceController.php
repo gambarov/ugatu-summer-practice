@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\ApiController;
+use App\Http\Resources\Audience\AudienceResource;
 use App\Models\Equipment\Audience;
+use App\Services\Audience\CreateAudienceService;
+use App\Services\Audience\UpdateAudienceService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
-class AudienceController extends Controller
+class AudienceController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -26,42 +31,67 @@ class AudienceController extends Controller
      */
     public function store(Request $request)
     {
-        return Audience::create($request->all())->toJson();
+        try {
+            $audience = app(CreateAudienceService::class)->execute($request->all());
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        }
+
+        return AudienceResource::make($audience);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Audience  $audience
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Audience $audience)
+    public function show($id)
     {
-        return $audience->toJson();
+        try {
+            $audience = Audience::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Аудитория не найдена');
+        }
+
+        return AudienceResource::make($audience);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Request  $request
-     * @param  \App\Models\Audience  $audience
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Audience $audience)
+    public function update(Request $request, $id)
     {
-        $audience->update($request->all());
-        return $audience->toJson();
+        try {
+            $audience = app(UpdateAudienceService::class)->execute($request->all());
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Аудитория не найдена');
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        }
+
+        return AudienceResource::make($audience);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Audience  $audience
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Audience $audience)
+    public function destroy($id)
     {
-        $audience->delete();
-        return $audience->toJson();
+        try {
+            $audience = Audience::findOrFail($id);
+            $audience->delete();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Аудитория не найдена');
+        }
+
+        return $this->respondObjectDeleted($audience->id);
     }
 }
