@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Equipment\UpdateEquipmentRequest;
 use App\Models\Equipment\Equipment;
 use App\Http\Resources\Equipment\EquipmentResource;
+use App\Services\Equipment\CreateEquipmentService;
+use App\Services\Equipment\UpdateEquipmentService;
 use Illuminate\Http\Request;
 
 class EquipmentController extends Controller
@@ -28,7 +31,7 @@ class EquipmentController extends Controller
      */
     public function store(Request $request)
     {
-        $equipment = Equipment::create($request->all());
+        $equipment = app(CreateEquipmentService::class)->execute($request->all());
         return new EquipmentResource($equipment);
     }
 
@@ -52,7 +55,7 @@ class EquipmentController extends Controller
      */
     public function update(Request $request, Equipment $equipment)
     {
-        $equipment->update($request->all());
+        $equipment = app(UpdateEquipmentService::class)->execute($request->all());
         return new EquipmentResource($equipment);
     }
 

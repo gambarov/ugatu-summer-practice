@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Equipment\Set;
 use App\Http\Resources\Set\SetResource;
+use App\Services\Set\CreateSetService;
+use App\Services\Set\UpdateSetService;
 use Illuminate\Http\Request;
 
 class SetController extends Controller
@@ -28,7 +30,7 @@ class SetController extends Controller
      */
     public function store(Request $request)
     {
-        $set = Set::create($request->all());
+        $set = app(CreateSetService::class)->execute($request->all());
         return new SetResource($set);
     }
 
@@ -52,7 +54,7 @@ class SetController extends Controller
      */
     public function update(Request $request, Set $set)
     {
-        $set->update($request->all());
+        $set = app(UpdateSetService::class)->execute($request->all());
         return new SetResource($set);
     }
 
