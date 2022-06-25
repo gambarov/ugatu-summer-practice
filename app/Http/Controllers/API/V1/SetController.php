@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\ApiController;
 use App\Models\Equipment\Set;
 use App\Http\Resources\Set\SetResource;
 use App\Services\Set\CreateSetService;
 use App\Services\Set\UpdateSetService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
-class SetController extends Controller
+class SetController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -30,43 +32,67 @@ class SetController extends Controller
      */
     public function store(Request $request)
     {
-        $set = app(CreateSetService::class)->execute($request->all());
+        try {
+            $set = app(CreateSetService::class)->execute($request->all());
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        }
+
         return new SetResource($set);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Set  $set
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Set $set)
+    public function show($id)
     {
-        return new SetResource($set->load('equipment'));
+        try {
+            $set = Set::with('equipment')->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Комплект не найден');
+        }
+
+        return new SetResource($set);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Request  $request
-     * @param  \App\Models\Set  $set
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
     {
-        $set = app(UpdateSetService::class)->execute($request->all() + ['id' => $id]);
+        try {
+            $set = app(UpdateSetService::class)->execute($request->all() + ['id' => $id]);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Комплект не найден');
+        }
+
         return new SetResource($set);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Set  $set
+     * @param integer   $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Set $set)
+    public function destroy($id)
     {
+        try {
+            $set = Set::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Комплект не найден');
+        }
+
         $set->delete();
-        return response()->noContent();
+        return $this->respondObjectDeleted($set->id);
     }
 }

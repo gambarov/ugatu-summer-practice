@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Equipment\UpdateEquipmentRequest;
+use App\Http\Controllers\API\ApiController;
 use App\Models\Equipment\Equipment;
 use App\Http\Resources\Equipment\EquipmentResource;
 use App\Services\Equipment\CreateEquipmentService;
 use App\Services\Equipment\UpdateEquipmentService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
-class EquipmentController extends Controller
+class EquipmentController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -31,43 +32,67 @@ class EquipmentController extends Controller
      */
     public function store(Request $request)
     {
-        $equipment = app(CreateEquipmentService::class)->execute($request->all());
+        try {
+            $equipment = app(CreateEquipmentService::class)->execute($request->all());
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        }
+
         return new EquipmentResource($equipment);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Equipment  $equipment
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Equipment $equipment)
+    public function show($id)
     {
-        return new EquipmentResource($equipment->load('sets'));
+        try {
+            $equipment = Equipment::with('sets')->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Оборудование не найдено');
+        }
+
+        return new EquipmentResource($equipment);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Request  $request
-     * @param  \App\Models\Equipment  $equipment
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $id)
     {
-        $equipment = app(UpdateEquipmentService::class)->execute($request->all() + ['id' => $id]);
+        try {
+            $equipment = app(UpdateEquipmentService::class)->execute($request->all() + ['id' => $id]);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Оборудование не найдено');
+        }
+
         return new EquipmentResource($equipment);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Equipment  $equipment
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Equipment $equipment)
+    public function destroy($id)
     {
+        try {
+            $equipment = Equipment::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Оборудование не найдено');
+        }
+
         $equipment->delete();
-        return response()->noContent();
+        return $this->respondObjectDeleted($equipment->id);
     }
 }
