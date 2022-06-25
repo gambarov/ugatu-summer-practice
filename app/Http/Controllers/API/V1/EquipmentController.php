@@ -53,9 +53,9 @@ class EquipmentController extends Controller
      * @param  \App\Models\Equipment  $equipment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Equipment $equipment)
+    public function update(Request $request, int $id)
     {
-        $equipment = app(UpdateEquipmentService::class)->execute($request->all());
+        $equipment = app(UpdateEquipmentService::class)->execute($request->all() + ['id' => $id]);
         return new EquipmentResource($equipment);
     }
 

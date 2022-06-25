@@ -52,9 +52,9 @@ class SetController extends Controller
      * @param  \App\Models\Set  $set
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Set $set)
+    public function update(Request $request, int $id)
     {
-        $set = app(UpdateSetService::class)->execute($request->all());
+        $set = app(UpdateSetService::class)->execute($request->all() + ['id' => $id]);
         return new SetResource($set);
     }
 
