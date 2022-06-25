@@ -16,7 +16,7 @@
       </div>
       <div class="flex flex-col mb-4">
         <label htmlFor="name">Оборудование</label>
-        <AutoComplete class="p-fluid" :multiple="true" v-model="selectedEquipment" :suggestions="filteredEquipment" @complete="searchEquipment($event)"
+        <AutoComplete class="p-fluid bg-blue-500" :multiple="true" v-model="selectedEquipment" :suggestions="filteredEquipment" @complete="searchEquipment($event)"
           :dropdown="true" field="name" forceSelection>
           <template #item="slotProps">
             <div class="flex flex-row justify-between">
@@ -29,7 +29,7 @@
     </div>
     <template #footer>
       <Button label="Отмена" icon="pi pi-times" @click="openDialog(false)" class="p-button-text" />
-      <Button label="Сохранить" icon="pi pi-check" @click="" class="p-button-success" />
+      <Button label="Сохранить" icon="pi pi-check" @click="addNewSet" class="p-button-success" />
     </template>
   </Dialog>
 </template>
@@ -43,7 +43,7 @@ import AutoComplete from 'primevue/autocomplete';
 import { useStore } from 'vuex'
 import { ref,onMounted, computed } from "vue";
 import { setsColumns } from "@/assets/setsColumns";
-import { deleteSet } from "@/assets/api/sets"
+import { deleteSet, postSet } from "@/assets/api/sets"
 export default {
   components: {
     EquipmentTable,
@@ -68,7 +68,7 @@ export default {
       isDialogOpen.value = value;
     };
     const newEquipment = ref({
-      letter: ' '
+      name: ''
     })
     store.dispatch('fetchSets').then(() => {
       loading.value = false;
@@ -87,10 +87,24 @@ export default {
       }
       else {
         filteredEquipment.value = equipment.filter((item) => {
-          return item.name.toLowerCase().startsWith(event.query.toLowerCase());
+          return item.name.toLowerCase().includes(event.query.toLowerCase());
         });
       }
     }
+    const addNewSet = () => {
+      if (newEquipment.value.name != null) {
+        postSet({
+          "name": newEquipment.value.name,
+        }).then(() => {
+          loading.value = true;
+          store.dispatch('fetchSets').then(() => {
+            loading.value = false;
+            info.value = store.getters.GET_SETS;
+          })
+        })
+        isDialogOpen.value = false;
+      }
+    };
     return {
       info,
       loading,
@@ -101,7 +115,8 @@ export default {
       update,
       searchEquipment,
       filteredEquipment,
-      selectedEquipment
+      selectedEquipment,
+      addNewSet
     }
   },
 };

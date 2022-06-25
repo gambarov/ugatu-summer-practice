@@ -21,7 +21,7 @@ export default {
     const store=useStore();
     const router = useRouter()
     const route = useRoute();
-    // store.dispatch('fetchEquipment')
+    store.dispatch('fetchUser')
     let items = [
       {
         label: "Разделы",

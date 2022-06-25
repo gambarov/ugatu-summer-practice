@@ -5,12 +5,18 @@ import ClassesTable from "../components/categories/ClassesTable.vue";
 import HistoryTable from "../components/categories/HistoryTable.vue";
 import EquipmentInfo from "../components/EquipmentInfo.vue";
 import SetsInfo from "../components/SetsInfo.vue";
+import LoginPage from "../components/LoginPage.vue";
 
 const routes = [
   {
     path: '/',
     name: 'default',
     component: Mto
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginPage
   },
   {
     path: '/category/mto',
@@ -46,9 +52,19 @@ const routes = [
   },
 ]
 
+const isAuthenticated=()=>{
+  let user=JSON.parse(localStorage.getItem('user'))
+  if(user!=null){
+    return true
+  }
+  return false;
+}
 const router = createRouter({
   history: createWebHistory(),
   routes
 })
-
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'login' && !isAuthenticated()) next({ name: 'login' })
+  else next()
+})
 export default router
