@@ -1,11 +1,13 @@
 import { createStore } from 'vuex'
 import equipment from "./equipment.js"
 import sets from "./sets.js"
+import classes from "./classes.js"
+import user from "./user.js"
 
 export default createStore({
   state: {
   },
   modules: {
-    equipment,sets
+    equipment,sets,classes,user
   }
 })
