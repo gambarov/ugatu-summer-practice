@@ -16,11 +16,9 @@ class CharMeasureSeeder extends Seeder
     public function run()
     {
         $names = [
-            'ГГц',
-            'МГц',
-            'мА*ч',
-            'мм',
-            'кг',
+            'МБ',
+            'шт',
+            "''",
         ];
 
         foreach ($names as $name) {

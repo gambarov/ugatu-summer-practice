@@ -16,6 +16,7 @@ class CharGroupSeeder extends Seeder
     public function run()
     {
         $names = [
+            'Основная информация',
             'Классификация',
             'Габариты',
             'Дополнительная информация',
