@@ -16,7 +16,7 @@ class CreateSetService extends BaseService
      */
     public function execute(array $data): Set
     {
-        $set = Set::create(Arr::only($data, ['name', 'employee_id']));
+        $set = Set::create(Arr::only($data, ['name', 'employee_id', 'inventory_id']));
 
         if (Arr::has($data, 'equipment')) {
             $set->equipment()->attach($data['equipment']);

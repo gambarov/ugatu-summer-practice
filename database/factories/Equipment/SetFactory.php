@@ -31,6 +31,7 @@ class SetFactory extends Factory
         }, $names));
 
         return [
+            'inventory_id' => $this->faker->unique()->numberBetween(100000, 999999),
             'name' => $this->faker->unique()->randomElement($mixed),
             'employee_id' => Employee::inRandomOrder()->firstOrCreate((new EmployeeFactory())->definition())->id,
         ];

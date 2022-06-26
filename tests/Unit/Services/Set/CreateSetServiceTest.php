@@ -18,6 +18,7 @@ class CreateSetServiceTest extends TestCase
     public function test_creates_a_set()
     {
         $data = [
+            'inventory_id' => '12346',
             'name' => 'TestSet',
         ];
 
@@ -25,6 +26,7 @@ class CreateSetServiceTest extends TestCase
 
         $this->assertDatabaseHas('sets', [
             'id' => $set->id,
+            'inventory_id' => '12346',
             'name' => 'TestSet',
         ]);
 
@@ -40,6 +42,7 @@ class CreateSetServiceTest extends TestCase
 
         $data = [
             'name' => 'TestSet',
+            'inventory_id' => '12345',
             'equipment' => [$equipment->id],
         ];
 
@@ -48,6 +51,7 @@ class CreateSetServiceTest extends TestCase
         $this->assertDatabaseHas('sets', [
             'id' => $set->id,
             'name' => 'TestSet',
+            'inventory_id' => '12345',
         ]);
 
         $this->assertInstanceOf(Set::class, $set);

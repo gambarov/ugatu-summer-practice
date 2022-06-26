@@ -16,6 +16,7 @@ class Set extends Model
     
     protected $fillable = [
         'name',
+        'inventory_id',
         'employee_id',
     ];
 

@@ -27,6 +27,7 @@ class UpdateSetServiceTest extends TestCase
 
         $data = [
             'id' => $set->id,
+            'inventory_id' => '12345',
             'name' => 'UpdatedTestSet',
             'employee_id' => $employee2->id,
         ];
@@ -35,6 +36,7 @@ class UpdateSetServiceTest extends TestCase
 
         $this->assertDatabaseHas('sets', [
             'id' => $set->id,
+            'inventory_id' => '12345',
             'name' => 'UpdatedTestSet',
             'employee_id' => $employee2->id,
         ]);
@@ -55,6 +57,7 @@ class UpdateSetServiceTest extends TestCase
 
         $data = [
             'id' => $set->id,
+            'inventory_id' => '12345',
             'name' => 'UpdatedTestSet',
             'equipment' => [$equipment2->id],
         ];
@@ -63,6 +66,7 @@ class UpdateSetServiceTest extends TestCase
 
         $this->assertDatabaseHas('sets', [
             'id' => $set->id,
+            'inventory_id' => '12345',
             'name' => 'UpdatedTestSet',
         ]);
 

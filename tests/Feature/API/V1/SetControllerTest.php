@@ -16,6 +16,7 @@ class SetControllerTest extends TestCase
     
     private $jsonSet = [
         'id',
+        'inventory_id',
         'name',
         'employee' => [
             'id',
@@ -32,6 +33,7 @@ class SetControllerTest extends TestCase
 
     private $jsonSetWithEquipment = [
         'id',
+        'inventory_id',
         'name',
         'employee' => [
             'id',
@@ -70,6 +72,7 @@ class SetControllerTest extends TestCase
         Sanctum::actingAs(Employee::factory()->create(), ['*']);
 
         $response = $this->json('POST', '/api/sets', [
+            'inventory_id' => 'TEST-SET',
             'name' => 'Test Set',
             'employee_id' => Employee::factory()->create()->id
         ]);
@@ -86,6 +89,7 @@ class SetControllerTest extends TestCase
         Sanctum::actingAs(Employee::factory()->create(), ['*']);
 
         $response = $this->json('POST', '/api/sets', [
+            'inventory_id' => 'TEST-SET',
             'name' => 'Test Set',
             'employee_id' => Employee::factory()->create()->id,
             'equipment' => [
@@ -124,6 +128,7 @@ class SetControllerTest extends TestCase
 
         $employee = Employee::factory()->create();
         $response = $this->json('PUT', '/api/sets/' . $set->id, [
+            'inventory_id' => 'TEST-SET',
             'name' => 'Test Set',
             'employee_id' => $employee->id
         ]);
@@ -133,6 +138,7 @@ class SetControllerTest extends TestCase
 
         $this->assertDatabaseHas('sets', [
             'id' => $set->id,
+            'inventory_id' => 'TEST-SET',
             'name' => 'Test Set',
             'employee_id' => $employee->id,
         ]);
@@ -150,6 +156,7 @@ class SetControllerTest extends TestCase
         $employee = Employee::factory()->create();
         $equipment = Equipment::factory()->create();
         $response = $this->json('PUT', '/api/sets/' . $set->id, [
+            'inventory_id' => 'TEST-SET',
             'name' => 'Test Set',
             'employee_id' => $employee->id,
             'equipment' => [
@@ -162,6 +169,7 @@ class SetControllerTest extends TestCase
 
         $this->assertDatabaseHas('sets', [
             'id' => $set->id,
+            'inventory_id' => 'TEST-SET',
             'name' => 'Test Set',
             'employee_id' => $employee->id,
         ]);
