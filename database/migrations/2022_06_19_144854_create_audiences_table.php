@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('number');
             $table->string('letter')->nullable();
             $table->unique(['building', 'number', 'letter']);
-            $table->foreignIdFor(AudienceType::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignIdFor(AudienceType::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

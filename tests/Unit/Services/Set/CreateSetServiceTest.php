@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\Services\Set;
 
-use App\Models\Employee;
 use App\Models\Equipment\Equipment;
-use App\Models\Equipment\EquipmentType;
 use App\Models\Equipment\Set;
 use App\Services\Set\CreateSetService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -38,7 +36,6 @@ class CreateSetServiceTest extends TestCase
      */
     public function test_creates_a_set_with_equipment()
     {
-        EquipmentType::factory(2)->create();
         $equipment = Equipment::factory()->create();
 
         $data = [

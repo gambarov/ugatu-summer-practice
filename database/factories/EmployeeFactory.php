@@ -36,7 +36,7 @@ class EmployeeFactory extends Factory
             'surname' => $this->faker->lastName(),
             'name' => $this->faker->firstName(),
             'patronymic' => $this->faker->lastName(),
-            'role_id' => Role::inRandomOrder()->first()->id,
+            'role_id' => Role::inRandomOrder()->firstOrCreate(['name' => $this->faker->word()])->id,
         ];
     }
 
