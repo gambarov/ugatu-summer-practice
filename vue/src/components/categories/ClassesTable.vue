@@ -1,13 +1,13 @@
 <template>
-  <div class="flex flex-col">
-    <ClassCreation @save="update" :saveClass="addNewClass"/>
+  <div class="flex flex-1 flex-col">
+    <Creation type="class" @save="update" :saveClass="addNewClass"/>
     <EquipmentTable @deleteElement="update" :delete="deleteClass" :loading="loading" :info="info"
       :columns="classesColumns" table="Аудитории" />
   </div>
 </template>
 <script>
 import EquipmentTable from "../EquipmentTable.vue";
-import ClassCreation from "@/components/modals/ClassCreation.vue"
+import Creation from "@/components/modals/Creation.vue"
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
@@ -25,7 +25,7 @@ export default {
     Dialog,
     Toolbar,
     Dropdown,
-    ClassCreation
+    Creation
   },
   setup() {
     const loading = ref(true);

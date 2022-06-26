@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-1 flex-col">
     <SetCreation :creation="true" @save="update" :saveEquipment="addNewSet" :equipment="[]"/>
     <EquipmentTable @deleteElement="update" :delete="deleteSet" name="sets" :loading="loading" :columns="setsColumns"
       table="Комплекты" :info="info" />

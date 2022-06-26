@@ -1,0 +1,1 @@
+export const employeeColumns = [{field:'id', header:'№'}, {field:'employeeInitials', header:'Сотрудник'}, {field:'role.name', header:'Роль'}];

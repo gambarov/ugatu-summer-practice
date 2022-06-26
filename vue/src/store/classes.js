@@ -23,7 +23,7 @@ export default {
     },
     actions: {
         fetchClasses(context){
-            return getClasses().then((response) => context.commit('SET_CLASSES', response.data)).catch((error) => console.log(error))
+            return getClasses().then((response) => context.commit('SET_CLASSES', response.data.data)).catch((error) => console.log(error))
         },
         deleteSet(context,payload){
             context.commmit('DELETE_SET',payload)

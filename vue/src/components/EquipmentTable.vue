@@ -1,6 +1,6 @@
 <template>
   <ConfirmDialog></ConfirmDialog>
-  <DataTable class="card" :value="info" :paginator="true" :rows="10" dataKey="id" :rowHover="true" filterDisplay="menu"
+  <DataTable v-model:filters="filters" class="card" :value="info" :paginator="true" :rows="10" dataKey="id" :rowHover="true" filterDisplay="menu"
     :loading="loading" v-model:selection="selectedRows"
     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
     :rowsPerPageOptions="[10, 25, 50]" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -8,13 +8,13 @@
     <template #header>
       <div class="flex justify-between items-center">
         <div class="flex flex-row items-center ">
-          <h5 class="m-0 mr-3">{{ table }}</h5>
+          <h5 class="m-0 text-xl mr-3">{{ table }}</h5>
 
         </div>
 
         <span class="p-input-icon-left">
           <i class="pi pi-search" />
-          <InputText placeholder="Keyword Search" />
+          <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
         </span>
         <Button v-if="isSelectedEmpty" label="Удалить выбранное" icon="pi pi-trash" class="p-button-danger" :disabled="isEmpty"
           @click="confirmDeleteSelected" />
@@ -84,6 +84,9 @@ export default {
     const isEmpty = computed(() => {
       return selectedRows === null;
     })
+    const filters = ref({
+            global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        });
     const isDialogOpen = ref(false);
     const selectedRows = ref([]);
     const data = ref([]);
@@ -140,7 +143,8 @@ export default {
       mtoColumns,
       showInfo,
       confirm2,
-      isSelectedEmpty:computed(()=>{return selectedRows.value.length})
+      isSelectedEmpty:computed(()=>{return selectedRows.value.length}),
+      filters
     };
   },
 };
