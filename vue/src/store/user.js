@@ -9,14 +9,20 @@ export default {
         GET_USER(state) {
             return state.user;
         },
+        GET_TOKEN(state){
+            return state.user.token||''
+        },
         GET_AUTHENTICATION(state) {
-            return state.user!==null?true:false;
+            return state.user !== null ? true : false;
         },
     },
     mutations: {
         SET_USER(state, payload) {
-            localStorage.setItem('user', JSON.stringify(payload));
-            state.user = payload;
+            if (payload != null) {
+                localStorage.setItem('user', JSON.stringify(payload));
+                state.user = payload;
+            }
+
         },
         DELETE_USER(state) {
             localStorage.removeItem('user');
@@ -24,9 +30,9 @@ export default {
         },
     },
     actions: {
-        fetchUser(context,user) {
-            return new Promise((resolve,error)=>{context.commit('SET_USER', user);resolve('lolz')}) 
-            // return postUser().then((response) => context.commit('SET_USER', response.data.data)).catch((error) => console.log(error))
+        fetchUser(context, user) {
+            // return new Promise((resolve,error)=>{context.commit('SET_USER', user);resolve('lolz')}) 
+            return postUser(user).then((response) => context.commit('SET_USER', response.data))
         },
         deleteUser(context) {
             context.commit('DELETE_USER');

@@ -5,3 +5,6 @@ export const getClasses=()=>{
 export const postClass=(data)=>{
     return url.post('/audiences',data)
 }
+export const deleteClass=(id)=>{
+    return url.delete('/audiences/'+id)
+}
