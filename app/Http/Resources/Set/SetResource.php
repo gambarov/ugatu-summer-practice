@@ -18,6 +18,7 @@ class SetResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'inventory_id' => $this->inventory_id,
             'name' => $this->name,
             'employee' => new EmployeeResource($this->whenLoaded('employee')),
             'equipment' => EquipmentResource::collection($this->whenLoaded('equipment')),

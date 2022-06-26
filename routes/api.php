@@ -15,14 +15,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::patch('/equipment/{id}', [EquipmentController::class, 'update']);
 Route::apiResource('/equipment', EquipmentController::class, [
-    'only' => ['index', 'store', 'show', 'destroy'],
+    'only' => ['index', 'store', 'show', 'update', 'destroy'],
 ]);
 
-Route::patch('/sets/{id}', [SetController::class, 'update']);
 Route::apiResource('/sets', SetController::class, [
-    'only' => ['index', 'store', 'show', 'destroy'],
+    'only' => ['index', 'store', 'show', 'update', 'destroy'],
 ]);
 
 Route::apiResource('/audiences', AudienceController::class, [

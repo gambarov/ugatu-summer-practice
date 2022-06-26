@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Traits\JsonRespondController;
+use App\Traits\JsonRespond;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    use JsonRespondController;
+    use JsonRespond;
 
     public function __construct()
     {

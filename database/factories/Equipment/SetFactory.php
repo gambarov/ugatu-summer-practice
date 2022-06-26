@@ -4,6 +4,7 @@ namespace Database\Factories\Equipment;
 
 use App\Models\Employee;
 use App\Models\Equipment\Set;
+use Database\Factories\EmployeeFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,8 +31,9 @@ class SetFactory extends Factory
         }, $names));
 
         return [
+            'inventory_id' => $this->faker->unique()->numberBetween(100000, 999999),
             'name' => $this->faker->unique()->randomElement($mixed),
-            'employee_id' => Employee::inRandomOrder()->first()->id,
+            'employee_id' => Employee::inRandomOrder()->firstOrCreate((new EmployeeFactory())->definition())->id,
         ];
     }
 }

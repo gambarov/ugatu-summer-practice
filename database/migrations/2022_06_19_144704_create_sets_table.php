@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('sets', function (Blueprint $table) {
             $table->id();
+            $table->string('inventory_id')->unique();
             $table->string('name');
             $table->foreignIdFor(Employee::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();

@@ -17,7 +17,7 @@ class UpdateSetService extends BaseService
     public function execute(array $data): Set
     {
         $set = Set::findOrFail($data['id']);
-        $set->update(Arr::only($data, ['name', 'employee_id']));
+        $set->update(Arr::only($data, ['name', 'employee_id', 'inventory_id']));
 
         if (Arr::has($data, 'equipment')) {
             $set->equipment()->sync($data['equipment']);

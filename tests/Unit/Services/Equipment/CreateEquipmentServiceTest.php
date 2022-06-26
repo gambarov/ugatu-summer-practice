@@ -2,11 +2,9 @@
 
 namespace Tests\Unit\Services\Equipment;
 
-use App\Models\Employee;
 use App\Models\Equipment\Equipment;
 use App\Models\Equipment\EquipmentType;
 use App\Models\Equipment\Set;
-use App\Models\Role;
 use App\Services\Equipment\CreateEquipmentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -20,7 +18,7 @@ class CreateEquipmentServiceTest extends TestCase
      */
     public function test_creates_equipment()
     {
-        $type = EquipmentType::factory()->create();
+        $type = EquipmentType::create(['name' => 'type']);
 
         $data = [
             'name' => 'TestEquipment',
@@ -45,9 +43,7 @@ class CreateEquipmentServiceTest extends TestCase
      */
     public function test_creates_equipment_with_sets()
     {
-        Role::factory()->create();
-        Employee::factory()->create();
-        $type = EquipmentType::factory()->create();
+        $type = EquipmentType::create(['name' => 'type']);
         $set = Set::factory()->create();
         $set2 = Set::factory()->create();
 
