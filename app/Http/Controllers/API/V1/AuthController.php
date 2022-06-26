@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\API\ApiController;
 use App\Http\Requests\Auth\LoginAuthRequest;
+use App\Http\Resources\Employee\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class AuthController extends ApiController
         $token = $employee->createToken('app')->plainTextToken;
 
         $response = [
-            'employee' => $employee,
+            'employee' => EmployeeResource::make($employee),
             'token' => $token
         ];
 
