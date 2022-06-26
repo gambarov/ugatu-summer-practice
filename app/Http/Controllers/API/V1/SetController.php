@@ -38,7 +38,7 @@ class SetController extends ApiController
             return $this->respondValidatorFailed($e->validator);
         }
 
-        return new SetResource($set);
+        return new SetResource($set->load(['employee', 'equipment']));
     }
 
     /**
@@ -75,7 +75,7 @@ class SetController extends ApiController
             return $this->respondNotFound('Комплект не найден');
         }
 
-        return new SetResource($set);
+        return new SetResource($set->load(['equipment']));
     }
 
     /**

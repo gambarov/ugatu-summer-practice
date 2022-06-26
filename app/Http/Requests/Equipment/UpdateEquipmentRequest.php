@@ -24,9 +24,6 @@ class UpdateEquipmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => [
-                'required|numeric|exists:App\Models\Equipment\Equipment,id'
-            ],
             'name' => 'sometimes|string|max:255',
             'equipment_type_id' => 'sometimes|integer|exists:App\Models\Equipment\EquipmentType,id',
             'inventory_id' => 'sometimes|string|max:255',

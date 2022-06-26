@@ -15,6 +15,8 @@ class Employee extends Authenticatable
 
     protected $guarded = ['id'];
 
+    protected $with = ['role'];
+
     /**
      * The attributes that are mass assignable.
      *

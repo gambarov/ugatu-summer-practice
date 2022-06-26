@@ -49,7 +49,7 @@ class AudienceControllerTest extends TestCase
         $response = $this->json('GET', '/api/audiences');
 
         $response->assertStatus(200);
-        $response->assertJsonStructure(['data' => ['*' => $this->jsonAudience]]);
+        $response->assertJsonStructure(['data' => ['*' => $this->jsonAudienceWithEquipment]]);
     }
 
     /**

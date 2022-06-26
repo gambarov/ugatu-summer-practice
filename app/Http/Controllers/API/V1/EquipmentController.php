@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\API\ApiController;
+use App\Http\Requests\Equipment\StoreEquipmentRequest;
+use App\Http\Requests\Equipment\UpdateEquipmentRequest;
 use App\Models\Equipment\Equipment;
 use App\Http\Resources\Equipment\EquipmentResource;
 use App\Services\Equipment\CreateEquipmentService;
@@ -30,7 +32,7 @@ class EquipmentController extends ApiController
      * @param  \App\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEquipmentRequest $request)
     {
         try {
             $equipment = app(CreateEquipmentService::class)->execute($request->all());
@@ -38,7 +40,7 @@ class EquipmentController extends ApiController
             return $this->respondValidatorFailed($e->validator);
         }
 
-        return new EquipmentResource($equipment);
+        return new EquipmentResource($equipment->load(['type', 'sets']));
     }
 
     /**
@@ -65,7 +67,7 @@ class EquipmentController extends ApiController
      * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $id)
+    public function update(UpdateEquipmentRequest $request, int $id)
     {
         try {
             $equipment = app(UpdateEquipmentService::class)->execute($request->all() + ['id' => $id]);
@@ -75,7 +77,7 @@ class EquipmentController extends ApiController
             return $this->respondNotFound('Оборудование не найдено');
         }
 
-        return new EquipmentResource($equipment);
+        return new EquipmentResource($equipment->load('sets'));
     }
 
     /**
