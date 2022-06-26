@@ -19,7 +19,8 @@ return new class extends Migration
     {
         Schema::create('works', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Equipment::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('workable_id');
+            $table->string('workable_type');
             $table->foreignIdFor(WorkType::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignIdFor(WorkStatus::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignIdFor(Employee::class)->nullable()->constrained()->nullOnDelete()->cascadeOnUpdate();

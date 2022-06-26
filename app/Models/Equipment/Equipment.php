@@ -56,4 +56,9 @@ class Equipment extends Model
     {
         return $this->hasMany(Note::class);
     }
+
+    public function works() 
+    {
+        return $this->morphMany(Work::class, 'workable');
+    }
 }

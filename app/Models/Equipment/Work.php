@@ -15,7 +15,8 @@ class Work extends Model
     protected $guarded = ['id'];
     
     protected $fillable = [
-        'equipment_id',
+        'workable_id',
+        'workable_type',
         'work_type_id',
         'work_status_id',
         'started_at',
@@ -23,8 +24,8 @@ class Work extends Model
         'employee_id'
     ];
 
-    public function equipment() {
-        return $this->belongsTo(Equipment::class);
+    public function workable() {
+        return $this->morphTo(__FUNCTION__, 'workable_type', 'workable_id');
     }
 
     public function type() {

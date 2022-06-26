@@ -29,4 +29,9 @@ class Set extends Model
     {
         return $this->belongsToMany(Equipment::class, 'equipment_set');
     }
+
+    public function works()
+    {
+        return $this->morphMany(Work::class, 'workable');
+    }
 }

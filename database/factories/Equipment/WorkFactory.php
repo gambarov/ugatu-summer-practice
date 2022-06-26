@@ -25,7 +25,8 @@ class WorkFactory extends Factory
     public function definition()
     {
         return [
-            'equipment_id' => Equipment::inRandomOrder()->firstOrCreate((new EquipmentFactory())->definition())->id,
+            'workable_id' => Equipment::inRandomOrder()->firstOrCreate((new EquipmentFactory())->definition())->id,
+            'workable_type' => 'App\Models\Equipment\Equipment',
             'work_type_id' => WorkType::inRandomOrder()->firstOrCreate(['name' => $this->faker->word()])->id,
             'work_status_id' => WorkStatus::inRandomOrder()->firstOrCreate(['name' => $this->faker->word()])->id,
             'employee_id' => Employee::inRandomOrder()->firstOrCreate((new EmployeeFactory())->definition())->id
