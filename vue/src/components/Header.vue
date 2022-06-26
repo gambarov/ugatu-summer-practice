@@ -5,12 +5,12 @@
 
     </template>
     <template #end>
-      <Button v-if="loggedIn" icon="pi pi-user" type="button" class="p-button-rounded p-button-info"
+      <Button label="Профиль" v-if="loggedIn" icon="pi pi-user" type="button" class="p-button-rounded p-button-info"
         @click="toggle($event)" aria-haspopup="true" aria-controls="overlay_menu" />
-      <div v-else>
+      <!-- <div v-else>
         <Button label="Зарегистрироваться" class="p-button-text" />
         <Button label="Войти" class="p-button-success p-button-text" />
-      </div>
+      </div> -->
 
     </template>
   </Menubar>

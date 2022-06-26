@@ -7,7 +7,7 @@
         <span class="p-inputgroup-addon">
           <i class="pi pi-user"></i>
         </span>
-        <InputText v-model="login" placeholder="Введите логин" />
+        <InputText v-model="email" placeholder="Введите логин" />
       </div>
       <div class="p-inputgroup mb-3">
         <span class="p-inputgroup-addon">
@@ -16,8 +16,9 @@
         <Password class="flex" v-model="password" :feedback="false" placeholder="Введите пароль" toggleMask></Password>
       </div>
       <div class="flex flex-col justify-end">
+        <span v-if="isLoginFailed">Неправильные данные</span>
         <Button @click="checkLogin" class="mb-3 p-button-success" label="Войти"/>
-        <Button class="p-button-outlined" label="Зарегистрироваться"/>
+        <!-- <Button class="p-button-outlined" label="Зарегистрироваться"/> -->
       </div>
     </div>
 
@@ -41,14 +42,15 @@ export default {
     Password
   },
   setup() {
-    const login = ref();
+    const email = ref();
     const password = ref();
     const store=useStore();
+    const isLoginFailed=ref(false);
     const checkLogin=()=>{
-      store.dispatch('fetchUser',{ name: login.value, password: password.value }).then(()=>console.log("lolf"))
+      store.dispatch('fetchUser',{ email: email.value, password: password.value }).then(()=>console.log("lolf"),).catch((error)=>isLoginFailed.value=true)
     }
    return{
-    login,password,checkLogin
+    email,password,checkLogin, isLoginFailed
   } 
   }
   
