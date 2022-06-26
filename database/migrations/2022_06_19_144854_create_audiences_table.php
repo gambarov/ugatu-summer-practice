@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('building');
             $table->string('number');
             $table->string('letter')->nullable();
+            $table->unique(['building', 'number', 'letter']);
             $table->foreignIdFor(AudienceType::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();
         });
