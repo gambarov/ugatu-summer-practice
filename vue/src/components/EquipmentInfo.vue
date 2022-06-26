@@ -66,7 +66,9 @@ export default {
             if (response.data.data.sets != null) {
                 sets.value = response.data.data.sets
                 sets.value = sets.value.map((set) => {
+                if(set.employee!=null){
                     set.employeeInitials = set.employee.surname + " " + set.employee.name[0] + "." + set.employee.patronymic[0] + ".";
+                }
                     return set;
                 })
             }

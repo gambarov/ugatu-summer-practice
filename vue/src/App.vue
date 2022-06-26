@@ -46,6 +46,11 @@ export default {
             icon: "pi pi-history",
             command: () => { router.push({ name: 'history' }) },
           },
+          {
+            label: "Сотрудники",
+            icon: "pi pi-id-card",
+            command: () => { router.push({ name: 'employees' }) },
+          },
         ],
       },
     ];
