@@ -9,9 +9,6 @@ use App\Models\Equipment\Equipment;
 use App\Http\Resources\Equipment\EquipmentResource;
 use App\Services\Equipment\CreateEquipmentService;
 use App\Services\Equipment\UpdateEquipmentService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class EquipmentController extends ApiController
 {
@@ -34,12 +31,7 @@ class EquipmentController extends ApiController
      */
     public function store(StoreEquipmentRequest $request)
     {
-        try {
-            $equipment = app(CreateEquipmentService::class)->execute($request->all());
-        } catch (ValidationException $e) {
-            return $this->respondValidatorFailed($e->validator);
-        }
-
+        $equipment = app(CreateEquipmentService::class)->execute($request->all());
         return new EquipmentResource($equipment->load(['type', 'sets']));
     }
 
@@ -51,12 +43,7 @@ class EquipmentController extends ApiController
      */
     public function show($id)
     {
-        try {
-            $equipment = Equipment::with('sets')->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Оборудование не найдено');
-        }
-
+        $equipment = Equipment::with('sets')->findOrFail($id);
         return new EquipmentResource($equipment);
     }
 
@@ -69,14 +56,7 @@ class EquipmentController extends ApiController
      */
     public function update(UpdateEquipmentRequest $request, int $id)
     {
-        try {
-            $equipment = app(UpdateEquipmentService::class)->execute($request->all() + ['id' => $id]);
-        } catch (ValidationException $e) {
-            return $this->respondValidatorFailed($e->validator);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Оборудование не найдено');
-        }
-
+        $equipment = app(UpdateEquipmentService::class)->execute($request->all() + ['id' => $id]);
         return new EquipmentResource($equipment->load('sets'));
     }
 
@@ -88,12 +68,7 @@ class EquipmentController extends ApiController
      */
     public function destroy($id)
     {
-        try {
-            $equipment = Equipment::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Оборудование не найдено');
-        }
-
+        $equipment = Equipment::findOrFail($id);
         $equipment->delete();
         return $this->respondObjectDeleted($equipment->id);
     }

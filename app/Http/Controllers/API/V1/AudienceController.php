@@ -7,9 +7,7 @@ use App\Http\Resources\Audience\AudienceResource;
 use App\Models\Equipment\Audience;
 use App\Services\Audience\CreateAudienceService;
 use App\Services\Audience\UpdateAudienceService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class AudienceController extends ApiController
 {
@@ -31,12 +29,7 @@ class AudienceController extends ApiController
      */
     public function store(Request $request)
     {
-        try {
-            $audience = app(CreateAudienceService::class)->execute($request->all());
-        } catch (ValidationException $e) {
-            return $this->respondValidatorFailed($e->validator);
-        }
-
+        $audience = app(CreateAudienceService::class)->execute($request->all());
         return AudienceResource::make($audience->load(['type', 'equipment']));
     }
 
@@ -48,12 +41,7 @@ class AudienceController extends ApiController
      */
     public function show($id)
     {
-        try {
-            $audience = Audience::with('equipment')->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Аудитория не найдена');
-        }
-
+        $audience = Audience::with('equipment')->findOrFail($id);
         return AudienceResource::make($audience);
     }
 
@@ -66,14 +54,7 @@ class AudienceController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        try {
-            $audience = app(UpdateAudienceService::class)->execute($request->all() + ['id' => $id]);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Аудитория не найдена');
-        } catch (ValidationException $e) {
-            return $this->respondValidatorFailed($e->validator);
-        }
-
+        $audience = app(UpdateAudienceService::class)->execute($request->all() + ['id' => $id]);
         return AudienceResource::make($audience->load(['equipment']));
     }
 
@@ -85,13 +66,8 @@ class AudienceController extends ApiController
      */
     public function destroy($id)
     {
-        try {
-            $audience = Audience::findOrFail($id);
-            $audience->delete();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Аудитория не найдена');
-        }
-
+        $audience = Audience::findOrFail($id);
+        $audience->delete();
         return $this->respondObjectDeleted($audience->id);
     }
 }

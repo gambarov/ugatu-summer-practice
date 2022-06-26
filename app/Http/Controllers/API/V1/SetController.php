@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\API\ApiController;
+use App\Http\Requests\Set\StoreSetRequest;
+use App\Http\Requests\Set\UpdateSetRequest;
 use App\Models\Equipment\Set;
 use App\Http\Resources\Set\SetResource;
 use App\Services\Set\CreateSetService;
 use App\Services\Set\UpdateSetService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class SetController extends ApiController
 {
@@ -30,14 +29,9 @@ class SetController extends ApiController
      * @param  \App\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSetRequest $request)
     {
-        try {
-            $set = app(CreateSetService::class)->execute($request->all());
-        } catch (ValidationException $e) {
-            return $this->respondValidatorFailed($e->validator);
-        }
-
+        $set = app(CreateSetService::class)->execute($request->all());
         return new SetResource($set->load(['employee', 'equipment']));
     }
 
@@ -49,12 +43,7 @@ class SetController extends ApiController
      */
     public function show($id)
     {
-        try {
-            $set = Set::with('equipment')->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Комплект не найден');
-        }
-
+        $set = Set::with('equipment')->findOrFail($id);
         return new SetResource($set);
     }
 
@@ -65,16 +54,9 @@ class SetController extends ApiController
      * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $id)
+    public function update(UpdateSetRequest $request, int $id)
     {
-        try {
-            $set = app(UpdateSetService::class)->execute($request->all() + ['id' => $id]);
-        } catch (ValidationException $e) {
-            return $this->respondValidatorFailed($e->validator);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Комплект не найден');
-        }
-
+        $set = app(UpdateSetService::class)->execute($request->all() + ['id' => $id]);
         return new SetResource($set->load(['equipment']));
     }
 
@@ -86,12 +68,7 @@ class SetController extends ApiController
      */
     public function destroy($id)
     {
-        try {
-            $set = Set::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Комплект не найден');
-        }
-
+        $set = Set::findOrFail($id);
         $set->delete();
         return $this->respondObjectDeleted($set->id);
     }

@@ -85,8 +85,8 @@ trait JsonRespond
     public function respondNotFound($message = null)
     {
         return $this->setHTTPStatusCode(404)
-                    ->setErrorCode(31)
-                    ->respondWithError($message);
+            ->setErrorCode(31)
+            ->respondWithError($message);
     }
 
     /**
@@ -99,8 +99,11 @@ trait JsonRespond
     public function respondValidatorFailed(Validator $validator)
     {
         return $this->setHTTPStatusCode(422)
-                    ->setErrorCode(32)
-                    ->respondWithError($validator->errors()->all());
+            ->setErrorCode(32)
+            ->respond(['error' => [
+                'message' => 'Ошибка при валидации данных',
+                'errors' => $validator->errors()
+            ]]);
     }
 
     /**
@@ -113,8 +116,8 @@ trait JsonRespond
     public function respondNotTheRightParameters($message = null)
     {
         return $this->setHTTPStatusCode(500)
-                    ->setErrorCode(33)
-                    ->respondWithError($message);
+            ->setErrorCode(33)
+            ->respondWithError($message);
     }
 
     /**
@@ -127,8 +130,8 @@ trait JsonRespond
     public function respondInvalidQuery($message = null)
     {
         return $this->setHTTPStatusCode(500)
-                    ->setErrorCode(40)
-                    ->respondWithError($message);
+            ->setErrorCode(40)
+            ->respondWithError($message);
     }
 
     /**
@@ -141,8 +144,8 @@ trait JsonRespond
     public function respondInvalidParameters($message = null)
     {
         return $this->setHTTPStatusCode(422)
-                    ->setErrorCode(41)
-                    ->respondWithError($message);
+            ->setErrorCode(41)
+            ->respondWithError($message);
     }
 
     /**
@@ -155,8 +158,8 @@ trait JsonRespond
     public function respondUnauthorized($message = null)
     {
         return $this->setHTTPStatusCode(401)
-                    ->setErrorCode(42)
-                    ->respondWithError($message);
+            ->setErrorCode(42)
+            ->respondWithError($message);
     }
 
     /**
@@ -170,7 +173,9 @@ trait JsonRespond
         return $this->respond([
             'error' => [
                 // 'status_code' => $this->getHTTPStatusCode(),
-                'message' => $message /** TODO: добавить получение сообщений из конфига */,
+                'message' => $message
+                /** TODO: добавить получение сообщений из конфига */
+                ,
                 // 'error_code' => $this->getErrorCode(),
             ],
         ]);

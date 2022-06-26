@@ -3,9 +3,12 @@
 namespace App\Exceptions;
 
 use App\Traits\JsonRespond;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -57,5 +60,25 @@ class Handler extends ExceptionHandler
                 return $this->respondUnauthorized('Пользователь не аутентифицирован.');
             }
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($request->is('api/*')) {
+            $class = get_class($e);
+
+            switch ($class) {
+                case AuthorizationException::class:
+                    return $this->respondUnauthorized('Недостаточно прав.');
+                case ValidationException::class:
+                    return $this->respondValidatorFailed($e->validator);
+                case ModelNotFoundException::class:
+                    return $this->respondNotFound('Запрашиваемый ресурс не найден.');
+                default:
+                    break;
+            }
+        }
+
+        return parent::render($request, $e);
     }
 }
