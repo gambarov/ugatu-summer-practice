@@ -2,11 +2,10 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Validation\Validator;
 
-trait JsonRespondController
+trait JsonRespond
 {
     /**
      * @var int
@@ -170,6 +169,7 @@ trait JsonRespondController
     {
         return $this->respond([
             'error' => [
+                // 'status_code' => $this->getHTTPStatusCode(),
                 'message' => $message /** TODO: добавить получение сообщений из конфига */,
                 // 'error_code' => $this->getErrorCode(),
             ],

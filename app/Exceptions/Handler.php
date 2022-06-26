@@ -2,11 +2,16 @@
 
 namespace App\Exceptions;
 
+use App\Traits\JsonRespond;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use JsonRespond;
+
     /**
      * A list of exception types with their corresponding custom log levels.
      *
@@ -45,6 +50,12 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (AuthenticationException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return $this->respondUnauthorized('Пользователь не аутентифицирован.');
+            }
         });
     }
 }
