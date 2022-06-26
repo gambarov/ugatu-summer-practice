@@ -4,10 +4,15 @@ namespace App\Http\Resources\Work;
 
 use App\Http\Resources\Employee\EmployeeResource;
 use App\Http\Resources\Equipment\EquipmentResource;
+use App\Http\Resources\Set\SetResource;
+use App\Models\Equipment\Equipment;
+use App\Models\Equipment\Set;
+use App\Traits\WhenMorph;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class EquipmentWorkResource extends JsonResource
+class WorkResource extends JsonResource
 {
+    use WhenMorph;
     /**
      * Transform the resource into an array.
      *
@@ -18,7 +23,10 @@ class EquipmentWorkResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'equipment' => new EquipmentResource($this->whenLoaded('equipment')),
+            'workable' => $this->whenMorphLoaded('workable', [
+                'App\Models\Equipment\Equipment' => EquipmentResource::class,
+                'App\Models\Equipment\Set' => SetResource::class
+            ]),
             'work_type' => new WorkTypeResource($this->whenLoaded('type')),
             'work_status' => new WorkStatusResource($this->whenLoaded('status')),
             'employee' => new EmployeeResource($this->whenLoaded('employee')),
