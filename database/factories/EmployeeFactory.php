@@ -28,6 +28,8 @@ class EmployeeFactory extends Factory
      */
     public function definition()
     {
+        $role = ['Администратор', 'Пользователь'][rand(0, 1)];
+
         return [
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
@@ -36,7 +38,7 @@ class EmployeeFactory extends Factory
             'surname' => $this->faker->lastName(),
             'name' => $this->faker->firstName(),
             'patronymic' => $this->faker->lastName(),
-            'role_id' => Role::inRandomOrder()->firstOrCreate(['name' => $this->faker->word()])->id,
+            'role_id' => Role::inRandomOrder()->firstOrCreate(['name' => $role])->id,
         ];
     }
 
