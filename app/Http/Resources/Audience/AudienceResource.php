@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Audience;
 
+use App\Http\Resources\Equipment\EquipmentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AudienceResource extends JsonResource
@@ -20,6 +21,7 @@ class AudienceResource extends JsonResource
             'number' => $this->number,
             'letter' => $this->letter,
             'audience_type' => new AudienceTypeResource($this->whenLoaded('type')),
+            'equipment' => EquipmentResource::collection($this->whenLoaded('equipment')),
         ];
     }
 }

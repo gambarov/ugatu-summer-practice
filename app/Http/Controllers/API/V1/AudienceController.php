@@ -20,7 +20,7 @@ class AudienceController extends ApiController
      */
     public function index()
     {
-        return Audience::all()->toJson();
+        return AudienceResource::collection(Audience::with('equipment')->get());
     }
 
     /**
@@ -37,7 +37,7 @@ class AudienceController extends ApiController
             return $this->respondValidatorFailed($e->validator);
         }
 
-        return AudienceResource::make($audience);
+        return AudienceResource::make($audience->load(['type', 'equipment']));
     }
 
     /**
@@ -49,7 +49,7 @@ class AudienceController extends ApiController
     public function show($id)
     {
         try {
-            $audience = Audience::findOrFail($id);
+            $audience = Audience::with('equipment')->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Аудитория не найдена');
         }
@@ -67,14 +67,14 @@ class AudienceController extends ApiController
     public function update(Request $request, $id)
     {
         try {
-            $audience = app(UpdateAudienceService::class)->execute($request->all());
+            $audience = app(UpdateAudienceService::class)->execute($request->all() + ['id' => $id]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Аудитория не найдена');
         } catch (ValidationException $e) {
             return $this->respondValidatorFailed($e->validator);
         }
 
-        return AudienceResource::make($audience);
+        return AudienceResource::make($audience->load(['equipment']));
     }
 
     /**
