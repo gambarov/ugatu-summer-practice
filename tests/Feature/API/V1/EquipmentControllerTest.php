@@ -181,4 +181,22 @@ class EquipmentControllerTest extends TestCase
             'id' => $equipment->id
         ]);
     }
+
+    /**
+     * @return void
+     */
+    public function test_throws_validation_error_when_storing_equipment_with_wrong_sets_array() 
+    {
+        Sanctum::actingAs(Employee::factory()->create(), ['*']);
+
+        $response = $this->json('POST', '/api/equipment', [
+            'name' => 'Test Equipment',
+            'inventory_id' => 'TEST-EQUIPMENT',
+            'equipment_type_id' => EquipmentType::create(['name' => 'type'])->id,
+            'sets' => [-1, 'test']
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['error' => ['message', 'errors']]);
+    }
 }
