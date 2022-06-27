@@ -121,6 +121,11 @@ return [
         'email' => 'Почта',
         'password' => 'Пароль',
         'sets.*' => 'Идентификатор комплекта',
+        'inventory_id' => 'Инветарный номер',
+        'work_type_id' => 'Тип работы',
+        'work_status_id.*' => 'Статус работы',
+        'audience_id' => 'Аудитория',
+        'audience_type_id' => 'Тип аудитории',
     ],
 
 ];
