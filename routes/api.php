@@ -7,6 +7,7 @@ use App\Http\Controllers\API\V1\EquipmentController;
 use App\Http\Controllers\API\V1\PlacementController;
 use App\Http\Controllers\API\V1\SetController;
 use App\Http\Controllers\API\V1\NoteController;
+use App\Http\Controllers\API\V1\WorkController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -35,6 +36,11 @@ Route::apiResource('/notes', NoteController::class, [
     'only' => ['index', 'store', 'show', 'update', 'destroy'],
 ]);
 
+Route::post('placements/equipment/{id}', [PlacementController::class, 'equipment']);
 Route::apiResource('/placements', PlacementController::class, [
     'only' => ['index', 'store', 'show'],
+]);
+
+Route::apiResource('/works', WorkController::class, [
+    'only' => ['index'],
 ]);

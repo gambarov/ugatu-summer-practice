@@ -22,6 +22,18 @@ class PlacementController extends Controller
     }
 
     /**
+     * Возвращает оборудование по идентификатору.
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function equipment($id)
+    {
+        $placements = Placement::with(['audience'])->where('equipment_id', $id)->get();
+        return PlacementResource::collection($placements);
+    }
+ 
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
