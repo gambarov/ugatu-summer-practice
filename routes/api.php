@@ -36,9 +36,9 @@ Route::apiResource('/notes', NoteController::class, [
     'only' => ['index', 'store', 'show', 'update', 'destroy'],
 ]);
 
-Route::post('placements/equipment/{id}', [PlacementController::class, 'equipment']);
+Route::get('placements/equipment/{id}', [PlacementController::class, 'equipment']);
 Route::apiResource('/placements', PlacementController::class, [
-    'only' => ['index', 'store', 'show'],
+    'only' => ['index', 'store', 'show', 'update', 'destroy'],
 ]);
 
 Route::apiResource('/works', WorkController::class, [
