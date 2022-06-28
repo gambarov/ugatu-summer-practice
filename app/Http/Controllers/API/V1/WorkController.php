@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\ApiController;
+use App\Http\Requests\Work\StoreWorkRequest;
+use App\Http\Requests\Work\UpdateWorkRequest;
+use App\Http\Resources\Work\WorkResource;
 use App\Models\Equipment\Work;
-use Illuminate\Http\Request;
 
-class WorkController extends Controller
+class WorkController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -15,17 +17,7 @@ class WorkController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return WorkResource::collection(Work::with('workable')->get());
     }
 
     /**
@@ -34,7 +26,7 @@ class WorkController extends Controller
      * @param  \App\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreWorkRequest $request)
     {
         //
     }
@@ -51,24 +43,13 @@ class WorkController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Work  $work
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Work $work)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Request  $request
      * @param  \App\Models\Work  $work
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Work $work)
+    public function update(UpdateWorkRequest $request, Work $work)
     {
         //
     }

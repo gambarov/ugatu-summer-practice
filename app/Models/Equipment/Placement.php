@@ -2,10 +2,13 @@
 
 namespace App\Models\Equipment;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Placement extends Pivot
 {
+    use HasFactory;
+
     protected $table = 'placements';
  
     public $timestamps = false;

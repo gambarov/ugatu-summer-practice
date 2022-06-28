@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Placement\StorePlacementRequest;
+use App\Http\Requests\Placement\UpdatePlacementRequest;
 use App\Http\Resources\Placement\PlacementResource;
 use App\Models\Equipment\Placement;
 use App\Services\Placement\CreatePlacementService;
-use Illuminate\Http\Request;
+use App\Services\Placement\UpdatePlacementService;
+use App\Traits\JsonRespond;
 
 class PlacementController extends Controller
 {
+    use JsonRespond;
+
     /**
      * Display a listing of the resource.
      *
@@ -22,9 +27,9 @@ class PlacementController extends Controller
     }
 
     /**
-     * Возвращает оборудование по идентификатору.
+     * Возвращает размещение по идентификатору оборудованию.
      *
-     * @param integer $id
+     * @param integer $id Идентификатор оборудования
      * @return void
      */
     public function equipment($id)
@@ -39,44 +44,48 @@ class PlacementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePlacementRequest $request)
     {
-        $placement = app(CreatePlacementService::class)
-            ->execute($request->all());
-        return new PlacementResource($placement);
+        $placement = app(CreatePlacementService::class)->execute($request->validated());
+        // FIXME:
+        return response()->json(['data' => new PlacementResource($placement->load(['equipment', 'audience']))], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Equipment\Placement  $placement
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Placement $placement)
+    public function show($id)
     {
-        return new PlacementResource($placement->load(['equipment', 'audience']));
+        $placement = Placement::with(['equipment', 'audience'])->findOrFail($id);
+        return new PlacementResource($placement);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Equipment\Placement  $placement
+     * @param  integer  $placement
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Placement $placement)
+    public function update(UpdatePlacementRequest $request, $id)
     {
-        //
+        $placement = app(UpdatePlacementService::class)->execute($request->validated() + ['id' => $id]);
+        return new PlacementResource($placement->load(['equipment', 'audience']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Equipment\Placement  $placement
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Placement $placement)
+    public function destroy($id)
     {
-        //
+        $placement = Placement::findOrFail($id);
+        $placement->delete();
+        return $this->respondObjectDeleted($id);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Database\Factories\Equipment;
 
+use App\Models\Equipment\Audience;
+use App\Models\Equipment\Equipment;
 use App\Models\Equipment\Placement;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +22,8 @@ class PlacementFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'equipment_id' => Equipment::inRandomOrder()->firstOrCreate((new EquipmentFactory())->definition())->id,
+            'audience_id' => Audience::inRandomOrder()->firstOrCreate((new AudienceFactory())->definition())->id,
         ];
     }
 }

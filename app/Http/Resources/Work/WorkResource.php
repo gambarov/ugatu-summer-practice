@@ -5,8 +5,6 @@ namespace App\Http\Resources\Work;
 use App\Http\Resources\Employee\EmployeeResource;
 use App\Http\Resources\Equipment\EquipmentResource;
 use App\Http\Resources\Set\SetResource;
-use App\Models\Equipment\Equipment;
-use App\Models\Equipment\Set;
 use App\Traits\WhenMorph;
 use Illuminate\Http\Resources\Json\JsonResource;
 
