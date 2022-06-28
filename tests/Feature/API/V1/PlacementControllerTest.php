@@ -115,10 +115,7 @@ class PlacementControllerTest extends TestCase
         $response->assertJsonStructure([
             'data' => $this->jsonPlacement,
         ]);
-        $this->assertDatabaseHas('placements', [
-            'id' => $placement->id,
-            'removed_at' => now()->toDateTimeString(),
-        ]);
+        $this->assertTrue($placement->refresh()->removed_at != null);
     }
 
     /**

@@ -170,23 +170,6 @@ class AudienceControllerTest extends TestCase
     /**
      * @return void
      */
-    public function test_deletes_an_audience()
-    {
-        Sanctum::actingAs(Employee::factory()->create(), ['*']);
-
-        $audience = Audience::factory()->create();
-        $response = $this->json('DELETE', '/api/audiences/' . $audience->id);
-
-        $response->assertStatus(200);
-
-        $this->assertDatabaseMissing('audiences', [
-            'id' => $audience->id
-        ]);
-    }
-
-    /**
-     * @return void
-     */
     public function test_only_admin_can_delete_an_audience()
     {
         $role = Role::create(['name' => 'Администратор']);
