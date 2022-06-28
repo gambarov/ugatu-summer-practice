@@ -102,7 +102,7 @@ export default {
         acceptClass: 'p-button-danger',
         accept: () => {
           console.log(id)
-          props.delete(id, props.info).then(() => { emit('deleteElement') })
+          props.delete(id, props.info).then(() => { emit('deleteElement') }).catch((error)=>console.log(error))
           // store.dispatch('deleteEquipment',id);
 
         },
@@ -130,7 +130,7 @@ export default {
     }
     const showInfo = (data) => {
       // router.push({ name: props.name + 'Info', params: { id: data.id } })
-      if(props.name==='employee'){
+      if(props.name==='employee'||props.name==='placement'){
         emit('change',data.id)
       }
       else{

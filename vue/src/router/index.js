@@ -6,12 +6,21 @@ import HistoryTable from "../components/categories/HistoryTable.vue";
 import EmployeeTable from "../components/categories/EmployeeTable.vue";
 import EquipmentInfo from "../components/EquipmentInfo.vue";
 import SetsInfo from "../components/SetsInfo.vue";
+import ClassInfo from "../components/ClassInfo.vue";
 import LoginPage from "../components/LoginPage.vue";
 import MtoPlacements from "../components/MtoPlacements.vue"
 import MtoWorks from "../components/MtoWorks.vue"
+import MtoSpecs from "../components/MtoSpecs.vue"
 import TabMenu from "../components/TabMenu.vue"
+import store from "@/store/index.js";
 
-
+const rights = store.getters.GET_RIGHTS || false;
+const checkRights = () => {
+  if (rights) {
+    return true
+  }
+  else return '/'
+}
 const routes = [
   {
     path: '/',
@@ -55,7 +64,15 @@ const routes = [
       components: {
         tabs: MtoWorks
       },
-    },
+
+    }, 
+    {
+      path: 'specs',
+      props: true,
+      components: {
+        tabs: MtoSpecs
+      },
+    }
     ]
   },
   {
@@ -75,6 +92,12 @@ const routes = [
     component: ClassesTable,
   },
   {
+    path: '/category/classes/info/:id',
+    name: 'classInfo',
+    component: ClassInfo,
+    props: true
+  },
+  {
     path: '/category/history',
     name: 'history',
     component: HistoryTable,
@@ -83,6 +106,7 @@ const routes = [
     path: '/category/employees',
     name: 'employees',
     component: EmployeeTable,
+    beforeEnter: [checkRights],
   },
 ]
 

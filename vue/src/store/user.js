@@ -9,6 +9,12 @@ export default {
         GET_USER(state) {
             return state.user;
         },
+        GET_RIGHTS(state) {
+            if(state.user!=null){
+              return state.user.employee.role.id===1?true:false;  
+            }
+            return false
+        },
         GET_TOKEN(state){
             if(state.user){
                return state.user.token

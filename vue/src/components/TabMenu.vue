@@ -55,6 +55,11 @@ export default {
                 icon: 'pi pi-fw pi-briefcase',
                 command: () => { router.push({ path: `/category/mto/info/${props.id}/works` }) }
             },
+             {
+                label: 'Характеристики',
+                icon: 'pi pi-fw pi-cog',
+                command: () => { router.push({ path: `/category/mto/info/${props.id}/specs` }) }
+            },
         ]);
         const closeModal = () => {
             router.push({ name: 'mto' })

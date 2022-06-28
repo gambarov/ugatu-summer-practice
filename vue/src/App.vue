@@ -2,7 +2,7 @@
   <div>
     <Header />
     <div class="flex relative p-4">
-      <Menu :model="items" class="mr-4" />
+      <Menu v-if="isLogedIn" :model="items" class="mr-4" />
       <router-view class="" />
     </div>
   </div>
@@ -11,7 +11,9 @@
 import Menu from "primevue/menu";
 import Header from "./components/Header.vue";
 import { useRouter, useRoute } from 'vue-router'
+import { ref } from "vue";
 import { useStore } from 'vuex'
+import { computed } from "@vue/reactivity";
 export default {
   components: {
     Menu,
@@ -49,7 +51,11 @@ export default {
         ],
       },
     ];
-    return { items };
+    if(store.getters.GET_RIGHTS!==true){
+      items=items[0]['items'].filter((item)=>item.label!=="Сотрудники");
+    }
+    console.log(route.fullPath)
+    return { items, isLogedIn:computed(()=>{return route.fullPath!=='/login'?true:false}) };
   },
 };
 </script>

@@ -1,1 +1,1 @@
-export const placementColumns = [{field:'id', header:'№'}, {field:'class', header:'Аудитория'},{field:'date', header:'Дата расположения'},];
+export const placementColumns = [{field:'id', header:'№'}, {field:'audience.name', header:'Аудитория'},{field:'time', header:'Дата расположения'},];
