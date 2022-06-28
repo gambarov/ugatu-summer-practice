@@ -58,7 +58,8 @@ class AudienceControllerTest extends TestCase
      */
     public function test_stores_a_new_audience()
     {
-        Sanctum::actingAs(Employee::factory()->create(), ['*']);
+        $role = Role::create(['name' => 'Администратор']);
+        Sanctum::actingAs(Employee::factory()->create(['role_id' => $role->id]), ['*']);
 
         $type = AudienceType::create(['name' => 'Test']);
         $response = $this->json('POST', '/api/audiences', [
@@ -77,7 +78,8 @@ class AudienceControllerTest extends TestCase
      */
     public function test_stores_a_new_audience_with_equipment() 
     {
-        Sanctum::actingAs(Employee::factory()->create(), ['*']);
+        $role = Role::create(['name' => 'Администратор']);
+        Sanctum::actingAs(Employee::factory()->create(['role_id' => $role->id]), ['*']);
 
         $type = AudienceType::create(['name' => 'Test']);
         $equipment = Equipment::factory()->create();
@@ -112,7 +114,8 @@ class AudienceControllerTest extends TestCase
      */
     public function test_updates_an_audience()
     {
-        Sanctum::actingAs(Employee::factory()->create(), ['*']);
+        $role = Role::create(['name' => 'Администратор']);
+        Sanctum::actingAs(Employee::factory()->create(['role_id' => $role->id]), ['*']);
 
         $audience = Audience::factory()->create();
         $response = $this->json('PUT', '/api/audiences/' . $audience->id, [
@@ -139,7 +142,8 @@ class AudienceControllerTest extends TestCase
      */
     public function test_updates_an_audience_with_equipment()
     {
-        Sanctum::actingAs(Employee::factory()->create(), ['*']);
+        $role = Role::create(['name' => 'Администратор']);
+        Sanctum::actingAs(Employee::factory()->create(['role_id' => $role->id]), ['*']);
 
         $audience = Audience::factory()->create();
         $equipment = Equipment::factory()->create();

@@ -14,7 +14,8 @@ class UpdateAudienceRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $user = auth()->user()->load('role');
+        return $user && $user->role->name === 'Администратор';
     }
 
     /**
