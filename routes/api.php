@@ -14,33 +14,34 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+
+
+    Route::apiResource('/equipment', EquipmentController::class, [
+        'only' => ['index', 'store', 'show', 'update', 'destroy'],
+    ]);
+
+    Route::apiResource('/sets', SetController::class, [
+        'only' => ['index', 'store', 'show', 'update', 'destroy'],
+    ]);
+
+    Route::apiResource('/audiences', AudienceController::class, [
+        'only' => ['index', 'store', 'show', 'update', 'destroy'],
+    ]);
+
+    Route::apiResource('/employees', EmployeeController::class, [
+        'only' => ['index', 'store', 'show', 'update', 'destroy'],
+    ]);
+
+    Route::apiResource('/notes', NoteController::class, [
+        'only' => ['index', 'store', 'show', 'update', 'destroy'],
+    ]);
+
+    Route::get('placements/equipment/{id}', [PlacementController::class, 'equipment']);
+    Route::apiResource('/placements', PlacementController::class, [
+        'only' => ['index', 'store', 'show', 'update', 'destroy'],
+    ]);
+
+    Route::apiResource('/works', WorkController::class, [
+        'only' => ['index', 'store', 'show', 'update', 'destroy'],
+    ]);
 });
-
-Route::apiResource('/equipment', EquipmentController::class, [
-    'only' => ['index', 'store', 'show', 'update', 'destroy'],
-]);
-
-Route::apiResource('/sets', SetController::class, [
-    'only' => ['index', 'store', 'show', 'update', 'destroy'],
-]);
-
-Route::apiResource('/audiences', AudienceController::class, [
-    'only' => ['index', 'store', 'show', 'update', 'destroy'],
-]);
-
-Route::apiResource('/employees', EmployeeController::class, [
-    'only' => ['index', 'store', 'show', 'update', 'destroy'],
-]);
-
-Route::apiResource('/notes', NoteController::class, [
-    'only' => ['index', 'store', 'show', 'update', 'destroy'],
-]);
-
-Route::get('placements/equipment/{id}', [PlacementController::class, 'equipment']);
-Route::apiResource('/placements', PlacementController::class, [
-    'only' => ['index', 'store', 'show', 'update', 'destroy'],
-]);
-
-Route::apiResource('/works', WorkController::class, [
-    'only' => ['index', 'store', 'show', 'update', 'destroy'],
-]);
