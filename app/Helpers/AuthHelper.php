@@ -2,8 +2,6 @@
 
 namespace App\Helpers;
 
-use Illuminate\Validation\ValidationException;
-
 class AuthHelper
 {
     public static function authorize()
@@ -13,6 +11,7 @@ class AuthHelper
         if (!$user)
             return false;
 
-        return $user->load('role')->role->name === 'Администратор';
+        $role = mb_strtolower($user->load('role')->role->name);
+        return $role == 'администратор';
     }
 }
