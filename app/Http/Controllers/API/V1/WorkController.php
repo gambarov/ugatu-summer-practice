@@ -7,9 +7,14 @@ use App\Http\Requests\Work\StoreWorkRequest;
 use App\Http\Requests\Work\UpdateWorkRequest;
 use App\Http\Resources\Work\WorkResource;
 use App\Models\Equipment\Work;
+use App\Services\Work\CreateWorkService;
+use App\Services\Work\UpdateWorkService;
+use App\Traits\JsonRespond;
 
 class WorkController extends ApiController
 {
+    use JsonRespond;
+
     /**
      * Display a listing of the resource.
      *
@@ -28,40 +33,45 @@ class WorkController extends ApiController
      */
     public function store(StoreWorkRequest $request)
     {
-        //
+        $work = app(CreateWorkService::class)->execute($request->validated());
+        return new WorkResource($work->load(['workable', 'type', 'status', 'employee']));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Work  $work
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Work $work)
+    public function show($id)
     {
-        //
+        $work = Work::with('workable')->findOrFail($id);
+        return new WorkResource($work);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Request  $request
-     * @param  \App\Models\Work  $work
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateWorkRequest $request, Work $work)
+    public function update(UpdateWorkRequest $request, $id)
     {
-        //
+        $work = app(UpdateWorkService::class)->execute($request->validated() + ['id' => $id]);
+        return new WorkResource($work->load(['workable']));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Work  $work
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Work $work)
+    public function destroy($id)
     {
-        //
+        $work = Work::findOrFail($id);
+        $work->delete();
+        return $this->respondObjectDeleted($id);
     }
 }

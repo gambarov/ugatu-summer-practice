@@ -14,7 +14,8 @@ class UpdateAudienceRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $user = auth()->user()->load('role');
+        return $user && $user->role->name === 'Администратор';
     }
 
     /**
@@ -37,6 +38,8 @@ class UpdateAudienceRequest extends FormRequest
             'number' => 'sometimes|integer',
             'letter' => 'nullable|string',
             'audience_type_id' => 'sometimes|integer|exists:App\Models\Equipment\AudienceType,id',
+            'equipment' => 'sometimes|array',
+            'equipment.*' => 'sometimes|integer|exists:App\Models\Equipment\Equipment,id',
         ];
     }
 

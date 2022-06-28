@@ -12,6 +12,8 @@ class Work extends Model
 
     public $timestamps = false;
 
+    protected $with = ['type', 'status', 'employee'];
+
     protected $guarded = ['id'];
     
     protected $fillable = [
