@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Audience;
 
+use App\Helpers\AuthHelper;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,12 +15,7 @@ class UpdateAudienceRequest extends FormRequest
      */
     public function authorize()
     {
-        $user = auth()->user();
-
-        if (!$user)
-            return false;
-
-        return $user->load('role')->role->name === 'Администратор';
+        return AuthHelper::authorize();
     }
 
     /**

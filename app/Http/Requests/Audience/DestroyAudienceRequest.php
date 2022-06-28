@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Audience;
 
+use App\Helpers\AuthHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DestroyAudienceRequest extends FormRequest
@@ -13,12 +14,7 @@ class DestroyAudienceRequest extends FormRequest
      */
     public function authorize()
     {
-        $user = auth()->user();
-
-        if (!$user)
-            return false;
-
-        return $user->load('role')->role->name === 'Администратор';
+        return AuthHelper::authorize();
     }
 
     /**
