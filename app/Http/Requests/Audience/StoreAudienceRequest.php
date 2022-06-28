@@ -14,8 +14,12 @@ class StoreAudienceRequest extends FormRequest
      */
     public function authorize()
     {
-        $user = auth()->user()->load('role');
-        return $user && $user->role->name === 'Администратор';
+        $user = auth()->user();
+
+        if (!$user)
+            return false;
+
+        return $user->load('role')->role->name === 'Администратор';
     }
 
     /**
