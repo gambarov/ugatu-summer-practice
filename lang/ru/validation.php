@@ -126,6 +126,9 @@ return [
         'work_status_id.*' => 'Статус работы',
         'audience_id' => 'Аудитория',
         'audience_type_id' => 'Тип аудитории',
+        'building' => 'Корпус',
+        'number' => 'Номер',
+        'letter' => 'Литер',
     ],
 
 ];

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\API\ApiController;
+use App\Http\Requests\Audience\StoreAudienceRequest;
+use App\Http\Requests\Audience\UpdateAudienceRequest;
 use App\Http\Resources\Audience\AudienceResource;
 use App\Models\Equipment\Audience;
 use App\Services\Audience\CreateAudienceService;
 use App\Services\Audience\UpdateAudienceService;
-use Illuminate\Http\Request;
 
 class AudienceController extends ApiController
 {
@@ -27,7 +28,7 @@ class AudienceController extends ApiController
      * @param  \App\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreAudienceRequest $request)
     {
         $audience = app(CreateAudienceService::class)->execute($request->all());
         return AudienceResource::make($audience->load(['type', 'equipment']));
@@ -52,7 +53,7 @@ class AudienceController extends ApiController
      * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateAudienceRequest $request, $id)
     {
         $audience = app(UpdateAudienceService::class)->execute($request->all() + ['id' => $id]);
         return AudienceResource::make($audience->load(['equipment']));
@@ -68,6 +69,6 @@ class AudienceController extends ApiController
     {
         $audience = Audience::findOrFail($id);
         $audience->delete();
-        return $this->respondObjectDeleted($audience->id);
+        return $this->respondObjectDeleted($id);
     }
 }
