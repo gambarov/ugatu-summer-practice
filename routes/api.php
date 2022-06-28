@@ -42,5 +42,5 @@ Route::apiResource('/placements', PlacementController::class, [
 ]);
 
 Route::apiResource('/works', WorkController::class, [
-    'only' => ['index'],
+    'only' => ['index', 'store', 'show', 'update', 'destroy'],
 ]);
