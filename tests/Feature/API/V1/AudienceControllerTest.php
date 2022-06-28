@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Equipment\Audience;
 use App\Models\Equipment\AudienceType;
 use App\Models\Equipment\Equipment;
+use App\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -61,7 +62,7 @@ class AudienceControllerTest extends TestCase
 
         $type = AudienceType::create(['name' => 'Test']);
         $response = $this->json('POST', '/api/audiences', [
-            'building' => 'А',
+            'building' => '1',
             'number' => '1',
             'letter' => 'а',
             'audience_type_id' => $type->id
@@ -81,7 +82,7 @@ class AudienceControllerTest extends TestCase
         $type = AudienceType::create(['name' => 'Test']);
         $equipment = Equipment::factory()->create();
         $response = $this->json('POST', '/api/audiences', [
-            'building' => 'А',
+            'building' => '1',
             'number' => '1',
             'letter' => 'а',
             'audience_type_id' => $type->id,
@@ -115,7 +116,7 @@ class AudienceControllerTest extends TestCase
 
         $audience = Audience::factory()->create();
         $response = $this->json('PUT', '/api/audiences/' . $audience->id, [
-            'building' => 'А',
+            'building' => '1',
             'number' => '1',
             'letter' => 'а',
             'audience_type_id' => $audience->audience_type_id
@@ -126,7 +127,7 @@ class AudienceControllerTest extends TestCase
 
         $this->assertDatabaseHas('audiences', [
             'id' => $audience->id,
-            'building' => 'А',
+            'building' => '1',
             'number' => '1',
             'letter' => 'а',
             'audience_type_id' => $audience->audience_type_id
@@ -143,7 +144,7 @@ class AudienceControllerTest extends TestCase
         $audience = Audience::factory()->create();
         $equipment = Equipment::factory()->create();
         $response = $this->json('PUT', '/api/audiences/' . $audience->id, [
-            'building' => 'А',
+            'building' => '1',
             'number' => '1',
             'letter' => 'а',
             'audience_type_id' => $audience->audience_type_id,
@@ -155,7 +156,7 @@ class AudienceControllerTest extends TestCase
 
         $this->assertDatabaseHas('audiences', [
             'id' => $audience->id,
-            'building' => 'А',
+            'building' => '1',
             'number' => '1',
             'letter' => 'а',
             'audience_type_id' => $audience->audience_type_id
@@ -179,6 +180,42 @@ class AudienceControllerTest extends TestCase
         $response->assertStatus(200);
 
         $this->assertDatabaseMissing('audiences', [
+            'id' => $audience->id
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_only_admin_can_delete_an_audience()
+    {
+        $role = Role::create(['name' => 'Администратор']);
+        Sanctum::actingAs(Employee::factory()->create(['role_id' => $role->id]), ['*']);
+
+        $audience = Audience::factory()->create();
+        $response = $this->json('DELETE', '/api/audiences/' . $audience->id);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('audiences', [
+            'id' => $audience->id
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_user_cant_delete_an_audience()
+    {
+        $role = Role::create(['name' => 'Пользователь']);
+        Sanctum::actingAs(Employee::factory()->create(['role_id' => $role->id]), ['*']);
+
+        $audience = Audience::factory()->create();
+        $response = $this->json('DELETE', '/api/audiences/' . $audience->id);
+
+        $response->assertStatus(401);
+
+        $this->assertDatabaseHas('audiences', [
             'id' => $audience->id
         ]);
     }

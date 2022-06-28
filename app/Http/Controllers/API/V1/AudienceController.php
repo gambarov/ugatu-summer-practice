@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\API\ApiController;
+use App\Http\Requests\Audience\DestroyAudienceRequest;
 use App\Http\Requests\Audience\StoreAudienceRequest;
 use App\Http\Requests\Audience\UpdateAudienceRequest;
 use App\Http\Resources\Audience\AudienceResource;
@@ -65,7 +66,7 @@ class AudienceController extends ApiController
      * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DestroyAudienceRequest $request, $id)
     {
         $audience = Audience::findOrFail($id);
         $audience->delete();
