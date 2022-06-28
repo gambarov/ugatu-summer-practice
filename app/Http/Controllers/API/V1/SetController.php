@@ -31,7 +31,7 @@ class SetController extends ApiController
      */
     public function store(StoreSetRequest $request)
     {
-        $set = app(CreateSetService::class)->execute($request->all());
+        $set = app(CreateSetService::class)->execute($request->validated());
         return new SetResource($set->load(['employee', 'equipment']));
     }
 
@@ -56,7 +56,7 @@ class SetController extends ApiController
      */
     public function update(UpdateSetRequest $request, int $id)
     {
-        $set = app(UpdateSetService::class)->execute($request->all() + ['id' => $id]);
+        $set = app(UpdateSetService::class)->execute($request->validated() + ['id' => $id]);
         return new SetResource($set->load(['equipment']));
     }
 
@@ -70,6 +70,6 @@ class SetController extends ApiController
     {
         $set = Set::findOrFail($id);
         $set->delete();
-        return $this->respondObjectDeleted($set->id);
+        return $this->respondObjectDeleted($id);
     }
 }

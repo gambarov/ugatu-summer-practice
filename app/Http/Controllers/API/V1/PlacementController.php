@@ -67,7 +67,7 @@ class PlacementController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  integer  $placement
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePlacementRequest $request, $id)

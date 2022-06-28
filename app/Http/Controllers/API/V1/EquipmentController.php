@@ -31,7 +31,7 @@ class EquipmentController extends ApiController
      */
     public function store(StoreEquipmentRequest $request)
     {
-        $equipment = app(CreateEquipmentService::class)->execute($request->all());
+        $equipment = app(CreateEquipmentService::class)->execute($request->validated());
         return new EquipmentResource($equipment->load(['type', 'sets']));
     }
 
@@ -56,7 +56,7 @@ class EquipmentController extends ApiController
      */
     public function update(UpdateEquipmentRequest $request, int $id)
     {
-        $equipment = app(UpdateEquipmentService::class)->execute($request->all() + ['id' => $id]);
+        $equipment = app(UpdateEquipmentService::class)->execute($request->validated() + ['id' => $id]);
         return new EquipmentResource($equipment->load('sets'));
     }
 
@@ -70,6 +70,6 @@ class EquipmentController extends ApiController
     {
         $equipment = Equipment::findOrFail($id);
         $equipment->delete();
-        return $this->respondObjectDeleted($equipment->id);
+        return $this->respondObjectDeleted($id);
     }
 }

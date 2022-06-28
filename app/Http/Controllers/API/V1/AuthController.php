@@ -29,7 +29,7 @@ class AuthController extends ApiController
         return $this->setHTTPStatusCode(201)->respond($response);
     }
 
-    public function logout(Request $request) {
+    public function logout() {
         /** @var \App\Models\Employee $user **/
         $user = auth()->user();
         $user->tokens()->delete();
