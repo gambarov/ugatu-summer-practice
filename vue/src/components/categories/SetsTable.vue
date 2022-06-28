@@ -46,10 +46,11 @@ export default {
         info.value = store.getters.GET_SETS;
       });
     }
-    const addNewSet = (equipment,name) => {
+    const addNewSet = (equipment,set) => {
         return postSet({
-          "name": name,
-          "equipment":equipment
+          "name": set.name,
+          "equipment":equipment,
+          "inventory_id":set.inventory_id
         });}
     return {
       info,

@@ -1,8 +1,9 @@
 <template>
   <div class="flex flex-1 flex-col">
-    <Creation type="employee" @save="update" :saveClass="addNewEmployee" />
-    <EquipmentTable @deleteElement="update" :delete="deleteEmployee" :loading="loading" :info="info"
-      :columns="employeeColumns" table="Сотрудники" />
+    <Creation type="employee" @save="update" :saveClass="addNewEmployee"/>
+    <EquipmentTable @change="change" @deleteElement="update" :delete="deleteEmployee" :loading="loading" :info="info"
+      :columns="employeeColumns" table="Сотрудники" name="employee" />
+    <Creation v-if="isDialogOpen" type="employee" @save="update" @closed="openDialog" :saveClass="changeEmployee" :info="creationInfo" :isOpen="isDialogOpen"/>
   </div>
 </template>
 <script>
@@ -16,7 +17,7 @@ import Dropdown from 'primevue/dropdown';
 import { useStore } from 'vuex'
 import { ref, computed } from "vue";
 import { employeeColumns } from "@/assets/employeeColumns";
-import { postEmployee, deleteEmployee } from "@/assets/api/employee";
+import { postEmployee, patchEmployee, deleteEmployee } from "@/assets/api/employee";
 export default {
   components: {
     EquipmentTable,
@@ -31,10 +32,15 @@ export default {
     const loading = ref(true);
     const info = ref();
     const store = useStore();
+    const creationInfo=ref({})
     const isDialogOpen = ref(false);
     const openDialog = (value) => {
       isDialogOpen.value = value;
     };
+    const change=(id)=>{
+      creationInfo.value=store.getters.GET_EMPLOYEE_BY_ID(id);
+      openDialog(true);
+    }
     const newEquipment = ref({
       letter: ' '
     })
@@ -57,17 +63,29 @@ export default {
       });
     }
 
+const changeEmployee=(employee)=>{
+  return patchEmployee(employee.id,{
+        "surname": employee.surname,
+        "name": employee.name,
+        "patronymic": employee.patronymic,
+        "email": employee.email,
+        "password":employee.password,
+        "role_id":1
+      });
+}
     return {
       info,
       employeeColumns,
       loading,
       isDialogOpen,
-
       openDialog,
       newEquipment,
       addNewEmployee,
       deleteEmployee,
-      update
+      changeEmployee,
+      update,
+      creationInfo,
+      change
     }
   },
 };

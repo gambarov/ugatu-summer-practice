@@ -4,7 +4,7 @@
             <Button label="Добавить" icon="pi pi-plus" class="p-button bg-blue-400 mr-3" @click="openDialog(true)" />
         </template>
     </Toolbar>
-    <Dialog class="" header="Добавить комплект" v-model:visible="isDialogOpen" :modal="true">
+    <Dialog @after-hide="close" class="" header="Добавить запись" v-model:visible="isDialogOpen" :modal="true">
         <div v-if="isClass" class="flex flex-col ">
             <div class="flex flex-col mb-4">
                 <label htmlFor="name">Корпус</label>
@@ -17,6 +17,10 @@
             <div class="flex flex-col mb-4">
                 <label htmlFor="name">Литер</label>
                 <InputText id="name" v-model="newEquipment.letter" required />
+            </div>
+            <div class="flex flex-col mb-4">
+                <label htmlFor="name">Тип</label>
+                <InputText id="name" v-model="newEquipment.audience_type" required />
             </div>
         </div>
         <div v-if="isEmployee" class="flex flex-col ">
@@ -39,6 +43,30 @@
             <div class="flex flex-col mb-4">
                 <label htmlFor="name">Пароль</label>
                 <InputText id="name" v-model="newEquipment.password" required />
+            </div>
+        </div>
+        <div v-if="isPlacement" class="flex flex-col ">
+            <div class="flex flex-col mb-4">
+                <label htmlFor="name">Класс</label>
+                <AutoComplete class="p-fluid bg-blue-500" v-model="selectedEquipment" :suggestions="filteredEquipment"
+                    @complete="searchEquipment($event)" :dropdown="true" field="name" :forceSelection="true">
+                    <template #item="slotProps">
+                        <div class="flex flex-row justify-between">
+                            <span class="ml-2"> {{ slotProps.item.name }}</span>
+                            <span>{{ slotProps.item.inventory_id }}</span>
+                        </div>
+                    </template>
+                </AutoComplete>
+            </div>
+        </div>
+        <div v-if="isWork" class="flex flex-col ">
+            <div class="flex flex-col mb-4">
+                <label htmlFor="name">Тип работ</label>
+                <InputText id="name" v-model="newEquipment.work_type" required />
+            </div>
+            <div class="flex flex-col mb-4">
+                <label htmlFor="name">Статус работ</label>
+                <InputText id="name" v-model="newEquipment.work_status" required />
             </div>
         </div>
         <template #footer>
@@ -67,7 +95,7 @@ export default {
         Toolbar,
         AutoComplete
     },
-    emits: ['save'],
+    emits: ['save','closed'],
     props: {
         equipment: {
             default: []
@@ -79,37 +107,55 @@ export default {
         type: {
             default: 'default',
         },
+        info: {
+            default: {}
+        },
+        isOpen:{
+            default:false
+        }
     },
     setup(props, { emit }) {
         onMounted(() => {
-            store.dispatch('fetchEquipment')
+            store.dispatch('fetchEquipment');
+            store.dispatch('fetchClasses');
         })
         const store = useStore();
-        // const selectedEquipment = ref(props.equipment);
-        // const filteredEquipment = ref();
-
-        // const equipment = store.getters.GET_EQUIPMENT;
+        const selectedEquipment = ref(props.equipment);
+        const filteredEquipment = ref();
+        let equipment;
+        switch (props.type) {
+            case 'class':
+                equipment = store.getters.GET_EQUIPMENT
+                break;
+            case 'placement':
+                equipment = store.getters.GET_CLASSES
+                break;
+        }
         const isDialogOpen = ref(false);
         const openDialog = (value) => {
             isDialogOpen.value = value;
         };
-        const newEquipment = ref({
-            name: '',
-            building: '',
-            letter: ''
-        })
-        // const searchEquipment = (event) => {
-        //     if (!event.query.trim().length) {
-        //         filteredEquipment.value = [...equipment];
-        //     }
-        //     else {
-        //         filteredEquipment.value = equipment.filter((item) => {
-        //             return item.name.toLowerCase().includes(event.query.toLowerCase());
-        //         });
-        //     }
-        // }
+        if(props.isOpen){
+            openDialog(true);
+        }
+        const close=()=>{
+            emit('closed',false)
+        }
+        const newEquipment = ref(props.info)
+        const searchEquipment = (event) => {
+            if (!event.query.trim().length) {
+                filteredEquipment.value = [...equipment];
+            }
+            else {
+                filteredEquipment.value = equipment.filter((item) => {
+                   if(item.name.toLowerCase().includes(event.query.toLowerCase())||item.inventory_id.toLowerCase().includes(event.query.toLowerCase())){
+                        return true;
+                    }
+                    return false;
+                });
+            }
+        }
         const addNew = () => {
-            let flag = 1;
             switch (props.type) {
                 case 'employee':
                     props.saveClass(newEquipment.value).then(() => emit('save'));
@@ -124,6 +170,12 @@ export default {
                         isDialogOpen.value = false;
                     }
                     break;
+                case 'placement':
+                    if (selectedEquipment.value != null || props.creation === false) {
+                        props.saveClass(selectedEquipment.value).then(() => emit('save'));
+                        isDialogOpen.value = false;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -133,13 +185,16 @@ export default {
             newEquipment, isDialogOpen, openDialog,
             deleteSet,
             equipment: computed(() => store.getters.GET_EQUIPMENT),
-            // searchEquipment,
-            // filteredEquipment,
-            // selectedEquipment,
+            searchEquipment,
+            filteredEquipment,
+            selectedEquipment,
             addNew,
             isCreation: computed(() => props.creation),
             isClass: computed(() => props.type === 'class'),
-            isEmployee: computed(() => props.type === 'employee')
+            isEmployee: computed(() => props.type === 'employee'),
+            isPlacement: computed(() => props.type === 'placement'),
+            isWork: computed(() => props.type === 'work'),
+            close
         }
     }
 }

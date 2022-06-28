@@ -10,6 +10,10 @@
                 <label htmlFor="name">Наименование комплекта</label>
                 <InputText id="name" v-model="newEquipment.name" required />
             </div>
+            <div v-if="isCreation" class="flex flex-col mb-4">
+                <label htmlFor="name">Инвентарный номер</label>
+                <InputText id="name" v-model="newEquipment.inventory_id" required />
+            </div>
             <div class="flex flex-col mb-4">
                 <label htmlFor="name">Оборудование</label>
                 <AutoComplete class="p-fluid bg-blue-500" :multiple="true" v-model="selectedEquipment"
@@ -81,7 +85,10 @@ export default {
             }
             else {
                 filteredEquipment.value = equipment.filter((item) => {
-                    return item.name.toLowerCase().includes(event.query.toLowerCase());
+                    if(item.name.toLowerCase().includes(event.query.toLowerCase())||item.inventory_id.toLowerCase().includes(event.query.toLowerCase())){
+                        return true;
+                    }
+                    return false;
                 });
             }
         }
@@ -90,7 +97,7 @@ export default {
                 const equipmentIds = selectedEquipment.value.map((eq) => {
                     return eq.id;
                 })
-                props.saveEquipment(equipmentIds,newEquipment.value.name).then(()=>emit('save'));
+                props.saveEquipment(equipmentIds,newEquipment.value).then(()=>emit('save'));
                 // postSet({
                 //     "name": newEquipment.value.name,
                 //     "equipment": equipmentIds

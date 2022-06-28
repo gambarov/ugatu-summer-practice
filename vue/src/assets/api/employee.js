@@ -5,6 +5,9 @@ export const getEmployees=()=>{
 export const postEmployee=(data)=>{
     return url.post('/employees',data)
 }
+export const patchEmployee=(id,data)=>{
+    return url.patch('/employees/'+id,data)
+}
 export const deleteEmployee=(id)=>{
     return url.delete('/employees/'+id)
 }

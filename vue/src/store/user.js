@@ -10,7 +10,10 @@ export default {
             return state.user;
         },
         GET_TOKEN(state){
-            return state.user.token||''
+            if(state.user){
+               return state.user.token
+            }
+            return ""
         },
         GET_AUTHENTICATION(state) {
             return state.user !== null ? true : false;

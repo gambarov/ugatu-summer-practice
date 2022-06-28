@@ -7,6 +7,10 @@ import EmployeeTable from "../components/categories/EmployeeTable.vue";
 import EquipmentInfo from "../components/EquipmentInfo.vue";
 import SetsInfo from "../components/SetsInfo.vue";
 import LoginPage from "../components/LoginPage.vue";
+import MtoPlacements from "../components/MtoPlacements.vue"
+import MtoWorks from "../components/MtoWorks.vue"
+import TabMenu from "../components/TabMenu.vue"
+
 
 const routes = [
   {
@@ -21,46 +25,70 @@ const routes = [
   },
   {
     path: '/category/mto',
-    name:'mto',
+    name: 'mto',
     component: Mto,
   },
   {
     path: '/category/mto/info/:id',
-    name:'mtoInfo',
-    component: EquipmentInfo,
-    props:true,
+    name: 'mtoInfo',
+    components: {
+      default: TabMenu,
+    },
+    props: true,
+    children: [{
+      path: 'placements',
+      props: true,
+      components: {
+        tabs: MtoPlacements
+      },
+    },
+    {
+      path: '',
+      props: true,
+      components: {
+        tabs: EquipmentInfo
+      },
+    },
+    {
+      path: 'works',
+      props: true,
+      components: {
+        tabs: MtoWorks
+      },
+    },
+    ]
   },
   {
     path: '/category/sets/info/:id',
-    name:'setsInfo',
+    name: 'setsInfo',
     component: SetsInfo,
-    props:true,
+    props: true,
   },
   {
     path: '/category/sets',
-    name:'sets',
+    name: 'sets',
     component: SetsTable,
   },
   {
     path: '/category/classes',
-    name:'classes',
+    name: 'classes',
     component: ClassesTable,
   },
   {
     path: '/category/history',
-    name:'history',
+    name: 'history',
     component: HistoryTable,
   },
   {
     path: '/category/employees',
-    name:'employees',
+    name: 'employees',
     component: EmployeeTable,
   },
 ]
 
-const isAuthenticated=()=>{
-  let user=JSON.parse(localStorage.getItem('user'))
-  if(user!=null){
+const isAuthenticated = () => {
+  let user = JSON.parse(localStorage.getItem('user'))
+  if (user != null) {
     return true
   }
   return false;

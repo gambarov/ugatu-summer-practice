@@ -8,6 +8,9 @@ export default {
         GET_EMPLOYEES(state) {
             return state.employees;
         },
+        GET_EMPLOYEE_BY_ID:(state)=>(id)=> {
+            return state.employees.find((item)=>item.id===id);
+        },
     },
     mutations: {
         SET_EMPLOYEES(state, payload) {
