@@ -1,0 +1,1 @@
+export const placementColumns = [{field:'id', header:'№'}, {field:'class', header:'Аудитория'},{field:'date', header:'Дата расположения'},];

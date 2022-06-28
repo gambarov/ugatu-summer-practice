@@ -1,11 +1,11 @@
 <template>
-  <EquipmentTable :columns="historyColumns" table="Аудитории" :data="info"/>
+  <EquipmentTable :columns="placementColumns" table="Аудитории" :data="info"/>
 </template>
 <script>
 import EquipmentTable from "../EquipmentTable.vue";
 import { useStore } from 'vuex'
 import { ref, computed } from "vue";
-import { historyColumns } from "@/assets/historyColumns";
+import { placementColumns } from "@/assets/placementColumns";
 export default {
   components: {
     EquipmentTable,
@@ -15,7 +15,7 @@ export default {
     const info=[];
     return{
         info,
-        historyColumns
+        placementColumns
     }
   },
 };

@@ -1,1 +1,0 @@
-export const historyColumns = [{field:'id', header:'№'}, {field:'name', header:'Название'},{field:'equipment_id', header:'Инвентарный номер'},{field:'class', header:'Аудитория'},{field:'date', header:'Дата расположения'},];

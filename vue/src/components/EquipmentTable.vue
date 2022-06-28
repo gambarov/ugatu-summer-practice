@@ -61,7 +61,7 @@ export default {
     Dialog,
     ConfirmDialog
   },
-  emits: ['deleteElement'],
+  emits: ['deleteElement','change'],
   props: {
     table: String,
     name: String,
@@ -129,9 +129,13 @@ export default {
       });
     }
     const showInfo = (data) => {
-      console.log(data)
-      router.push({ name: props.name + 'Info', params: { id: data.id } })
-
+      // router.push({ name: props.name + 'Info', params: { id: data.id } })
+      if(props.name==='employee'){
+        emit('change',data.id)
+      }
+      else{
+        router.push({ path:`/category/${props.name}/info/${data.id}`} )
+      }
     }
     return {
       data,

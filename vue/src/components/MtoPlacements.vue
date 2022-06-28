@@ -1,9 +1,9 @@
 <template>
     <Toast />
-    
-    <div class=" bg-white p-4">
-        <div class="flex  flex-row ">
-            <div class="mr-3 flex-auto">
+
+    <div class="">
+        <div  class="flex p-4 flex-row ">
+            <!-- <div class="mr-3 flex-auto">
                 <div class="flex flex-col ">
                     <label htmlFor="name">Наименование МТО</label>
                     <InputText type="text" v-model="data.name" />
@@ -17,9 +17,11 @@
                     <InputText type="text" v-model="data.inventory_id" />
                 </div>
                 <Button label="Обновить данные" @click="updateEquipment" class="p-button-success" />
-            </div>
+            </div> -->
             <div class="flex-auto">
-                <EquipmentTable :loading="loading" name="sets" :columns="setsColumns" table="Комплекты" :info="sets" />
+                <Creation type="placement" :saveClass="addNew" @save="update" />
+                <EquipmentTable :loading="loading" name="sets" :columns="placementColumns" table="Размещение"
+                    :info="sets" />
             </div>
         </div>
     </div>
@@ -31,12 +33,13 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Toast from 'primevue/toast';
-import TabMenu from 'primevue/tabmenu';
 import { useToast } from "primevue/usetoast";
 import { getEquipmentById, patchEquipment } from '@/assets/api/equipment'
+import { postPlacement } from '@/assets/api/placements';
 import { useRouter, useRoute } from 'vue-router'
 import EquipmentTable from './EquipmentTable.vue';
-import { setsColumns } from '@/assets/setsColumns';
+import Creation from './modals/Creation.vue';
+import { placementColumns } from '@/assets/placementColumns';
 export default {
     components: {
         Dialog,
@@ -44,7 +47,7 @@ export default {
         InputText,
         EquipmentTable,
         Toast,
-        TabMenu
+        Creation
     },
     props: {
         id: {
@@ -59,33 +62,21 @@ export default {
         const data = ref({});
         const sets = ref([]);
         const type = ref();
-        const loading = ref(true);
-        const items = ref([
-            {
-                label: 'Home',
-                icon: 'pi pi-fw pi-home',
-                to: '/'
-            },
-            {
-                label: 'Calendar',
-                icon: 'pi pi-fw pi-calendar',
-                command: ()=>{router.push({ path: `/category/mto/info/${props.id}/placements` })}
-            },
-        ]);
-        getEquipmentById(props.id).then((response) => {
-            data.value = response.data.data;
-            if (response.data.data.sets != null) {
-                sets.value = response.data.data.sets
-                sets.value = sets.value.map((set) => {
-                if(set.employee!=null){
-                    set.employeeInitials = set.employee.surname + " " + set.employee.name[0] + "." + set.employee.patronymic[0] + ".";
-                }
-                    return set;
-                })
-            }
-            type.value = response.data.data.equipment_type.name
-        })
-            .then(loading.value = false).catch((error) => { console.log(error) })
+        const loading = ref(true)
+        const update = () => {
+            loading.value = true;
+            store.dispatch('fetchClasses').then(() => {
+                loading.value = false;
+                info.value = store.getters.GET_CLASSES;
+            });
+        }
+        update();
+        const addNew = (placement) => {
+            return postPlacement({
+                'equipment_id': props.id,
+                "audience_id": placement.id
+            });
+        }
         const closeModal = () => {
             isDialogOpen.value = false;
             router.push({ name: 'mto' })
@@ -104,10 +95,11 @@ export default {
             data, loading,
             sets,
             type,
-            setsColumns,
+            placementColumns,
             hasSets: computed(() => { return sets.value.length }),
             updateEquipment,
-            items
+            update,
+            addNew
         }
     },
 };

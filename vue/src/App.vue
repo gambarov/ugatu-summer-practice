@@ -42,11 +42,6 @@ export default {
             command: () => { router.push({ name: 'classes' }) },
           },
           {
-            label: "Размещение",
-            icon: "pi pi-history",
-            command: () => { router.push({ name: 'history' }) },
-          },
-          {
             label: "Сотрудники",
             icon: "pi pi-id-card",
             command: () => { router.push({ name: 'employees' }) },

@@ -1,1 +1,1 @@
-export const classesColumns = [{field:'id', header:'№'}, {field:'name', header:'Название'},];
+export const classesColumns = [{field:'id', header:'№'}, {field:'name', header:'Название'},{field:'audience_type.name', header:'Тип'},];
