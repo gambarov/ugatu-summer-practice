@@ -32,11 +32,11 @@ class UpdateWorkRequest extends FormRequest
             ],
             'workable_type' => [
                 'sometimes', 
-                'integer', 
+                'string', 
                 Rule::requiredIf($this->request->has('workable_id'))
             ],
             'work_type_id' => 'sometimes|integer|exists:App\Models\Equipment\WorkType,id',
-            'work_status_id' => 'somtimes|integer|exists:App\Models\Equipment\WorkStatus,id',
+            'work_status_id' => 'sometimes|integer|exists:App\Models\Equipment\WorkStatus,id',
             'employee_id' => 'nullable|integer|exists:App\Models\Employee,id',
             'started_at' => 'sometimes|date',
             'ended_at' => 'nullable|date',
