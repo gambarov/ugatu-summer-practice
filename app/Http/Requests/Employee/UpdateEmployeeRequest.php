@@ -4,7 +4,7 @@ namespace App\Http\Requests\Employee;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreEmployeeRequest extends FormRequest
+class UpdateEmployeeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,12 +25,12 @@ class StoreEmployeeRequest extends FormRequest
     public function rules()
     {
         return [
-            'surname' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'patronymic' => 'required|string|max:255',
-            'role_id' => 'required|integer:exists:App\Models\Role,id',
-            'email' => 'required|string|email|max:255|unique:App\Models\Employee,email',
-            'password' => 'required|string|min:6',
+            'surname' => 'sometimes|string|max:255',
+            'name' => 'sometimes|string|max:255',
+            'patronymic' => 'sometimes|string|max:255',
+            'role_id' => 'sometimes|integer:exists:App\Models\Role,id',
+            'email' => 'sometimes|string|email|max:255|unique:App\Models\Employee,email,' . auth()->user()->id,
+            'password' => 'sometimes|string|min:6',
         ];
     }
 }

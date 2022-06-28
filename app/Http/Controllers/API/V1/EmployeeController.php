@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Employee\StoreEmployeeRequest;
+use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Models\Employee;
 use App\Http\Resources\Employee\EmployeeResource;
-use Illuminate\Http\Request;
+use App\Traits\JsonRespond;
 
 class EmployeeController extends Controller
 {
+    use JsonRespond;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::with('role')->get();
+        $employees = Employee::all();
         return EmployeeResource::collection($employees);
     }
 
@@ -26,9 +30,10 @@ class EmployeeController extends Controller
      * @param  \App\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEmployeeRequest $request)
     {
-        return Employee::create($request->all())->toJson();
+        $employee = Employee::create($request->validated());
+        return EmployeeResource::make($employee->load('role'));
     }
 
     /**
@@ -49,10 +54,10 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        $employee->update($request->all());
-        return $employee->toJson();
+        $employee->update($request->validated());
+        return new EmployeeResource($employee->load('role'));
     }
 
     /**
@@ -65,6 +70,6 @@ class EmployeeController extends Controller
     {
         $employee->tokens()->delete();
         $employee->delete();
-        return response()->noContent();
+        return $this->respondObjectDeleted($employee->id);
     }
 }
