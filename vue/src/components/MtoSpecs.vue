@@ -93,7 +93,7 @@ export default {
                 "removed_at":placement.removed_at,
                 "placed_at":placement.placed_at,
             }).then(() => showSuccess()).catch(() => {
-                toast.add({ severity: 'error', summary: error.response.data.error.message, life: 3000 });
+                toast.add({ severity: 'error', summary: 'Ошибка', life: 3000 });
             })
         }
         const showSuccess = () => {

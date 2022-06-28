@@ -1,6 +1,9 @@
 import { url } from "./url"
-export const getPlacements=(data)=>{
-    return url.post('/placements',data)
+export const getPlacements=()=>{
+    return url.get('/placements')
+}
+export const getPlacementsEquipment=(id)=>{
+    return url.get('/placements/equipment/'+id)
 }
 export const postPlacement=(data)=>{
     return url.post('/placements',data)

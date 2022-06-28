@@ -18,7 +18,7 @@
                 <label htmlFor="name">Оборудование</label>
                 <AutoComplete class="p-fluid bg-blue-500" :multiple="true" v-model="selectedEquipment"
                     :suggestions="filteredEquipment" @complete="searchEquipment($event)" :dropdown="true" field="name"
-                    forceSelection>
+                    :forceSelection="true">
                     <template #item="slotProps">
                         <div class="flex flex-row justify-between">
                             <span class="ml-2"> {{ slotProps.item.name }}</span>

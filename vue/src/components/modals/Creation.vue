@@ -4,7 +4,7 @@
             <Button label="Добавить" icon="pi pi-plus" class="p-button bg-blue-400 mr-3" @click="openDialog(true)" />
         </template>
     </Toolbar>
-    <Dialog @after-hide="close" class="" header="Добавить запись" v-model:visible="isDialogOpen" :modal="true">
+    <Dialog  @after-hide="close" class="" header="Добавить запись" v-model:visible="isDialogOpen" :modal="true">
         <div v-if="isClass" class="flex flex-col ">
             <div class="flex flex-col mb-4">
                 <label htmlFor="name">Корпус</label>
@@ -58,6 +58,16 @@
                     </template>
                 </AutoComplete>
             </div>
+            <div v-if="!isCreation" class="flex flex-col ">
+            <div class="flex flex-col mb-4">
+                <label htmlFor="name">От</label>
+                <InputText id="name" v-model="newEquipment.placed_at" required />
+            </div>
+            <div class="flex flex-col mb-4">
+                <label htmlFor="name">До</label>
+                <InputText id="name" v-model="newEquipment.removed_at" required />
+            </div>
+        </div>
         </div>
         <div v-if="isWork" class="flex flex-col ">
             <div class="flex flex-col mb-4">
@@ -116,21 +126,22 @@ export default {
     },
     setup(props, { emit }) {
         onMounted(() => {
-            store.dispatch('fetchEquipment');
-            store.dispatch('fetchClasses');
+
+            switch (props.type) {
+            case 'class':
+                store.dispatch('fetchEquipment').then(()=>{equipment = store.getters.GET_EQUIPMENT});
+                break;
+            case 'placement':
+                store.dispatch('fetchClasses').then(()=>{equipment = store.getters.GET_CLASSES});
+                break;
+        }
+            // store.dispatch('fetchEquipment').then(()=>{equipment = store.getters.GET_EQUIPMENT});
+            // store.dispatch('fetchClasses');
         })
         const store = useStore();
         const selectedEquipment = ref(props.equipment);
         const filteredEquipment = ref();
         let equipment;
-        switch (props.type) {
-            case 'class':
-                equipment = store.getters.GET_EQUIPMENT
-                break;
-            case 'placement':
-                equipment = store.getters.GET_CLASSES
-                break;
-        }
         const isDialogOpen = ref(false);
         const openDialog = (value) => {
             isDialogOpen.value = value;
@@ -145,6 +156,7 @@ export default {
         const searchEquipment = (event) => {
             if (!event.query.trim().length) {
                 filteredEquipment.value = [...equipment];
+                console.log(equipment)
             }
             else {
                 filteredEquipment.value = equipment.filter((item) => {
@@ -172,7 +184,7 @@ export default {
                     break;
                 case 'placement':
                     if (selectedEquipment.value != null || props.creation === false) {
-                        props.saveClass(selectedEquipment.value).then(() => emit('save'));
+                        props.saveClass(newEquipment.value,selectedEquipment.value).then(() => emit('save'));
                         isDialogOpen.value = false;
                     }
                     break;
@@ -184,7 +196,7 @@ export default {
             setsColumns,
             newEquipment, isDialogOpen, openDialog,
             deleteSet,
-            equipment: computed(() => store.getters.GET_EQUIPMENT),
+            equipment,
             searchEquipment,
             filteredEquipment,
             selectedEquipment,

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-1 flex-col">
     <Creation type="class" @save="update" :saveClass="addNewClass" />
-    <EquipmentTable @deleteElement="update" :delete="deleteClass" :loading="loading" :info="info"
+    <EquipmentTable @deleteElement="update" name="classes" :delete="deleteClass" :loading="loading" :info="info"
       :columns="classesColumns" table="Аудитории" />
   </div>
 </template>

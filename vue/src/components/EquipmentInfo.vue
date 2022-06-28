@@ -1,6 +1,6 @@
 <template>
     <Toast />
-    
+
     <div class=" bg-white p-4">
         <div class="flex  flex-row ">
             <div class="mr-3 flex-auto">
@@ -69,7 +69,7 @@ export default {
             {
                 label: 'Calendar',
                 icon: 'pi pi-fw pi-calendar',
-                command: ()=>{router.push({ path: `/category/mto/info/${props.id}/placements` })}
+                command: () => { router.push({ path: `/category/mto/info/${props.id}/placements` }) }
             },
         ]);
         getEquipmentById(props.id).then((response) => {
@@ -77,9 +77,9 @@ export default {
             if (response.data.data.sets != null) {
                 sets.value = response.data.data.sets
                 sets.value = sets.value.map((set) => {
-                if(set.employee!=null){
-                    set.employeeInitials = set.employee.surname + " " + set.employee.name[0] + "." + set.employee.patronymic[0] + ".";
-                }
+                    if (set.employee != null) {
+                        set.employeeInitials = set.employee.surname + " " + set.employee.name[0] + "." + set.employee.patronymic[0] + ".";
+                    }
                     return set;
                 })
             }
@@ -91,8 +91,12 @@ export default {
             router.push({ name: 'mto' })
         }
         const updateEquipment = () => {
-            patchEquipment(props.id, data.value).then(() => showSuccess()).catch(() => {
-                toast.add({ severity: 'error', summary: 'Ошибка', life: 3000 });
+            patchEquipment(props.id, {
+                equipment_type_id: data.equipment_type_id,
+                inventory_id: data.inventory_id,
+                name: data.name,
+            }).then(() => showSuccess()).catch((error) => {
+                toast.add({ severity: 'error', summary: error.response.data.error.message, life: 3000 });
             })
         }
         const showSuccess = () => {
