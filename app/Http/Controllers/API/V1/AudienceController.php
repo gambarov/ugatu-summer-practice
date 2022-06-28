@@ -31,7 +31,7 @@ class AudienceController extends ApiController
      */
     public function store(StoreAudienceRequest $request)
     {
-        $audience = app(CreateAudienceService::class)->execute($request->all());
+        $audience = app(CreateAudienceService::class)->execute($request->validated());
         return AudienceResource::make($audience->load(['type', 'equipment']));
     }
 
@@ -56,7 +56,7 @@ class AudienceController extends ApiController
      */
     public function update(UpdateAudienceRequest $request, $id)
     {
-        $audience = app(UpdateAudienceService::class)->execute($request->all() + ['id' => $id]);
+        $audience = app(UpdateAudienceService::class)->execute($request->validated() + ['id' => $id]);
         return AudienceResource::make($audience->load(['equipment']));
     }
 

@@ -28,11 +28,11 @@ class UpdateAudienceRequest extends FormRequest
             'building' =>  [
                 'required',
                 'integer',
-                Rule::unique('App\Models\Equipment\Audience')->ignore($this->id)->where(function ($query) {
+                Rule::unique('App\Models\Equipment\Audience')->where(function ($query) {
                     return $query->where('building', $this->building)
                         ->where('number', $this->number)
                         ->where('letter', $this->letter);
-                })
+                })->ignore($this->route('audience')),
             ],
             'number' => 'sometimes|integer',
             'letter' => 'nullable|string',
