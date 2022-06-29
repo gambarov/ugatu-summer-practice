@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Helpers\MorphHelper;
 use App\Http\Controllers\API\ApiController;
 use App\Http\Requests\Work\StoreWorkRequest;
 use App\Http\Requests\Work\UpdateWorkRequest;
@@ -10,6 +11,7 @@ use App\Models\Equipment\Work;
 use App\Services\Work\CreateWorkService;
 use App\Services\Work\UpdateWorkService;
 use App\Traits\JsonRespond;
+use Illuminate\Http\Request;
 
 class WorkController extends ApiController
 {
@@ -23,6 +25,18 @@ class WorkController extends ApiController
     public function index()
     {
         return WorkResource::collection(Work::with('workable')->get());
+    }
+
+    public function workable(Request $request, $id)
+    {
+        $data = $request->validate([
+            'workable_type' => 'required|string',
+        ]);
+        $workable_type = MorphHelper::getMorphType($data['workable_type']);
+        return WorkResource::collection(
+            Work::where('workable_id', $id)
+                ->where('workable_type', $workable_type)->get()
+        );
     }
 
     /**

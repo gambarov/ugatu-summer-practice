@@ -15,7 +15,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-
     Route::apiResource('/equipment', EquipmentController::class, [
         'only' => ['index', 'store', 'show', 'update', 'destroy'],
     ]);
@@ -41,6 +40,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         'only' => ['index', 'store', 'show', 'update', 'destroy'],
     ]);
 
+    Route::get('works/workable/{id}', [WorkController::class, 'workable']);
     Route::apiResource('/works', WorkController::class, [
         'only' => ['index', 'store', 'show', 'update', 'destroy'],
     ]);
