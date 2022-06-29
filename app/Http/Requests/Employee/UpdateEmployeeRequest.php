@@ -33,7 +33,7 @@ class UpdateEmployeeRequest extends FormRequest
             'email' => [
                 'sometimes',
                 'email',
-                Rule::unique('employees')->ignore($this->user()->id, 'id')
+                Rule::unique('employees')->ignore($this->route('employee'))
             ],
             'password' => 'sometimes|string|min:6',
         ];
