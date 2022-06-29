@@ -4,6 +4,7 @@ namespace App\Http\Requests\Employee;
 
 use App\Helpers\AuthHelper;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateEmployeeRequest extends FormRequest
 {
@@ -29,7 +30,11 @@ class UpdateEmployeeRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             'patronymic' => 'sometimes|string|max:255',
             'role_id' => 'sometimes|integer:exists:App\Models\Role,id',
-            'email' => 'sometimes|string|email|max:255|unique:App\Models\Employee,email,' . auth()->user()->id,
+            'email' => [
+                'sometimes',
+                'email',
+                Rule::unique('employees')->ignore($this->user()->id, 'id')
+            ],
             'password' => 'sometimes|string|min:6',
         ];
     }
