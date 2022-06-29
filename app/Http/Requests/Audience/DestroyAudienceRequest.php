@@ -14,7 +14,7 @@ class DestroyAudienceRequest extends FormRequest
      */
     public function authorize()
     {
-        return AuthHelper::authorize();
+        return AuthHelper::isAdmin();
     }
 
     /**

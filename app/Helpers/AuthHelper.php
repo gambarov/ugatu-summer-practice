@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class AuthHelper
 {
-    public static function authorize()
+    public static function isAdmin()
     {
         $user = auth()->user();
 
