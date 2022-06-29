@@ -144,4 +144,26 @@ class WorkControllerTest extends TestCase
             'id' => $work->id,
         ]);
     }    
+
+    /**
+     * @return void
+     */
+    public function test_gets_workable_works()
+    {
+        $employee = Employee::factory()->create();
+        Sanctum::actingAs($employee, ['*']);
+
+        $equipment = Equipment::factory()->create();
+        Work::factory()->create([
+            'workable_id' => $equipment->id,
+            'workable_type' => 'equipment',
+        ]);
+
+        $response = $this->getJson('/api/works/workable/' . $equipment->id . '?workable_type=equipment');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => ['*' => $this->jsonWorkable],
+        ]);
+    }    
 }
