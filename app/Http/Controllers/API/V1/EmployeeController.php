@@ -64,11 +64,12 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Employee  $employee
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DestroyEmployeeRequest $employee)
+    public function destroy(DestroyEmployeeRequest $request, $id)
     {
+        $employee = Employee::findOrFail($id);
         $employee->tokens()->delete();
         $employee->delete();
         return $this->respondObjectDeleted($employee->id);
