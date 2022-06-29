@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
+use App\Models\Equipment\Equipment;
 use App\Models\Note;
+use Database\Factories\Equipment\EquipmentFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +23,9 @@ class NoteFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'text' => $this->faker->text(),
+            'equipment_id' => Equipment::inRandomOrder()->firstOrCreate((new EquipmentFactory())->definition())->id,
+            'employee_id' => Employee::inRandomOrder()->firstOrCreate((new EmployeeFactory())->definition())->id,
         ];
     }
 }

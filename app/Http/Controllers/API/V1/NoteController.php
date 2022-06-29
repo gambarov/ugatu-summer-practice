@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Note\StoreNoteRequest;
+use App\Http\Requests\Note\UpdateNoteRequest;
 use App\Models\Note;
 use App\Http\Resources\Note\NoteResource;
-use Illuminate\Http\Request;
+use App\Traits\JsonRespond;
 
 class NoteController extends Controller
 {
+    use JsonRespond;
+
     /**
      * Display a listing of the resource.
      *
@@ -26,9 +30,10 @@ class NoteController extends Controller
      * @param  \App\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreNoteRequest $request)
     {
-        return NoteResource::create($request->all());
+        $note = Note::create($request->validated());
+        return NoteResource::make($note->load('equipment', 'employee'));
     }
 
     /**
@@ -49,21 +54,22 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Note $note)
+    public function update(UpdateNoteRequest $request, Note $note)
     {
-        $note->update($request->all());
+        $note->update($request->validated());
         return new NoteResource($note);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Note  $note
+     * @param  integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Note $note)
+    public function destroy($id)
     {
+        $note = Note::findOrFail($id);
         $note->delete();
-        return response()->noContent();
+        return $this->respondObjectDeleted($id);
     }
 }

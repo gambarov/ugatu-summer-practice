@@ -12,6 +12,8 @@ class Note extends Model
 
     protected $guarded = ['id'];
 
+    protected $with = ['equipment', 'employee'];
+
     protected $fillable = [
         'text',
         'equipment_id',
