@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\API\ApiController;
 use App\Http\Requests\Equipment\StoreEquipmentRequest;
 use App\Http\Requests\Equipment\UpdateEquipmentRequest;
+use App\Http\Resources\Equipment\EquipmentCharResource;
 use App\Models\Equipment\Equipment;
 use App\Http\Resources\Equipment\EquipmentResource;
+use App\Models\Equipment\EquipmentChar;
 use App\Services\Equipment\CreateEquipmentService;
 use App\Services\Equipment\UpdateEquipmentService;
 
@@ -23,6 +25,12 @@ class EquipmentController extends ApiController
         return EquipmentResource::collection($equipment);
     }
 
+    public function chars($id)
+    {
+        $chars = EquipmentChar::with('char')->where('equipment_id', $id)->get();
+        return EquipmentCharResource::collection($chars);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -32,7 +40,7 @@ class EquipmentController extends ApiController
     public function store(StoreEquipmentRequest $request)
     {
         $equipment = app(CreateEquipmentService::class)->execute($request->validated());
-        return new EquipmentResource($equipment->load('type', 'sets', 'chars'));
+        return new EquipmentResource($equipment->load(['type', 'sets', 'chars']));
     }
 
     /**

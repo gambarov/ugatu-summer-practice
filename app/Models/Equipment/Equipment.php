@@ -29,6 +29,7 @@ class Equipment extends Model
     {
         return $this->belongsToMany(Equipment::class, 'equipment_char', 'equipment_id', 'char_id')
             ->withPivot('value')
+            ->using(EquipmentChar::class)
             ->withTimestamps();
     }
 

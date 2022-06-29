@@ -19,6 +19,9 @@ class CharResource extends JsonResource
             'name' => $this->name,
             'char_group' => new CharGroupResource($this->whenLoaded('group')),
             'char_measure' => new CharMeasureResource($this->whenLoaded('measure')),
+            'value' => $this->whenPivotLoaded('equipment_char', function () {
+                return $this->pivot->value;
+            }),
         ];
     }
 }
