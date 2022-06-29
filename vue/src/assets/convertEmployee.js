@@ -9,3 +9,13 @@ export const convertEmployee = (arr) => {
     })
 
 }
+export const convertEmployeeInArray = (arr) => {
+    return arr.map((set) => {
+        if (set.employee.surname != null&&set.employee.patronymic != null&&set.employee.name != null) {
+            set.employee.employeeInitials = set.employee.surname + " " + set.employee.name[0] + "." + set.employee.patronymic[0] + ".";
+
+        }
+        return set;
+    })
+
+}

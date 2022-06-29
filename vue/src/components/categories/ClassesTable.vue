@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-1 flex-col">
-    <Creation type="class" @save="update" :saveClass="addNewClass" />
+    <Creation type="class" @save="update" :saveClass="addNewClass" :creation="true" />
     <EquipmentTable @deleteElement="update" name="classes" :delete="deleteClass" :loading="loading" :info="info"
       :columns="classesColumns" table="Аудитории" />
   </div>
@@ -46,12 +46,12 @@ export default {
       });
     }
     update();
-    const addNewClass = (className) => {
+    const addNewClass = (className,type) => {
       return postClass({
         "building": className.building,
         "number": className.number,
         "letter": className.letter,
-        "audience_type_id": className.audience_type,
+        "audience_type_id": type.id,
 
       });
     }

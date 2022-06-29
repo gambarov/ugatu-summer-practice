@@ -2,6 +2,9 @@ import { url } from "./url"
 export const getClasses=()=>{
     return url.get('/audiences')
 }
+export const getTypes=()=>{
+    return url.get('/audience/types')
+}
 export const getClassById=(id)=>{
     return url.get('/audiences/'+id)
 }

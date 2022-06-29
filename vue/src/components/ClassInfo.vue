@@ -22,7 +22,16 @@
                     </div>
                     <div class="flex flex-col mb-3">
                         <label htmlFor="type">Тип</label>
-                        <Dropdown v-model="data.audience_type" optionLabel="name" :options="types" placeholder="Выберите тип класса" />
+                        <AutoComplete class="p-fluid bg-blue-500" v-model="selectedEquipment"
+                            :suggestions="filteredEquipment" @complete="searchEquipment($event)" :dropdown="true"
+                            field="name" :forceSelection="true">
+                            <template #item="slotProps">
+                                <div class="flex flex-row justify-between">
+                                    <span class="ml-2"> {{ slotProps.item.name }}</span>
+                                    <span>{{ slotProps.item.inventory_id }}</span>
+                                </div>
+                            </template>
+                        </AutoComplete>
                     </div>
                     <Button label="Обновить данные" @click="updateClass" class="p-button-success" />
                 </div>
@@ -42,6 +51,7 @@ import InputText from "primevue/inputtext";
 import Toast from 'primevue/toast';
 import TabMenu from 'primevue/tabmenu';
 import Dropdown from 'primevue/dropdown';
+import AutoComplete from 'primevue/autocomplete';
 import { useToast } from "primevue/usetoast";
 import { getClassById, patchClass } from '@/assets/api/classes'
 import { useRouter, useRoute } from 'vue-router'
@@ -55,7 +65,8 @@ export default {
         EquipmentTable,
         Toast,
         TabMenu,
-        Dropdown
+        Dropdown,
+        AutoComplete
     },
     props: {
         id: {
@@ -70,9 +81,12 @@ export default {
         const data = ref({});
         const type = ref();
         const loading = ref(true);
-const types = [{ name: "Дисплейный", id: 1 }, { name: "АО", id: 2 }];
+        const selectedEquipment = ref();
+        const filteredEquipment=ref();
+        const types = ref([]);
         getClassById(props.id).then((response) => {
             data.value = response.data.data;
+            selectedEquipment.value=data.value.audience_type
             // if (response.data.data.sets != null) {
             //     sets.value = response.data.data.sets
             //     sets.value = sets.value.map((set) => {
@@ -83,15 +97,31 @@ const types = [{ name: "Дисплейный", id: 1 }, { name: "АО", id: 2 }]
             //     })
             // }
             // type.value = response.data.data.equipment_type.name
-        })
-            .then(loading.value = false).catch((error) => { console.log(error) })
+        }).then(() => {
+            store.dispatch('fetchClasses').then(() => {
+                types.value = store.getters.GET_CLASSES_TYPES
+            })
+        }).then(loading.value = false).catch((error) => { console.log(error) })
+        const searchEquipment = (event) => {
+            if (!event.query.trim().length) {
+                filteredEquipment.value = [...types.value];
+            }
+            else {
+                filteredEquipment.value = types.value.filter((item) => {
+                    if (item.name.toLowerCase().includes(event.query.toLowerCase()) || item.inventory_id.toLowerCase().includes(event.query.toLowerCase())) {
+                        return true;
+                    }
+                    return false;
+                });
+            }
+        }
         const closeModal = () => {
             isDialogOpen.value = false;
             router.push({ name: 'classes' })
         }
         const updateClass = () => {
             patchClass(props.id, {
-                audience_type_id: data.value.audience_type.id,
+                audience_type_id: selectedEquipment.value.id,
                 building: data.value.building,
                 letter: data.value.letter,
                 number: data.value.number
@@ -109,7 +139,10 @@ const types = [{ name: "Дисплейный", id: 1 }, { name: "АО", id: 2 }]
             type,
             mtoColumns,
             updateClass,
-            types
+            types,
+            searchEquipment,
+            selectedEquipment,
+            filteredEquipment
         }
     },
 };

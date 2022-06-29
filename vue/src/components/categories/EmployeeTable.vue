@@ -59,7 +59,7 @@ export default {
         "patronymic": employee.patronymic,
         "email": employee.email,
         "password":employee.password,
-        "role_id":1
+        "role_id":employee.role.id
       });
     }
 
@@ -70,7 +70,7 @@ const changeEmployee=(employee)=>{
         "patronymic": employee.patronymic,
         "email": employee.email,
         "password":employee.password,
-        "role_id":1
+        "role_id":employee.role.id
       });
 }
     return {

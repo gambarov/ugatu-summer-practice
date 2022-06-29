@@ -130,7 +130,7 @@ export default {
     }
     const showInfo = (data) => {
       // router.push({ name: props.name + 'Info', params: { id: data.id } })
-      if(props.name==='employee'||props.name==='placement'){
+      if(props.name==='employee'||props.name==='placement'||props.name==='work'){
         emit('change',data.id)
       }
       else{
