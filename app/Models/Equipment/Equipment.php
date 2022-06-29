@@ -13,7 +13,7 @@ class Equipment extends Model
     protected $with = ['type'];
 
     protected $guarded = ['id'];
-    
+
     protected $fillable = [
         'inventory_id',
         'name',
@@ -27,7 +27,9 @@ class Equipment extends Model
 
     public function chars()
     {
-        return $this->belongsToMany(Char::class, 'equipment_char');
+        return $this->belongsToMany(Equipment::class, 'equipment_char', 'equipment_id', 'char_id')
+            ->withPivot('value')
+            ->withTimestamps();
     }
 
     public function audiences()

@@ -9,6 +9,8 @@ class Char extends Model
 {
     use HasFactory;
 
+    protected $with = ['group', 'measure'];
+
     protected $guarded = ['id'];
     
     protected $fillable = [
@@ -20,7 +22,9 @@ class Char extends Model
 
     public function equipment()
     {
-        return $this->belongsToMany(Equipment::class, 'equipment_char');
+        return $this->belongsToMany(Equipment::class, 'equipment_char', 'char_id', 'equipment_id')
+            ->withPivot('value')
+            ->withTimestamps();
     }
 
     public function group()
