@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Equipment\EquipmentTypeResource;
 use App\Models\Equipment\EquipmentType;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class EquipmentTypeController extends Controller
      */
     public function index()
     {
-        //
+        return EquipmentTypeResource::collection(EquipmentType::all());
     }
 
     /**
