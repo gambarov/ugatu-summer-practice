@@ -4,8 +4,9 @@ use App\Http\Controllers\API\V1\AudienceController;
 use App\Http\Controllers\API\V1\AudienceTypeController;
 use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\CharController;
+use App\Http\Controllers\API\V1\CharGroupController;
+use App\Http\Controllers\API\V1\CharMeasureController;
 use App\Http\Controllers\API\V1\EmployeeController;
-use App\Http\Controllers\API\V1\EquipmentCharController;
 use App\Http\Controllers\API\V1\EquipmentController;
 use App\Http\Controllers\API\V1\EquipmentTypeController;
 use App\Http\Controllers\API\V1\PlacementController;
@@ -25,6 +26,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/work/statuses', [WorkStatusController::class, 'index']);
     Route::get('/work/types', [WorkTypeController::class, 'index']);
     Route::get('/audience/types', [AudienceTypeController::class, 'index']);
+    Route::get('/char/groups', [CharGroupController::class, 'index']);
+    Route::get('/char/measures', [CharMeasureController::class, 'index']);
 
     Route::apiResource('/chars', CharController::class, [
         'only' => ['index', 'store', 'show', 'update', 'destroy'],
