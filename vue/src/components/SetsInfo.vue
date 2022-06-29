@@ -1,11 +1,6 @@
 <template>
 <Toast></Toast>
-    <div class="absolute inset-0 h-fit bg-white p-4">
-        <div class="flex items-center mb-3">
-            <Button icon="pi pi-arrow-left" @click="closeModal" class="p-button-rounded p-button-outlined mr-3" />
-            <h1 class="text-2xl font-medium">Информация о комплекте</h1>
-        </div>
-
+    <div class=" bg-white p-4">
         <div v-if="!loading" class="flex  flex-row ">
             <div class="mr-3 flex-auto">
                 <div class="flex flex-col ">

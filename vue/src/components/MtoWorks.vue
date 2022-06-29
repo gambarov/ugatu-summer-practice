@@ -24,6 +24,7 @@ import { useRouter, useRoute } from 'vue-router'
 import EquipmentTable from './EquipmentTable.vue';
 import Creation from './modals/Creation.vue';
 import { worksColumns } from '@/assets/worksColumns';
+import equipment from '@/store/equipment';
 export default {
     components: {
         Dialog,
@@ -41,6 +42,7 @@ export default {
     setup(props) {
         const toast = useToast();
         const router = useRouter();
+        const route = useRoute();
         const isDialogOpen = ref(false)
         const openDialog = (value) => {
             isDialogOpen.value = value;
@@ -50,9 +52,14 @@ export default {
         const type = ref();
         const loading = ref(true)
         const creationInfo = ref();
+        let category='';
+        if(route.fullPath.includes('mto')){
+            category='equipment'
+        }
+        else category='set'
         const update = () => {
             loading.value = true;
-            getWorks(props.id, 'equipment').then((response) => {
+            getWorks(props.id, category).then((response) => {
                 info.value = response.data.data.map((item) => {
                     item.time = item.started_at + ' - ';
                     item.time += item.ended_at ? item.ended_at : '';
@@ -74,7 +81,7 @@ export default {
 
             return postWork({
                 "workable_id": props.id,
-                "workable_type": "equipment",
+                "workable_type": category,
                 "work_type_id": type.id,
                 "work_status_id": status.id,
                 "employee_id": store.getters.GET_USER_ID
@@ -91,7 +98,7 @@ export default {
                 "started_at": work.started_at,
                 "work_type_id": type.id,
                 "work_status_id": status.id,
-                "workable_type":'equipment'
+                "workable_type":category
             }
             if (work.ended_at != null) {
                 body.ended_at = work.ended_at

@@ -35,6 +35,7 @@ import { useStore } from 'vuex'
 import { ref, onMounted, computed } from "vue";
 import { setsColumns } from "@/assets/setsColumns";
 import { deleteSet, postSet } from "@/assets/api/sets"
+import router from "@/router";
 export default {
   components: {
     InputText,
@@ -47,7 +48,7 @@ export default {
     const store=useStore();
     const isLoginFailed=ref(false);
     const checkLogin=()=>{
-      store.dispatch('fetchUser',{ email: email.value, password: password.value }).then(()=>console.log("lolf"),).catch((error)=>isLoginFailed.value=true)
+      store.dispatch('fetchUser',{ email: email.value, password: password.value }).then(()=>router.push('/'),).catch((error)=>isLoginFailed.value=true)
     }
    return{
     email,password,checkLogin, isLoginFailed

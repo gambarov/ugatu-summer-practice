@@ -12,6 +12,7 @@ import MtoPlacements from "../components/MtoPlacements.vue"
 import MtoWorks from "../components/MtoWorks.vue"
 import MtoSpecs from "../components/MtoSpecs.vue"
 import TabMenu from "../components/TabMenu.vue"
+import SetsTabMenu from "../components/SetsTabMenu.vue"
 import store from "@/store/index.js";
 
 const rights = store.getters.GET_RIGHTS || false;
@@ -78,8 +79,24 @@ const routes = [
   {
     path: '/category/sets/info/:id',
     name: 'setsInfo',
-    component: SetsInfo,
+    component: SetsTabMenu,
     props: true,
+    children: [
+    {
+      path: '',
+      props: true,
+      components: {
+        tabs: SetsInfo
+      },
+    },
+    {
+      path: 'works',
+      props: true,
+      components: {
+        tabs: MtoWorks
+      },
+    }, 
+    ]
   },
   {
     path: '/category/sets',
