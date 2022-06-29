@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Char\StoreCharRequest;
+use App\Http\Requests\Char\UpdateCharRequest;
+use App\Http\Resources\Char\CharResource;
 use App\Models\Equipment\Char;
-use Illuminate\Http\Request;
+use App\Traits\JsonRespond;
 
 class CharController extends Controller
 {
+    use JsonRespond;
+
     /**
      * Display a listing of the resource.
      *
@@ -15,17 +20,7 @@ class CharController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return CharResource::collection(Char::all());
     }
 
     /**
@@ -34,9 +29,10 @@ class CharController extends Controller
      * @param  \App\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCharRequest $request)
     {
-        //
+        $char = Char::create($request->validated());
+        return CharResource::make($char->load('measure', 'group'));
     }
 
     /**
@@ -47,18 +43,7 @@ class CharController extends Controller
      */
     public function show(Char $char)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Char  $equipmentChar
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Char $char)
-    {
-        //
+        return CharResource::make($char->load('measure', 'group'));
     }
 
     /**
@@ -68,19 +53,22 @@ class CharController extends Controller
      * @param  \App\Models\Char  $equipmentChar
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Char $char)
+    public function update(UpdateCharRequest $request, Char $char)
     {
-        //
+        $char->update($request->validated());
+        return CharResource::make($char->load('measure', 'group'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Char  $equipmentChar
+     * @param  integer $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Char $char)
+    public function destroy($id)
     {
-        //
+        $char = Char::findOrFail($id);
+        $char->delete();
+        $this->respondObjectDeleted($id);
     }
 }
