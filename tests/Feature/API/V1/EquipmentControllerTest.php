@@ -3,11 +3,13 @@
 namespace Tests\Feature\API\V1;
 
 use App\Models\Employee;
+use App\Models\Equipment\Char;
 use App\Models\Equipment\Equipment;
 use App\Models\Equipment\EquipmentType;
 use App\Models\Equipment\Set;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -21,19 +23,10 @@ class EquipmentControllerTest extends TestCase
         'inventory_id',
         'equipment_type' => [
             'id',
-            'name'
-        ]
-    ];
-
-    private $jsonEquipmentWithSets = [
-        'id',
-        'name',
-        'inventory_id',
-        'equipment_type' => [
-            'id',
             'name',
         ],
-        'sets'
+        'sets',
+        'chars'
     ];
 
     /**
@@ -48,7 +41,7 @@ class EquipmentControllerTest extends TestCase
         $response = $this->json('GET', '/api/equipment');
 
         $response->assertStatus(200);
-        $response->assertJsonStructure(['data' => ['*' => $this->jsonEquipmentWithSets]]);
+        $response->assertJsonStructure(['data' => ['*' => $this->jsonEquipment]]);
     }
 
     /**
@@ -85,7 +78,7 @@ class EquipmentControllerTest extends TestCase
         ]);
 
         $response->assertStatus(201);
-        $response->assertJsonStructure(['data' => $this->jsonEquipmentWithSets]);
+        $response->assertJsonStructure(['data' => $this->jsonEquipment]);
     }
 
     /**
@@ -100,7 +93,7 @@ class EquipmentControllerTest extends TestCase
         $response = $this->json('GET', '/api/equipment/' . $equipment->id);
 
         $response->assertStatus(200);
-        $response->assertJsonStructure(['data' => $this->jsonEquipmentWithSets]);
+        $response->assertJsonStructure(['data' => $this->jsonEquipment]);
     }
 
     /**
@@ -149,7 +142,7 @@ class EquipmentControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200);
-        $response->assertJsonStructure(['data' => $this->jsonEquipmentWithSets]);
+        $response->assertJsonStructure(['data' => $this->jsonEquipment]);
 
         $this->assertDatabaseHas('equipment', [
             'id' => $equipment->id,
@@ -185,7 +178,7 @@ class EquipmentControllerTest extends TestCase
     /**
      * @return void
      */
-    public function test_throws_validation_error_when_storing_equipment_with_wrong_sets_array() 
+    public function test_throws_validation_error_when_storing_equipment_with_wrong_sets_array()
     {
         Sanctum::actingAs(Employee::factory()->create(), ['*']);
 
@@ -198,5 +191,33 @@ class EquipmentControllerTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonStructure(['error' => ['message', 'errors']]);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_stores_a_equipment_with_chars()
+    {
+        Sanctum::actingAs(Employee::factory()->create(), ['*']);
+
+        $char = Char::factory()->create();
+
+        $response = $this->json('POST', '/api/equipment', [
+            'name' => 'Test Equipment',
+            'inventory_id' => 'TEST-EQUIPMENT',
+            'equipment_type_id' => EquipmentType::create(['name' => 'type'])->id,
+            'chars' => [
+                [$char->id => ['value' => 50]],
+            ]
+        ]);
+
+        $response->assertStatus(201);
+        $response->assertJsonStructure(['data' => $this->jsonEquipment]);
+
+        $this->assertDatabaseHas('equipment_char', [
+            'equipment_id' => $response->json('data.id'),
+            'char_id' => $char->id,
+            'value' => 50
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Equipment;
 
+use App\Http\Resources\Char\CharResource;
 use App\Http\Resources\Set\SetResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,7 @@ class EquipmentResource extends JsonResource
             'name' => $this->name,
             'equipment_type' => new EquipmentTypeResource($this->whenLoaded('type')),
             'sets' => SetResource::collection($this->whenLoaded('sets')),
+            'chars' => CharResource::collection($this->whenLoaded('chars')),
         ];
     }
 }

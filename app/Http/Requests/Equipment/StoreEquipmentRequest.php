@@ -29,6 +29,7 @@ class StoreEquipmentRequest extends FormRequest
             'inventory_id' => 'required|string|max:255',
             'sets' => 'sometimes|array',
             'sets.*' => 'sometimes|integer|exists:App\Models\Equipment\Set,id',
+            'chars' => 'sometimes|array',
         ];
     }
 }
