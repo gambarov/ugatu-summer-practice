@@ -43,7 +43,7 @@ class CharController extends Controller
      */
     public function show(Char $char)
     {
-        return CharResource::make($char->load('measure', 'group'));
+        return CharResource::make($char);
     }
 
     /**
