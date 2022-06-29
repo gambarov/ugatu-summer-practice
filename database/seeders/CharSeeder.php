@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Equipment\Char;
 use App\Models\Equipment\CharGroup;
 use App\Models\Equipment\CharMeasure;
+use App\Models\Equipment\Equipment;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -37,6 +38,13 @@ class CharSeeder extends Seeder
 
         foreach ($chars as $char) {
             Char::create($char);
+        }
+
+        foreach (Equipment::all() as $equipment) {
+            $chars = Char::inRandomOrder()->take(rand(1, 2))->pluck('id')->map(function ($id) {
+                return [$id => ['value' => rand(1, 100)]];
+            });
+            $equipment->chars()->attach($chars[0]);
         }
     }
 }

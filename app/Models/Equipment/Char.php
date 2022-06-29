@@ -15,7 +15,6 @@ class Char extends Model
     
     protected $fillable = [
         'name',
-        'value',
         'char_group_id',
         'char_measure_id',
     ];
@@ -24,6 +23,7 @@ class Char extends Model
     {
         return $this->belongsToMany(Equipment::class, 'equipment_char', 'char_id', 'equipment_id')
             ->withPivot('value')
+            ->using(EquipmentChar::class)
             ->withTimestamps();
     }
 
