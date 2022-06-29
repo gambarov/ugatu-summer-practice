@@ -88,11 +88,15 @@ export default {
             router.push({ name: 'mto' })
         }
         const changePlacement = (placement,audience) => {
-            return patchPlacement(placement.id,{
+            let body={
                 "audience_id": audience.id,
-                "removed_at":placement.removed_at,
                 "placed_at":placement.placed_at,
-            }).then(() => showSuccess()).catch(() => {
+            }
+            if(placement.removed_at!=null){
+                body.removed_at=placement.removed_at
+
+            }
+            return patchPlacement(placement.id,body).then(() => showSuccess()).catch(() => {
                 toast.add({ severity: 'error', summary: error.response.data.error.message, life: 3000 });
             })
         }

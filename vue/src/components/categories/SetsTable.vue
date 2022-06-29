@@ -50,7 +50,8 @@ export default {
         return postSet({
           "name": set.name,
           "equipment":equipment,
-          "inventory_id":set.inventory_id
+          "inventory_id":set.inventory_id,
+          "employee_id":store.getters.GET_USER_ID
         });}
     return {
       info,

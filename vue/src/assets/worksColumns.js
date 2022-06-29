@@ -1,1 +1,1 @@
-export const worksColumns = [{field:'id', header:'№'}, {field:'class', header:'Тип'},{field:'date', header:'Дата расположения'},];
+export const worksColumns = [{field:'id', header:'№'}, {field:'work_type.name', header:'Тип'},{field:'work_status.name', header:'Статус'},{field:'time', header:'Время выполнения'},];

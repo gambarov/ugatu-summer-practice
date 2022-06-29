@@ -1,6 +1,9 @@
 import { url } from "./url"
 export const getEquipment=()=>{
-    return url.get('/equipment')
+    return url.get('/equipment');
+}
+export const getTypes=()=>{
+    return url.get('/equipment/types');
 }
 export const getEquipmentById=(id)=>{
     return url.get('/equipment/'+id)

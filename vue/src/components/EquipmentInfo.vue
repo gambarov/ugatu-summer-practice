@@ -10,7 +10,14 @@
                 </div>
                 <div class="flex flex-col">
                     <label htmlFor="type">Тип</label>
-                    <InputText type="text" v-model="type" />
+                    <AutoComplete class="p-fluid bg-blue-500" v-model="selectedType" :suggestions="filteredType"
+                        @complete="searchType($event)" :dropdown="true" field="name" :forceSelection="true">
+                        <template #item="slotProps">
+                            <div class="flex flex-row justify-between">
+                                <span class="ml-2"> {{ slotProps.item.name }}</span>
+                            </div>
+                        </template>
+                    </AutoComplete>
                 </div>
                 <div class="flex flex-col mb-3">
                     <label htmlFor="type">Идентификатор</label>
@@ -32,6 +39,7 @@ import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Toast from 'primevue/toast';
 import TabMenu from 'primevue/tabmenu';
+import AutoComplete from 'primevue/autocomplete';
 import { useToast } from "primevue/usetoast";
 import { getEquipmentById, patchEquipment } from '@/assets/api/equipment'
 import { useRouter, useRoute } from 'vue-router'
@@ -44,7 +52,8 @@ export default {
         InputText,
         EquipmentTable,
         Toast,
-        TabMenu
+        TabMenu,
+        AutoComplete
     },
     props: {
         id: {
@@ -58,6 +67,9 @@ export default {
         const store = useStore();
         const data = ref({});
         const sets = ref([]);
+        const selectedType = ref();
+        const filteredType = ref();
+        const types = ref([]);
         const type = ref();
         const loading = ref(true);
         const items = ref([
@@ -83,7 +95,11 @@ export default {
                     return set;
                 })
             }
-            type.value = response.data.data.equipment_type.name
+            selectedType.value=data.value.equipment_type
+        }).then(()=>{
+            store.dispatch('fetchEquipment').then(()=>{
+                types.value=store.getters.GET_EQUIPMENT_TYPES;
+            })
         })
             .then(loading.value = false).catch((error) => { console.log(error) })
         const closeModal = () => {
@@ -92,9 +108,9 @@ export default {
         }
         const updateEquipment = () => {
             patchEquipment(props.id, {
-                equipment_type_id: data.equipment_type_id,
-                inventory_id: data.inventory_id,
-                name: data.name,
+                equipment_type_id: selectedType.value.id,
+                inventory_id: data.value.inventory_id,
+                name: data.value.name,
             }).then(() => showSuccess()).catch((error) => {
                 toast.add({ severity: 'error', summary: error.response.data.error.message, life: 3000 });
             })
@@ -102,6 +118,19 @@ export default {
         const showSuccess = () => {
             toast.add({ severity: 'success', summary: 'Изменения сохранены', life: 2000 });
         }
+        const searchType = (event) => {
+      if (!event.query.trim().length) {
+        filteredType.value = [...types.value];
+      }
+      else {
+        filteredType.value = types.value.filter((item) => {
+          if (item.name.toLowerCase().includes(event.query.toLowerCase())) {
+            return true;
+          }
+          return false;
+        });
+      }
+    }
         return {
             isDialogOpen,
             closeModal,
@@ -111,7 +140,11 @@ export default {
             setsColumns,
             hasSets: computed(() => { return sets.value.length }),
             updateEquipment,
-            items
+            items,
+            searchType,
+            selectedType,
+            filteredType,
+            types
         }
     },
 };

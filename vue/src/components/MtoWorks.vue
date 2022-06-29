@@ -1,12 +1,15 @@
 <template>
     <Toast />
-        <div  class="flex p-4 flex-row ">
-            <div class="flex-auto">
-                <Creation type="work" :saveClass="addNew" @save="update" />
-                <EquipmentTable :loading="loading" name="sets" :columns="worksColumns" table="Работы"
-                    :info="sets" />
-            </div>
+    <div class="flex p-4 flex-row ">
+        <div class="flex-auto">
+            <Creation type="work" :saveClass="addNew" @save="update" v-if="!loading" @closed="openDialog" />
+            <EquipmentTable @change="change" @deleteElement="update" :delete="deleteWork" :loading="loading" name="work"
+                :columns="worksColumns" table="Работы" :info="info" />
+            <Creation v-if="isDialogOpen" type="work" @save="update" @closed="openDialog" :saveClass="changeWork"
+                :info="creationInfo" :isOpen="isDialogOpen" :creation="false" :equipment="creationInfo.work_type"
+                :status="creationInfo.work_status" :employee="creationInfo.employee"/>
         </div>
+    </div>
 </template>
 <script>
 import { useStore } from 'vuex'
@@ -16,7 +19,7 @@ import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Toast from 'primevue/toast';
 import { useToast } from "primevue/usetoast";
-import { postWork } from '@/assets/api/works';
+import { postWork, getWorks, deleteWork,patchWork } from '@/assets/api/works';
 import { useRouter, useRoute } from 'vue-router'
 import EquipmentTable from './EquipmentTable.vue';
 import Creation from './modals/Creation.vue';
@@ -38,33 +41,63 @@ export default {
     setup(props) {
         const toast = useToast();
         const router = useRouter();
-        const isDialogOpen = ref(true)
+        const isDialogOpen = ref(false)
+        const openDialog = (value) => {
+            isDialogOpen.value = value;
+        };
         const store = useStore();
-        const data = ref({});
-        const sets = ref([]);
+        const info = ref([]);
         const type = ref();
         const loading = ref(true)
+        const creationInfo = ref();
         const update = () => {
             loading.value = true;
-            store.dispatch('fetchClasses').then(() => {
+            getWorks(props.id, 'equipment').then((response) => {
+                info.value = response.data.data.map((item) => {
+                    item.time = item.started_at + ' - ';
+                    item.time += item.ended_at ? item.ended_at : '';
+                    if (item.employee.surname != null && item.employee.patronymic != null && item.employee.name != null) {
+                        item.employee.employeeInitials = item.employee.surname + " " + item.employee.name[0] + "." + item.employee.patronymic[0] + ".";
+                    }
+                    return item;
+                })
                 loading.value = false;
-                info.value = store.getters.GET_CLASSES;
             });
+            // store.dispatch('fetchTypes');
         }
         update();
-        const addNew = (work) => {
+        const change = (id) => {
+            creationInfo.value = info.value.find((item) => item.id === id);
+            openDialog(true)
+        }
+        const addNew = (status, type) => {
+
             return postWork({
-                'equipment_id': props.id,
-                "audience_id": work.id
+                "workable_id": props.id,
+                "workable_type": "equipment",
+                "work_type_id": type.id,
+                "work_status_id": status.id,
+                "employee_id": store.getters.GET_USER_ID
+
             });
         }
         const closeModal = () => {
             isDialogOpen.value = false;
             router.push({ name: 'mto' })
         }
-        const updateEquipment = () => {
-            patchEquipment(props.id, data.value).then(() => showSuccess()).catch(() => {
-                toast.add({ severity: 'error', summary: 'Ошибка', life: 3000 });
+        const changeWork = (status, type,employee, work) => {
+            let body = {
+                "employee_id": employee.id,
+                "started_at": work.started_at,
+                "work_type_id": type.id,
+                "work_status_id": status.id,
+                "workable_type":'equipment'
+            }
+            if (work.ended_at != null) {
+                body.ended_at = work.ended_at
+            }
+            return patchWork(work.id, body).then(() => showSuccess()).catch(() => {
+                toast.add({ severity: 'error', summary: error.response.data.error.message, life: 3000 });
             })
         }
         const showSuccess = () => {
@@ -72,15 +105,17 @@ export default {
         }
         return {
             isDialogOpen,
-            closeModal,
-            data, loading,
-            sets,
+            openDialog,
+            info, loading,
             type,
             worksColumns,
-            hasSets: computed(() => { return sets.value.length }),
-            updateEquipment,
+            // updateEquipment,
             update,
-            addNew
+            addNew,
+            deleteWork,
+            changeWork,
+            change,
+            creationInfo
         }
     },
 };
