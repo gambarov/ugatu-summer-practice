@@ -8,6 +8,7 @@ use App\Models\Equipment\Set;
 use App\Models\Equipment\Work;
 use App\Models\Equipment\WorkStatus;
 use App\Models\Equipment\WorkType;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
@@ -104,12 +105,15 @@ class WorkControllerTest extends TestCase
 
         $work = Work::factory()->create();
 
+        $ended_at = Carbon::now()->toDateTimeString();
+
         $response = $this->putJson('/api/works/' . $work->id, [
             'workable_id' => $set->id,
             'workable_type' => 'set',
             'work_type_id' => $type->id,
             'work_status_id' => $status->id,
             'employee_id' => $employee->id,
+            'ended_at' => $ended_at,
         ]);
 
         $response->assertStatus(200);
@@ -124,6 +128,7 @@ class WorkControllerTest extends TestCase
             'work_type_id' => $type->id,
             'work_status_id' => $status->id,
             'employee_id' => $employee->id,
+            'ended_at' => $ended_at,
         ]);
     }
 
