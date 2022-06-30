@@ -50,6 +50,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         'only' => ['index', 'store', 'show', 'update', 'destroy'],
     ]);
 
+    Route::get('/notes/equipment/{id}', [NoteController::class, 'equipment']);
+    Route::get('/notes/employee/{id}', [NoteController::class, 'employee']);
     Route::apiResource('/notes', NoteController::class, [
         'only' => ['index', 'store', 'show', 'update', 'destroy'],
     ]);
