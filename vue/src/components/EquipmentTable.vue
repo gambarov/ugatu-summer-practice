@@ -1,5 +1,16 @@
 <template>
+  <div>
   <ConfirmDialog></ConfirmDialog>
+
+  <div id="printMe">
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <div v-for="(row, index) in selectedRows" :key="index">
+          <p>{{row.inventory_id}}</p>
+          <qrcode-vue :value="row"></qrcode-vue>
+        </div>
+    </div>
+  </div>
+ 
   <DataTable v-model:filters="filters" class="card" :value="info" :paginator="true" :rows="10" dataKey="id" :rowHover="true" filterDisplay="menu"
     :loading="loading" v-model:selection="selectedRows"
     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -18,6 +29,7 @@
         </span>
         <Button v-if="isSelectedEmpty" label="Удалить выбранное" icon="pi pi-trash" class="p-button-danger" :disabled="isEmpty"
           @click="confirmDeleteSelected" />
+        <Button v-if="isSelectedEmpty" v-print="'#printMe'" label="Распечатать QR-код" @click="printQrcode" class="p-button bg-blue-500" />
       </div>
     </template>
     <template #empty> Нет оборудования </template>
@@ -33,6 +45,7 @@
       </template>
     </Column>
   </DataTable>
+  </div>
 
 </template>
 
@@ -51,6 +64,8 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { mtoColumns } from "@/assets/mtoColumns";
+import QrcodeVue from 'qrcode.vue'
+import print from 'vue3-print-nb'
 
 export default {
   components: {
@@ -59,7 +74,11 @@ export default {
     InputText,
     Button,
     Dialog,
-    ConfirmDialog
+    ConfirmDialog,
+    QrcodeVue
+  },
+  directives: {
+    print   
   },
   emits: ['deleteElement','change'],
   props: {
@@ -162,5 +181,15 @@ button {
 .card {
   border: 1px solid #dee2e6;
   border-radius: 3px;
+}
+
+@media print
+{
+   #printMe { display: block; } 
+}
+
+@media screen
+{
+   #printMe { display: none; } 
 }
 </style>
