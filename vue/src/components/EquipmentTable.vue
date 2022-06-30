@@ -3,11 +3,14 @@
   <ConfirmDialog></ConfirmDialog>
 
   <div id="printMe">
-    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-        <div v-for="(row, index) in selectedRows" :key="index">
+    <div class="item" v-for="(row, index) in selectedRows" :key="index">
+      <div class="column">
+        <div class="align-items-center">
           <p>{{row.inventory_id}}</p>
-          <qrcode-vue :value="row"></qrcode-vue>
+          <!-- TODO: Добавить нормальную ссылку на страницу оборудования -->
+          <qrcode-vue :value="row" render-as="svg"></qrcode-vue>
         </div>
+      </div>
     </div>
   </div>
  
@@ -185,7 +188,21 @@ button {
 
 @media print
 {
-   #printMe { display: block; } 
+   #printMe { display: table; text-align: justify; }
+
+   .item {
+    display:inline-block;
+    margin-right: 1.2rem;
+   }
+
+   .column {
+    display: block;
+   }
+
+   .align-items-center {
+    display: table-cell;
+    vertical-align: middle;
+   }
 }
 
 @media screen
