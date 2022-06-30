@@ -1,7 +1,9 @@
 <template>
   <Menubar>
     <template #start>
-      <h1>Магл</h1>
+      <h1>
+        СТПП
+      </h1>
 
     </template>
     <template #end>
