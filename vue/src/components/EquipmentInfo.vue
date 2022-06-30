@@ -1,9 +1,10 @@
 <template>
+    <div>
     <Toast />
-
     <div class=" bg-white p-4">
         <div class="flex  flex-row ">
             <div class="mr-3 flex-auto">
+                
                 <div class="flex flex-col ">
                     <label htmlFor="name">Наименование МТО</label>
                     <InputText type="text" v-model="data.name" />
@@ -23,12 +24,13 @@
                     <label htmlFor="type">Идентификатор</label>
                     <InputText type="text" v-model="data.inventory_id" />
                 </div>
-                <Button label="Обновить данные" @click="updateEquipment" class="p-button-success" />
+                <Button label="Обновить данные" @click="updateEquipment" class="p-button bg-blue-500" />
             </div>
             <div class="flex-auto">
                 <EquipmentTable :loading="loading" name="sets" :columns="setsColumns" table="Комплекты" :info="sets" />
             </div>
         </div>
+    </div>
     </div>
 </template>
 <script>
@@ -45,6 +47,7 @@ import { getEquipmentById, patchEquipment } from '@/assets/api/equipment'
 import { useRouter, useRoute } from 'vue-router'
 import EquipmentTable from './EquipmentTable.vue';
 import { setsColumns } from '@/assets/setsColumns';
+
 export default {
     components: {
         Dialog,
@@ -53,7 +56,7 @@ export default {
         EquipmentTable,
         Toast,
         TabMenu,
-        AutoComplete
+        AutoComplete,
     },
     props: {
         id: {
@@ -132,6 +135,8 @@ export default {
       }
     }
         return {
+            value: 'https://example.com',
+            size: 300,
             isDialogOpen,
             closeModal,
             data, loading,
@@ -162,4 +167,5 @@ button {
 .a {
     margin-bottom: 10px;
 }
+
 </style>
