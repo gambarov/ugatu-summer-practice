@@ -28,9 +28,7 @@ class UpdateEquipmentService extends BaseService
         }
 
         if (Arr::has($data, ['chars'])) {
-            foreach ($data['chars'][0] as $id => $char) {
-                $equipment->chars()->sync($id, ['value' => $char['value']]);
-            }
+            $equipment->chars()->sync($data['chars'][0]);
         }
 
         return $equipment;

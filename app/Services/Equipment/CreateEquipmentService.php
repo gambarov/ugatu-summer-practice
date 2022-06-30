@@ -27,9 +27,7 @@ class CreateEquipmentService extends BaseService
         }
 
         if (Arr::has($data, ['chars'])) {
-            foreach ($data['chars'][0] as $id => $char) {
-                $equipment->chars()->attach($id, ['value' => $char['value']]);
-            }
+            $equipment->chars()->attach($data['chars'][0]);
         }
 
         return $equipment;

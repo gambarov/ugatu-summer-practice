@@ -220,4 +220,33 @@ class EquipmentControllerTest extends TestCase
             'value' => 50
         ]);
     }
+
+    /**
+     * @return void
+     */
+    public function test_updates_an_equipment_with_chars()
+    {
+        Sanctum::actingAs(Employee::factory()->create(), ['*']);
+
+        $equipment = Equipment::factory()->create();
+        $char = Char::factory()->create();
+
+        $response = $this->json('PUT', '/api/equipment/' . $equipment->id, [
+            'name' => 'Test Equipment',
+            'inventory_id' => 'TEST-EQUIPMENT',
+            'equipment_type_id' => EquipmentType::create(['name' => 'type'])->id,
+            'chars' => [
+                [$char->id => ['value' => 50]],
+            ]
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure(['data' => $this->jsonEquipment]);
+
+        $this->assertDatabaseHas('equipment_char', [
+            'equipment_id' => $equipment->id,
+            'char_id' => $char->id,
+            'value' => 50
+        ]);
+    }     
 }
