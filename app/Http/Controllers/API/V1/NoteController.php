@@ -24,6 +24,18 @@ class NoteController extends Controller
         return NoteResource::collection($notes);
     }
 
+    public function equipment($id)
+    {
+        $notes = Note::where('equipment_id', $id)->get();
+        return NoteResource::collection($notes);
+    }
+
+    public function employee($id)
+    {
+        $notes = Note::where('employee_id', $id)->get();
+        return NoteResource::collection($notes);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
