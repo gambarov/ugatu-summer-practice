@@ -30,7 +30,7 @@ class StoreWorkRequest extends FormRequest
             'work_status_id' => 'required|integer|exists:App\Models\Equipment\WorkStatus,id',
             'employee_id' => 'nullable|integer|exists:App\Models\Employee,id',
             'started_at' => 'sometimes|date',
-            'ended_at' => 'nullable|date',
+            'ended_at' => 'sometimes|date',
         ];
     }
 }

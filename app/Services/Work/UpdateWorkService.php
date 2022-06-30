@@ -21,6 +21,7 @@ class UpdateWorkService extends BaseService
             'work_type_id',
             'work_status_id',
             'started_at',
+            'ended_at',
             'employee_id'
         ]));
 
