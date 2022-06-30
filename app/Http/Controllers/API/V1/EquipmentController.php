@@ -21,7 +21,7 @@ class EquipmentController extends ApiController
      */
     public function index()
     {
-        $equipment = Equipment::with(['sets', 'chars'])->get();
+        $equipment = Equipment::with(['sets', 'chars', 'audiences'])->get();
         return EquipmentResource::collection($equipment);
     }
 
@@ -40,7 +40,7 @@ class EquipmentController extends ApiController
     public function store(StoreEquipmentRequest $request)
     {
         $equipment = app(CreateEquipmentService::class)->execute($request->validated());
-        return new EquipmentResource($equipment->load(['type', 'sets', 'chars']));
+        return new EquipmentResource($equipment->load(['type', 'sets', 'chars', 'audiences']));
     }
 
     /**
@@ -51,7 +51,7 @@ class EquipmentController extends ApiController
      */
     public function show($id)
     {
-        $equipment = Equipment::with('sets', 'chars')->findOrFail($id);
+        $equipment = Equipment::with('sets', 'chars', 'audiences')->findOrFail($id);
         return new EquipmentResource($equipment);
     }
 
@@ -65,7 +65,7 @@ class EquipmentController extends ApiController
     public function update(UpdateEquipmentRequest $request, int $id)
     {
         $equipment = app(UpdateEquipmentService::class)->execute($request->validated() + ['id' => $id]);
-        return new EquipmentResource($equipment->load('sets', 'chars'));
+        return new EquipmentResource($equipment->load('sets', 'chars', 'audiences'));
     }
 
     /**

@@ -26,7 +26,8 @@ class EquipmentControllerTest extends TestCase
             'name',
         ],
         'sets',
-        'chars'
+        'chars',
+        'audience'
     ];
 
     /**
