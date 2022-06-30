@@ -11,7 +11,7 @@ class AuthHelper
         if (!$user)
             return false;
 
-        $role = mb_strtolower($user->load('role')->role->name);
+        $role = mb_strtolower($user->role->name);
         return $role == 'администратор';
     }
 }
