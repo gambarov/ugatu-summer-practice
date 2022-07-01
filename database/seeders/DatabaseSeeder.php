@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Factories\NoteFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -27,5 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(WorkTypeSeeder::class);
         $this->call(WorkStatusSeeder::class);
         $this->call(WorkSeeder::class);
+        $this->call(NoteSeeder::class);
     }
 }
