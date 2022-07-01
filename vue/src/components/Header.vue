@@ -1,9 +1,7 @@
 <template>
   <Menubar>
     <template #start>
-      <h1>
-        СТПП
-      </h1>
+      <router-link class="text-xl pointer" to="/">СТПП</router-link>
 
     </template>
     <template #end>

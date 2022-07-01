@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-1 flex-col">
     <Toolbar class="mb-3">
-      <template #start>
+      <template  #start>
         <Button label="Добавить" icon="pi pi-plus" class="p-button bg-blue-400 mr-3" @click="openDialog(true)" />
       </template>
     </Toolbar>
     <EquipmentTable @deleteElement="updateEq" :delete="deleteEquipment" name="mto" :loading="loading"
-      :columns="mtoColumns" table="Мто" :info="info" />
+      :columns="mtoColumns" table="МТО" :info="info" />
   </div>
 
   <Dialog header="Добавить МТО" v-model:visible="isDialogOpen" :modal="true">

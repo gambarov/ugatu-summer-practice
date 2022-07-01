@@ -14,6 +14,14 @@ export default {
     },
     mutations: {
         SET_EQUIPMENT(state, payload) {
+            payload=payload.map((item) =>{
+                if(item.audience!=null){
+                item.audience.name=item.audience.building+"-"+item.audience.number;
+                item.audience.name+=item.audience.letter?item.audience.letter:''; 
+                }
+
+                return item;
+            })
             state.equipment = payload;
         },
         SET_EQUIPMENT_TYPES(state,payload){

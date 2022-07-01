@@ -1,0 +1,1 @@
+export const specsColumns = [{field:'id', header:'№'}, {field:'char.name', header:'Название'}, {field:'value', header:'Значение'},{field:'char.char_measure.name', header:'Значение'}];

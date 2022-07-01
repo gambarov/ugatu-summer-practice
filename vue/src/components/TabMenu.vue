@@ -60,6 +60,11 @@ export default {
                 icon: 'pi pi-fw pi-cog',
                 command: () => { router.push({ path: `/category/mto/info/${props.id}/specs` }) }
             },
+            {
+                label: 'Заметки',
+                icon: 'pi pi-fw pi-comment',
+                command: () => { router.push({ path: `/category/mto/info/${props.id}/notes` }) }
+            },
         ]);
         const closeModal = () => {
             router.push({ name: 'mto' })
