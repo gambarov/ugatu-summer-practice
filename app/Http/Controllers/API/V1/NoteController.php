@@ -8,6 +8,7 @@ use App\Http\Requests\Note\UpdateNoteRequest;
 use App\Models\Note;
 use App\Http\Resources\Note\NoteResource;
 use App\Traits\JsonRespond;
+use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
@@ -33,6 +34,15 @@ class NoteController extends Controller
     public function employee($id)
     {
         $notes = Note::where('employee_id', $id)->get();
+        return NoteResource::collection($notes);
+    }
+
+    public function search(Request $request)
+    {
+        $notes = Note::with('equipment', 'employee')
+            ->where('equipment_id', $request->equipment_id)
+            ->where('employee_id', $request->employee_id)
+            ->get();
         return NoteResource::collection($notes);
     }
 
