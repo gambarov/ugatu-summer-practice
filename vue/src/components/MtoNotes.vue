@@ -61,7 +61,10 @@ export default {
         const loading = ref(true);
         const update = () => {
             loading.value = true;
-            getNotes().then((response) => {
+            getNotes({
+                "equipment_id":props.id,
+    "employee_id":store.getters.GET_USER_ID
+            }).then((response) => {
                 info.value = response.data.data
                 loading.value = false;
             });

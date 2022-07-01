@@ -4,7 +4,6 @@
     <EquipmentTable @deleteElement="update" :delete="deleteSet" name="sets" :loading="loading" :columns="setsColumns"
       table="Комплекты" :info="info" />
   </div>
-
 </template>
 <script>
 import EquipmentTable from "../EquipmentTable.vue";

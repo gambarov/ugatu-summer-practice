@@ -2,8 +2,8 @@ import { url } from "./url"
 export const getNoteByEquipment=(id)=>{
     return url.get(`/equipment/${id}/chars`)
 }
-export const getNotes=()=>{
-    return url.get(`/notes`)
+export const getNotes=(data)=>{
+    return url.post(`/notes/search`,data)
 }
 export const postNote=(data)=>{
     return url.post('/notes',data)

@@ -2,7 +2,7 @@
   <div class="flex p-4 items-center card flex-1 flex-col">
     <h1 class="font-semibold">Вход в систему</h1>
     <div class="tt">
-      
+
       <div class=" p-inputgroup mt-3 mb-3 ">
         <span class="p-inputgroup-addon">
           <i class="pi pi-user"></i>
@@ -17,7 +17,7 @@
       </div>
       <div class="flex flex-col justify-end">
         <span v-if="isLoginFailed">Неправильные данные</span>
-        <Button @click="checkLogin" class="mb-3 p-button-success" label="Войти"/>
+        <Button type="submit" @click="checkLogin" class="mb-3 p-button-success" label="Войти" />
         <!-- <Button class="p-button-outlined" label="Зарегистрироваться"/> -->
       </div>
     </div>
@@ -45,16 +45,16 @@ export default {
   setup() {
     const email = ref();
     const password = ref();
-    const store=useStore();
-    const isLoginFailed=ref(false);
-    const checkLogin=()=>{
-      store.dispatch('fetchUser',{ email: email.value, password: password.value }).then(()=>router.push('/'),).catch((error)=>isLoginFailed.value=true)
+    const store = useStore();
+    const isLoginFailed = ref(false);
+    const checkLogin = () => {
+      store.dispatch('fetchUser', { email: email.value, password: password.value }).then(() => router.replace('/'),).catch((error) => isLoginFailed.value = true)
     }
-   return{
-    email,password,checkLogin, isLoginFailed
-  } 
+    return {
+      email, password, checkLogin, isLoginFailed
+    }
   }
-  
+
 }
 </script>
 <style lang="scss">
