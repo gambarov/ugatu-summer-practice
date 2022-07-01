@@ -6,7 +6,7 @@
       </template>
     </Toolbar>
     <EquipmentTable @deleteElement="updateEq" :delete="deleteEquipment" name="mto" :loading="loading"
-      :columns="mtoColumns" table="МТО" :info="info" />
+      :columns="mtoColumns" table="МТО" :info="info" :qrCode="true"/>
   </div>
 
   <Dialog header="Добавить МТО" v-model:visible="isDialogOpen" :modal="true">

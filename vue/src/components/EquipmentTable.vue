@@ -2,13 +2,13 @@
   <div>
   <ConfirmDialog></ConfirmDialog>
 
-  <div id="printMe">
+  <div v-if="isQrCode" id="printMe">
     <div class="item" v-for="(row, index) in selectedRows" :key="index">
       <div class="column">
         <div class="align-items-center">
           <p>{{row.inventory_id}}</p>
           <!-- TODO: Добавить нормальную ссылку на страницу оборудования -->
-          <qrcode-vue :value="row.url" render-as="svg"></qrcode-vue>
+          <qrcode-vue :value="row.url" render-as="svg" size="110"></qrcode-vue>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
         </span>
         <Button v-if="isSelectedEmpty" label="Удалить выбранное" icon="pi pi-trash" class="p-button-danger" :disabled="isEmpty"
           @click="confirmDeleteSelected" />
-        <Button v-if="isSelectedEmpty" v-print="'#printMe'" label="Распечатать QR-код" @click="printQrcode" class="p-button bg-blue-500" />
+        <Button  v-if="isSelectedEmpty&&isQrCode" v-print="'#printMe'" label="Распечатать QR-код" @click="printQrcode" class="p-button bg-blue-500" />
       </div>
     </template>
     <template #empty> Нет оборудования </template>
@@ -96,6 +96,9 @@ export default {
     },
     loading: {
       default: true
+    },
+    qrCode:{
+      default:false
     }
   },
   setup(props, { emit }) {
@@ -169,7 +172,8 @@ export default {
       showInfo,
       confirm2,
       isSelectedEmpty:computed(()=>{return selectedRows.value.length}),
-      filters
+      filters,
+      isQrCode:computed(()=>{return props.qrCode}),
     };
   },
 };

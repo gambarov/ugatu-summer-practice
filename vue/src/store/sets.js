@@ -1,4 +1,5 @@
 import { getSets } from "@/assets/api/sets";
+import { baseUrl } from "@/assets/api/baseUrl";
 export default {
     state: {
         sets:[],
@@ -15,6 +16,7 @@ export default {
                     set.employeeInitials=set.employee.surname+" "+set.employee.name[0]+"."+set.employee.patronymic[0]+".";
 
                 }
+                set.url=baseUrl+'/category/sets/info/'+set.id;
                 return set;
             })
             state.sets=payload;

@@ -42,7 +42,6 @@ item.url=baseUrl+'/category/mto/info/'+item.id;
             return Promise.all([getEquipment(),getTypes()]).then((response) => {
                 context.commit('SET_EQUIPMENT', response[0].data.data);
                 context.commit('SET_EQUIPMENT_TYPES', response[1].data.data)});
-            return getEquipment().then((response) => context.commit('SET_EQUIPMENT', response.data.data)).catch((error) => console.log(error))
         },
         deleteEquipment(context, payload) {
             context.commit('DELETE_EQUIPMENT', payload)
