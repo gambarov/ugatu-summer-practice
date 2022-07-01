@@ -1,4 +1,5 @@
 import { getEquipment,getTypes } from "@/assets/api/equipment";
+import { baseUrl } from "@/assets/api/baseUrl";
 export default {
     state: {
         equipment: [],
@@ -18,7 +19,9 @@ export default {
                 if(item.audience!=null){
                 item.audience.name=item.audience.building+"-"+item.audience.number;
                 item.audience.name+=item.audience.letter?item.audience.letter:''; 
+                
                 }
+item.url=baseUrl+'/category/mto/info/'+item.id;
 
                 return item;
             })

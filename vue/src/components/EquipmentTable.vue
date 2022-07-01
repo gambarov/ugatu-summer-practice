@@ -8,7 +8,7 @@
         <div class="align-items-center">
           <p>{{row.inventory_id}}</p>
           <!-- TODO: Добавить нормальную ссылку на страницу оборудования -->
-          <qrcode-vue :value="row" render-as="svg"></qrcode-vue>
+          <qrcode-vue :value="row.url" render-as="svg"></qrcode-vue>
         </div>
       </div>
     </div>

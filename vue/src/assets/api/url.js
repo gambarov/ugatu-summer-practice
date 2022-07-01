@@ -1,4 +1,5 @@
 import axios from "axios";
+import { baseUrl } from "./baseUrl";
 import store from "@/store/index.js";
 let token;
 if (JSON.parse(localStorage.getItem('user')) != null) {
@@ -6,6 +7,6 @@ if (JSON.parse(localStorage.getItem('user')) != null) {
 }
 
 export const url = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: `${baseUrl}/api`,
     headers: { 'Authorization': `Bearer ${token}` }
 })
