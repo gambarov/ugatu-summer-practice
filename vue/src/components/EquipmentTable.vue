@@ -14,7 +14,7 @@
     </div>
   </div>
  
-  <DataTable v-model:filters="filters" class="card" :value="info" :paginator="true" :rows="10" dataKey="id" :rowHover="true" filterDisplay="menu"
+  <DataTable  v-model:filters="filters" class="card" :value="info" :paginator="true" :rows="10" dataKey="id" :rowHover="true" filterDisplay="menu"
     :loading="loading" v-model:selection="selectedRows"
     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
     :rowsPerPageOptions="[10, 25, 50]" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -38,12 +38,11 @@
     <template #empty> Нет оборудования </template>
     <template #loading> Загрузка... </template>
     <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-    <Column v-for="column in columns" :field="column.field" :header="column.header" sortable></Column>
+    <Column style="word-wrap: break-word; max-width:300px; white-space: initial;" v-for="column in columns" :field="column.field" :header="column.header" sortable></Column>
     <Column headerStyle="width: 4rem; text-align: center"
       bodyStyle="display:flex;text-align: center; overflow: visible">
       <template #body="slotProps">
         <Button @click="showInfo(slotProps.data)" icon="pi pi-eye" className="p-button-rounded p-button-primary mr-2" />
-        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" />
         <Button icon="pi pi-trash" @click="confirm2(slotProps.data.id)" className="p-button-rounded p-button-danger" />
       </template>
     </Column>

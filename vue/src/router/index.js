@@ -11,6 +11,7 @@ import LoginPage from "../components/LoginPage.vue";
 import MtoPlacements from "../components/MtoPlacements.vue"
 import MtoWorks from "../components/MtoWorks.vue"
 import MtoSpecs from "../components/MtoSpecs.vue"
+import MtoNotes from "../components/MtoNotes.vue"
 import TabMenu from "../components/TabMenu.vue"
 import SetsTabMenu from "../components/SetsTabMenu.vue"
 import store from "@/store/index.js";
@@ -72,6 +73,13 @@ const routes = [
       props: true,
       components: {
         tabs: MtoSpecs
+      },
+    },
+    {
+      path: 'notes',
+      props: true,
+      components: {
+        tabs: MtoNotes
       },
     }
     ]

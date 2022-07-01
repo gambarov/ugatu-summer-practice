@@ -21,7 +21,7 @@
                     </AutoComplete>
                 </div>
                 <div class="flex flex-col mb-3">
-                    <label htmlFor="type">Идентификатор</label>
+                    <label htmlFor="type">Инвентарный номер</label>
                     <InputText type="text" v-model="data.inventory_id" />
                 </div>
                 <Button label="Обновить данные" @click="updateEquipment" class="p-button bg-blue-500" />
