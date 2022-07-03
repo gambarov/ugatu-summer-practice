@@ -318,14 +318,14 @@ var AppTabView = function AppTabView(props, ref) {
     var tabPanel = tabPanels[options.index];
     return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("a", __assign({
       role: "tab",
-      onClick: options.onClick,
       className: options.className,
       "aria-controls": options.ariaControls,
       "aria-selected": options.selected,
       tabIndex: options.index
     }, {
       children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", __assign({
-        className: options.titleClassName
+        className: options.titleClassName,
+        onClick: options.onClick
       }, {
         children: tabPanel.header
       })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("i", {
@@ -637,8 +637,12 @@ var EquipmentTable = function EquipmentTable() {
   };
 
   var renderHeader = function renderHeader() {
-    return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
-      children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("span", __assign({
+    return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", __assign({
+      className: 'flex flex-column md:flex-row md:justify-content-between md:align-items-center'
+    }, {
+      children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", {
+        children: "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u041C\u0422\u041E"
+      }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("span", __assign({
         className: "p-input-icon-left"
       }, {
         children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("i", {
@@ -648,14 +652,14 @@ var EquipmentTable = function EquipmentTable() {
           value: globalFilterValue,
           onChange: onGlobalFilterChange,
           placeholder: "\u041F\u043E\u0438\u0441\u043A..."
+        }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(primereact_button__WEBPACK_IMPORTED_MODULE_4__.Button, {
+          type: "button",
+          icon: "pi pi-filter-slash",
+          label: "\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C",
+          onClick: resetFilters
         })]
-      })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(primereact_button__WEBPACK_IMPORTED_MODULE_4__.Button, {
-        type: "button",
-        icon: "pi pi-filter-slash",
-        label: "\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C",
-        onClick: resetFilters
-      })]
-    });
+      }))]
+    }));
   };
 
   var header = (0,react__WEBPACK_IMPORTED_MODULE_1__.useMemo)(function () {
